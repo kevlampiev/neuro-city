@@ -1,0 +1,22 @@
+// Fonts
+@import url('https://fonts.bunny.net/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+.bg-primary,
+.btn-primary,
+.badge-primary,
+.alert-primary {
+    background-image: linear-gradient(to right, #40E0D0, #EE82EE);
+}
+
+.spread {
+
+    height: 100%;
+    width: 100%;
+}
