@@ -26,8 +26,6 @@
 
 <body class="bg-primary ">
     <div class="bg-main-image spread">
-        @include("layouts.layout-components.main-menu")
-
 
         <main class="py-4">
             @yield('content')
