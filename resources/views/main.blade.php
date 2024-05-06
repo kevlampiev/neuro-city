@@ -1,5 +1,5 @@
 @extends("layouts/app")
 
 @section('content')
-    <div class="bg-white"> ddd</div>
+    {{-- <div class="bg-white"> ddd</div> --}}
 @endsection
