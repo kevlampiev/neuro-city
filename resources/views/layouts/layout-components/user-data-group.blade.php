@@ -5,11 +5,11 @@
         </li>
     @endif
 
-    @if (Route::has('register'))
+    {{-- @if (Route::has('register'))
         <li class="nav-item">
             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
         </li>
-    @endif
+    @endif --}}
 @else
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
@@ -17,7 +17,7 @@
             {{ Auth::user()->name }}
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            {{-- <li><a class="dropdown-item" href="{{route('user.profileEdit')}}"> Личный кабинет </a></li> --}}
+            <li><a class="dropdown-item" href="{{route('user.profileEdit')}}"> Личный кабинет </a></li>
             <li><a class="dropdown-item" href="{{ route('logout') }}"
                    onclick="event.preventDefault();
                                document.getElementById('logout-form').submit();">

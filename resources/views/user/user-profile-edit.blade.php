@@ -1,0 +1,108 @@
+@extends('layouts.big-form')
+
+
+@section('content')
+    <div class="row justify-content-center">
+        <div class="col-mb-8">
+            <h3> Редактирование личной информации</h3>
+            <form action="#" method="POST">
+                @csrf
+                <div class="row">
+                    <div class = "col-md-6">
+                            <div class="form-group">
+                                <label for="inputName">Имя </label>
+                                <input type="text"
+                                    class="{{($errors->has('name')?'form-control is-invalid':'form-control')}}"
+                                    id="inputName" placeholder="Введите имя" name="name"
+                                    value="{{$user->name}}">
+                            </div>
+                            @if($errors->has('name'))
+                                <div class="alert alert-danger">
+                                    <ul class="p-0 m-0">
+                                        @foreach($errors->get('name') as $error)
+                                            <li class="m-0 p-0"> {{$error}}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                                
+                            <div class="form-group">
+                                <label for="inputEMail">e-mail</label>
+                                <input type="email"
+                                    class="{{($errors->has('email')?'form-control is-invalid':'form-control')}}"
+                                    id="inputEMail" placeholder="name@server.ru" name="email"
+                                    value="{{$user->email}}">
+                            </div>
+                            @if($errors->has('email'))
+                                <div class="alert alert-danger">
+                                    <ul class="p-0 m-0">
+                                        @foreach($errors->get('email') as $error)
+                                            <li class="m-0 p-0"> {{$error}}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
+                            <div class="form-group">
+                                <label for="inputPhone">Номер телефона</label>
+                                <input type="tel"
+                                    class="{{($errors->has('phone_number')?'form-control is-invalid':'form-control')}}"
+                                    id="inputPhone" name="phone_number"
+                                    placeholder="(XXX)-XXX-XXXX"
+                                    value="{{$user->phone_number}}"
+                                >
+                            </div>
+                            @if($errors->has('phone_number'))
+                                <div class="alert alert-danger">
+                                    <ul class="p-0 m-0">
+                                        @foreach($errors->get('phone_number') as $error)
+                                            <li class="m-0 p-0"> {{$error}}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+ 
+                            <div class="form-group">
+                                <label for="inputBirthday">День рождения</label>
+                                <input type="date"
+                                    class="{{($errors->has('birthday')?'form-control is-invalid':'form-control')}}"
+                                    id="inputBirthday" name="birthday"
+                                    value="{{$user->birthday}}"
+                                >
+                            </div>
+                            @if($errors->has('birthday'))
+                                <div class="alert alert-danger">
+                                    <ul class="p-0 m-0">
+                                        @foreach($errors->get('birthday') as $error)
+                                            <li class="m-0 p-0"> {{$error}}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
+
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Изображение для аватара</h5>
+                        <img src="https://cdn1.ntv.com.tr/gorsel/4bpw7kjnGk6s4MBHMOwAyg.jpg?width=1000&mode=both&scale=both&v=1512620740569" class="rounded-circle float-start border-info" alt="..."
+                        style="width: 200px; height:200px; object-fit: cover;">
+                    </div>
+                </div>
+
+                <div class="form-group mt-2">
+                    {{-- <a class="btn btn-outline-secondary" href="{{route('password.expired')}}"> Изменить пароль </a> --}}
+                    <a class="btn btn-outline-secondary" href="#"> Изменить пароль </a>
+                </div>
+
+                <div class="pt-5  "> 
+                    <button type="submit" class="btn btn-primary">
+                        Изменить информацию
+                    </button>
+                    <a class="btn btn-secondary" href="{{session('previous_url',route('home'))}}">Отмена</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+@endsection
