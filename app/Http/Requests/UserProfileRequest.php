@@ -25,7 +25,7 @@ class UserProfileRequest extends FormRequest
             'name' => 'required|string',
             'email' => 'required|email',
             'phone_number' => 'numeric',
-            'birthday' => 'date'
+            'birthday' => 'date',
         ];
     }
 }

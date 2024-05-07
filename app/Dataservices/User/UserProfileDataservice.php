@@ -22,6 +22,10 @@ class UserProfileDataservice
         $user = auth()->user();
         $user->fill($request->only('name', 'email', 'phone_number', 'birthday'));
         $user->updated_at = now();
+        if ($request->file('img_file')) {
+            $file_path = $request->file('img_file')->store(config('paths.vehicles.put', 'public/img/avatars'));
+            $user->photo = basename($file_path);
+        }
         $user->save();
     }
 

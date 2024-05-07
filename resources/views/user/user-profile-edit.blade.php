@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-mb-8">
             <h3> Редактирование личной информации</h3>
-            <form action="#" method="POST">
+            <form action="#" method="POST"  enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class = "col-md-6">
@@ -80,19 +80,41 @@
                                 </div>
                             @endif
 
-
-                    </div>
+                    </div>       
+                    
                     <div class="col-md-6">
                         <h5>Изображение для аватара</h5>
-                        <img src="https://cdn1.ntv.com.tr/gorsel/4bpw7kjnGk6s4MBHMOwAyg.jpg?width=1000&mode=both&scale=both&v=1512620740569" class="rounded-circle float-start border-info" alt="..."
-                        style="width: 200px; height:200px; object-fit: cover;">
+                        <div onclick="document.getElementById('loadImgBtn').click()">
+                            <img 
+                                @if(!$user->photo)
+                                    src="https://aristokratrest.com/files/rublevbar/image/no_product.jpg" 
+                                @else
+                                    src={{Storage::disk('local')->url('public/img/avatars/'.$user->photo)}} 
+                                @endif    
+                                    class="rounded-circle float-start border-info" alt="Изображение для аватара"
+                            style="width: 200px; height:200px; object-fit: cover;" id="img-viewer">
+                        </div>    
+                        
                     </div>
                 </div>
 
-                <div class="form-group mt-2">
-                    {{-- <a class="btn btn-outline-secondary" href="{{route('password.expired')}}"> Изменить пароль </a> --}}
-                    <a class="btn btn-outline-secondary" href="#"> Изменить пароль </a>
-                </div>
+                <div class="row mt-2">
+                    <div class = "col-md-6">
+                        {{-- <a class="btn btn-outline-secondary" href="{{route('password.expired')}}"> Изменить пароль </a> --}}
+                        <a class="btn btn-outline-secondary" href="#"> <i class="bi bi-incognito"></i> Изменить пароль </a>
+
+                    </div>
+                    <div class = "col-md-6">
+                        <div>
+                            <a class="btn btn-outline-secondary" href="#" onclick="document.getElementById('loadImgBtn').click()" > <i class="bi bi-image"></i> Изменить изображение </a>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control-file" id="loadImgBtn" name="img_file"
+                            accept="image/*" style="display:none">
+                        </div>    
+
+                    </div>
+                </div>    
 
                 <div class="pt-5  "> 
                     <button type="submit" class="btn btn-primary">
@@ -105,4 +127,30 @@
         </div>
     </div>
 
+@endsection
+
+@section('scripts')
+
+    <script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
+
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#img-viewer').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#loadImgBtn").change(function () {
+            readURL(this);
+        });
+
+
+    </script>
 @endsection
