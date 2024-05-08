@@ -29,10 +29,10 @@
         @include("layouts.layout-components.main-menu")
 
 
-        <main class="py-4">
+        <main class="pl-4 pr-4 pb-2 pt-1">
             @if(session()->has('message'))
-            <div class="alert alert-success m-0 p-0">
-                {{ session()->get('message') }}
+            <div class="alert alert-success m-0 pt-1 pb-1 pl-2">
+                <i class="bi bi-info-circle"></i> {{ session()->get('message') }}
             </div>
            @endif
 
@@ -45,14 +45,14 @@
 
             @if(session()->has('error'))
                 <div class="alert alert-danger m-0 p-0">
-                    {{ session()->get('error') }}
+                    <i class="bi bi-exclamation-diamond"></i> {{ session()->get('error') }}
                 </div>
             @endif
 
             <div class="m-5 p-5 bg-body-tertiary rounded bg-white shadow">
                 @yield('content')
             <div>    
-            
+
         </main>
     </div>
     

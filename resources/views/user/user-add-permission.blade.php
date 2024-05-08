@@ -1,15 +1,15 @@
-@extends('layouts.big-form')
+@extends('layouts.admin')
 
 @section('title')
-    Администратор|Добавить разрешение к роли
+    Администратор|Добавить роль пользователю
 @endsection
 
 @section('content')
-    <h3> Добавить разрешение к роли  {{$role->name}}</h3>
+    <h3> Добавить разрещение пользователю  {{$user->name}}</h3>
     <form method="POST">
         @csrf
         <div class="input-group mb-3">
-            <label for="permissions"></label>
+            <label for="permissions">Доступные разрешения</label>
             <select name="permission_id"
                     class="form-control selectpicker" id="permissions" data-live-search="true">
                 @foreach ($permissions as $permission)
@@ -25,7 +25,7 @@
         <button type="submit" class="btn btn-primary">
             Добавить
         </button>
-        <a class="btn btn-secondary" href="{{route('roleSummary',['role'=>$role, 'page' => 'permissions'])}}">Отмена</a>
+        <a class="btn btn-secondary" href="{{route('admin.userSummary',['user'=>$user, 'page' => 'permissions'])}}">Отмена</a>
     </form>
 
 @endsection

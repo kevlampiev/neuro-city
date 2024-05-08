@@ -27,7 +27,7 @@
                     <td>
                         <a onclick="return confirm('Действительно удалить разрешение у этой роли?')"
                             href="{{route('roleDetachPermission', ['role' => $role, 'permission' => $permission])}}">
-                            &#10007;Удалить разрешение
+                            <i class="bi bi-trash3"></i> Удалить разрешение
                         </a>
                     </td>
                 </tr>
