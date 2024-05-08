@@ -31,7 +31,7 @@
 
         <main class="py-4">
             @if(session()->has('message'))
-            <div class="alert alert-success">
+            <div class="alert alert-success m-0 p-0">
                 {{ session()->get('message') }}
             </div>
            @endif
@@ -44,14 +44,15 @@
             @endif --}}
 
             @if(session()->has('error'))
-                <div class="alert alert-danger">
+                <div class="alert alert-danger m-0 p-0">
                     {{ session()->get('error') }}
                 </div>
             @endif
 
-                <div class="m-5 p-5 bg-body-tertiary rounded bg-white shadow">
-                    @yield('content')
-                <div>    
+            <div class="m-5 p-5 bg-body-tertiary rounded bg-white shadow">
+                @yield('content')
+            <div>    
+            
         </main>
     </div>
     

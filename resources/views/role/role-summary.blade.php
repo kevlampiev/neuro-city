@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.big-form')
 
 @section('title')
     Администратор| Карточка роли
@@ -59,15 +59,15 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="main" role="tabpanel" aria-labelledby="main-tab">
                     <h4>Основная информация</h4>
-                    @include("Admin.Roles.components.common-info");
+                    @include("role.components.common-info");
                 </div>
                 <div class="tab-pane fade" id="permissions" role="tabpanel" aria-labelledby="permissions-tab">
                     <h4>Разрешения роли</h4>
-                    @include("Admin.Roles.components.permissions-table");
+                    @include("role.components.permissions-table");
                 </div>
                 <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
                     <h4>Сотрудники, которым назначена данная роль</h4>
-                    @include("Admin.Roles.components.users-table");
+                    @include("role.components.users-table");
                 </div>
 
             </div>

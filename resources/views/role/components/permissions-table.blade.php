@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-12">
         <a class="btn btn-outline-info"
-           href="{{route('admin.roleAttachPermission', ['role' => $role])}}">
+           href="{{route('roleAttachPermission', ['role' => $role])}}">
             Добавить разрешение
         </a>
     </div>
@@ -26,7 +26,7 @@
                     <td>{{$permission->slug}}</td>
                     <td>
                         <a onclick="return confirm('Действительно удалить разрешение у этой роли?')"
-                            href="{{route('admin.roleDetachPermission', ['role' => $role, 'permission' => $permission])}}">
+                            href="{{route('roleDetachPermission', ['role' => $role, 'permission' => $permission])}}">
                             &#10007;Удалить разрешение
                         </a>
                     </td>

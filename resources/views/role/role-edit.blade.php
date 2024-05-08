@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.big-form')
 
 @section('title')
     Администратор|Редактирование роли
@@ -54,7 +54,7 @@
                     Добавить
                 @endif
             </button>
-            <a class="btn btn-secondary" href="{{route('admin.roles')}}">Отмена</a>
+            <a class="btn btn-secondary" href="{{route('roles')}}">Отмена</a>
 
         </form>
 

@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.big-form')
 
 @section('title')
     Администратор| Роли пользователей
@@ -9,7 +9,7 @@
     <div class="row">
         <h2>Роли в системе</h2>
         <div>
-            <a class="btn btn-outline-info" href="{{route('admin.addRole', [])}}">Добавить роль</a>
+            <a class="btn btn-outline-info" href="{{route('addRole', [])}}">Добавить роль</a>
         </div>
     </div>
 
@@ -32,9 +32,9 @@
                     <td>{{$loop->index +1}}</td>
                     <td>{{$role->name}}</td>
                     <td>{{$role->slug}}</td>
-                    <td><a href="{{route('admin.roleSummary',['role' => $role])}}"> &#9776;Карточка </a></td>
-                    <td><a href="{{route('admin.editRole',['role' => $role])}}"> &#9998;Изменить </a></td>
-                    <td><a href="{{route('admin.deleteRole',['role' => $role])}}"
+                    <td><a href="{{route('roleSummary',['role' => $role])}}"> &#9776;Карточка </a></td>
+                    <td><a href="{{route('editRole',['role' => $role])}}"> &#9998;Изменить </a></td>
+                    <td><a href="{{route('deleteRole',['role' => $role])}}"
                            onclick="return confirm('Действительно удалить роль?')"> &#10008;Удалить </a>
                     </td>
                 </tr>

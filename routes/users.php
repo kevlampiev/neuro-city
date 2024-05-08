@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\User\RoleController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Middleware\CheckIsAdmin;
 use Illuminate\Support\Facades\Route;

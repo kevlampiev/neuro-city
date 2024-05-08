@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-12">
         <a class="btn btn-outline-info"
-           href="{{route('admin.roleAttachUser', ['role' => $role])}}">
+           href="{{route('roleAttachUser', ['role' => $role])}}">
             Добавить сотрудника
         </a>
     </div>
@@ -28,11 +28,11 @@
                     <td>{{$user->phone}}</td>
                     <td>{{$user->email}}</td>
                     <td>
-                        <a href="{{route('admin.userSummary', ['user' => $user])}}"> &#9776;Карточка</a>
+                        <a href="{{route('userSummary', ['user' => $user])}}"> &#9776;Карточка</a>
                     </td>
                     <td>
                         <a onclick="return confirm('Действительно отозвать роль у пользователя')"
-                            href="{{route('admin.roleDetachUser', ['role'=>$role, 'user' => $user])}}"> &#10007;Отозвать роль </a>
+                            href="{{route('roleDetachUser', ['role'=>$role, 'user' => $user])}}"> &#10007;Отозвать роль </a>
                     </td>
                 </tr>
             @empty
