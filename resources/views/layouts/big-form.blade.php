@@ -49,11 +49,15 @@
                 </div>
             @endif
 
-           
-            @yield('content')
+                <div class="m-5 p-5 bg-body-tertiary rounded bg-white shadow">
+                    @yield('content')
+                <div>    
         </main>
     </div>
-    <script src="script.js"></script>
+    
+    
+        @yield("scripts")
+    
 </body>
 
 
