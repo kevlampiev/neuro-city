@@ -85,14 +85,17 @@
                     <div class="col-md-6">
                         <h5>Изображение для аватара</h5>
                         <div onclick="document.getElementById('loadImgBtn').click()">
-                            <img 
-                                @if(!$user->photo)
-                                    src="https://aristokratrest.com/files/rublevbar/image/no_product.jpg" 
-                                @else
-                                    src={{Storage::disk('local')->url('public/img/avatars/'.$user->photo)}} 
-                                @endif    
+                            @if(!$user->photo)
+                                <img src="https://aristokratrest.com/files/rublevbar/image/no_product.jpg" alt="No photo"
                                     class="rounded-circle float-start border-info" alt="Изображение для аватара"
-                            style="width: 200px; height:200px; object-fit: cover;" id="img-viewer">
+                                    style="width: 200px; height:200px; object-fit: cover;" id="img-viewer">
+                            @else
+                                <img src="{{ Storage::url('img/avatars/'.$user->photo) }}" alt="User photo"
+                                    class="rounded-circle float-start border-info" alt="Изображение для аватара"
+                                    style="width: 200px; height:200px; object-fit: cover;" id="img-viewer">
+                            @endif
+
+                                    
                         </div>    
                         
                     </div>
