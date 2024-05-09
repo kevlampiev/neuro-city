@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.big-form')
 
 @section('title')
     Администратор|Добавить роль пользователю
@@ -8,7 +8,7 @@
     <h3> Добавить разрещение пользователю  {{$user->name}}</h3>
     <form method="POST">
         @csrf
-        <div class="input-group mb-3">
+        <div class="mb-3">
             <label for="permissions">Доступные разрешения</label>
             <select name="permission_id"
                     class="form-control selectpicker" id="permissions" data-live-search="true">
@@ -25,7 +25,7 @@
         <button type="submit" class="btn btn-primary">
             Добавить
         </button>
-        <a class="btn btn-secondary" href="{{route('admin.userSummary',['user'=>$user, 'page' => 'permissions'])}}">Отмена</a>
+        <a class="btn btn-secondary" href="{{route('userSummary',['user'=>$user, 'page' => 'permissions'])}}">Отмена</a>
     </form>
 
 @endsection

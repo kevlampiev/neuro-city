@@ -4,9 +4,9 @@
             <h6 >
                     роль: &nbsp;
                     <strong> {{$role->name}} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </strong>
-                <a href="{{route('admin.roleSummary', ['role'=>$role])}}"> &#9776;Карточка роли &nbsp; &nbsp;</a>
+                <a href="{{route('roleSummary', ['role'=>$role])}}"> &#9776;Карточка роли &nbsp; &nbsp;</a>
                     <a onclick="return confirm('Действительно отозвать роль у пользователя?')"
-                       href="{{route('admin.detachRoleFromUser', ['role'=>$role, 'user' => $user])}}"> &#10007;Отозвать роль &nbsp; &nbsp;</a>
+                       href="{{route('detachRoleFromUser', ['role'=>$role, 'user' => $user])}}"> &#10007;Отозвать роль &nbsp; &nbsp;</a>
 
             </h6>
             <div >

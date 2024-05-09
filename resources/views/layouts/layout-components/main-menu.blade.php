@@ -92,7 +92,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="#">Пользователи</a></li>
+                            <li><a class="dropdown-item" href="{{route('users')}}">Пользователи</a></li>
                             <li><a class="dropdown-item" href="{{route('roles')}}">Роли в системе</a></li>
                         {{-- @endif --}}
 

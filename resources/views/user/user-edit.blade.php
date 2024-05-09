@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.big-form')
 
 @section('title')
     Администратор|Редактирование пользователя
@@ -68,28 +68,16 @@
                         </div>
                     @endif
 
-                    @php  $roles = ['admin', 'user', 'manager']; @endphp
-                    <div class="form-group">
-                        <label for="inputRole">Роль</label>
-                        <select name="role" class="form-control {{$errors->has('role')?'is-invalid':''}}"
-                            {{Auth::user()->id===$user->id?'disabled':''}}>
-                            @foreach ($roles as $role)
-                                <option
-                                    value="{{$role}}" {{($role == $user->role) ? 'selected' : ''}}>
-                                    {{$role}}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @if ($errors->has('role'))
-                        <div class="alert alert-danger">
-                            <ul class="p-0 m-0">
-                                @foreach($errors->get('role') as $error)
-                                    <li class="m-0 p-0"> {{$error}}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+
+                    @if ($user->id != Auth::user()->id)
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" name="is_superuser" {{$user->is_superuser?"checked":""}}>
+                            <label class="form-check-label" for="is_superuser">
+                                Является администратором
+                            </label>
+                        </div>    
                     @endif
+
 
                     <div class="form-group">
                         <label for="phone_number">Телефон</label>
@@ -108,7 +96,7 @@
                         </div>
                     @endif
 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="frc_id">Входитв ЦФО</label>
                         <select name="frc_id"
                                 class="form-control {{$errors->has('frc_id')?'is-invalid':''}}">
@@ -129,8 +117,8 @@
                             </ul>
                         </div>
                     @endif
-
-                    <div class="form-group">
+ --}}
+                    {{-- <div class="form-group">
                         <label for="company_id">Компания группы</label>
                         <select name="company_id" class="form-control ">
                             @foreach ($companies as $company)
@@ -149,9 +137,9 @@
                                 @endforeach
                             </ul>
                         </div>
-                    @endif
+                    @endif --}}
 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="post">Должность</label>
                         <input type="post"
                                class="form-control {{$errors->has('post')?'is-invalid':''}}"
@@ -168,7 +156,7 @@
                         </div>
                     @endif
 
-                </div>
+                </div> --}}
 
                 <div class="col-md-4">
                     <h6>Фото/Аватар </h6>
@@ -204,7 +192,7 @@
                             Добавить
                         @endif
                     </button>
-                    <a class="btn btn-secondary" href="{{route('admin.users')}}">Отмена</a>
+                    <a class="btn btn-secondary" href="{{route('users')}}">Отмена</a>
                 </div>
             </div>
 
@@ -217,6 +205,13 @@
 
 
 @section('scripts')
+
+ <script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
+
+
     <script>
         function readURL(input) {
             if (input.files && input.files[0]) {

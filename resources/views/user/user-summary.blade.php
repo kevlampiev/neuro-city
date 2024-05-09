@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.big-form')
 
 @section('title')
     Администратор|Карточка пользователя
@@ -23,7 +23,7 @@
                 Основная информация
             </button>
 
-            <button class="nav-link"
+            {{-- <button class="nav-link"
                     id="tasks-tab"
                     data-bs-toggle="tab"
                     data-bs-target="#tasks"
@@ -33,7 +33,7 @@
                     aria-selected="true">
                 <i class="fa fa-tasks" aria-hidden="true"></i>
                 Задачи пользователя
-            </button>
+            </button> --}}
 
             <button class="nav-link"
                     id="permissions-tab"
@@ -53,23 +53,23 @@
     <div class="tab-content p-2" id="nav-tabContent">
         <div class="tab-pane fade show active" id="main" role="tabpanel" aria-labelledby="main-tab">
             <h4>Основные данные</h4>
-            @include('Admin.user.components.user-main')
+            @include('user.components.user-main')
         </div>
 
-        <div class="tab-pane fade" id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
+        {{-- <div class="tab-pane fade" id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
             <h4>Задачи</h4>
             <div class="row m-1">
                 <div class="col-md-12">
-                    @include('Admin.user.components.user-tasks')
+                    @include('user.components.user-tasks')
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <div class="tab-pane fade" id="permissions" role="tabpanel" aria-labelledby="permissions-tab">
             <h4>Разрешения пользователя</h4>
             <div class="row m-1">
                 <div class="col-md-12">
-                    @include('Admin.user.components.user-privilegies')
+                    @include('user.components.user-privilegies')
                 </div>
             </div>
         </div>
