@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Controllers\User\RoleController;
-use App\Http\Middleware\CheckIsManager;
 use App\Http\Middleware\CheckSuperuser;
+use App\Http\Middleware\PasswordExpired;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
     'prefix' => 'roles',
-    'middleware' => ['auth:web',CheckSuperuser::class],
+    'middleware' => ['auth:web',PasswordExpired::class, CheckSuperuser::class],
 ],
     function () {
         Route::get('/', [RoleController::class, 'index'])

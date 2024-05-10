@@ -1,13 +1,12 @@
 <?php
 
-use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\User\UserController;
-use App\Http\Middleware\CheckIsAdmin;
 use App\Http\Middleware\CheckSuperuser;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\PasswordExpired;
 
 Route::group([
-    'middleware' => ['auth:web',CheckSuperuser::class],
+    'middleware' => ['auth:web',PasswordExpired::class, CheckSuperuser::class],
     'prefix' => 'users'
 ],
     function () {

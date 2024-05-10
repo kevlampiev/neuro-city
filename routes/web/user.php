@@ -1,9 +1,6 @@
 <?php
 
-use App\Http\Requests\UserProfileRequest;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Counter;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\User\UserProfileController;
 use App\Http\Middleware\PasswordExpired;
 
@@ -11,9 +8,7 @@ Route::group(['middleware'=>['auth', PasswordExpired::class]], function () {
     Route::get('/', function () {
         return view('main');
     });
-    Route::get('/counter', Counter::class);
-    
-    
+    // Route::get('/counter', Counter::class);
     
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     
