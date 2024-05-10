@@ -24,13 +24,11 @@ Route::group([
             ->name('setTempPassword');
         Route::get('{user}/summary/{page?}', [UserController::class, 'userSummary'])
             ->name('userSummary');
-
         Route::get('{user}/addRole', [UserController::class, 'addRole'])
             ->name('userAddRole');
         Route::post('{user}/addRole', [UserController::class, 'attachRole']);
         Route::match(['get', 'post'],'{user}/detach-role/{role}', [UserController::class, 'detachRole'])
             ->name('detachRoleFromUser');
-
         Route::get('{user}/add-permission', [UserController::class, 'addPermission'])
             ->name('userAddPermission');
         Route::post('{user}/add-permission', [UserController::class, 'attachPermission']);
