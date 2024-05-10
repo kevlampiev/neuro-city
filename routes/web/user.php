@@ -5,9 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\Counter;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\User\UserProfileController;
+use App\Http\Middleware\PasswordExpired;
 
-
-Route::group(['middleware'=>'auth'], function () {
+Route::group(['middleware'=>['auth', PasswordExpired::class]], function () {
     Route::get('/', function () {
         return view('main');
     });

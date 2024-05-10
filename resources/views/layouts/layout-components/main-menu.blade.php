@@ -88,13 +88,13 @@
                         <li><a class="dropdown-item" href="#">Страховые компании</a>
                         </li>
                         <li><a class="dropdown-item" href="#">Тип страховок</a></li>
-                        {{-- @if (Auth::user()->role=='admin') --}}
+                        @if (Auth::user()->is_superuser==true)
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="{{route('users')}}">Пользователи</a></li>
                             <li><a class="dropdown-item" href="{{route('roles')}}">Роли в системе</a></li>
-                        {{-- @endif --}}
+                        @endif
 
                     </ul>
                 </li>

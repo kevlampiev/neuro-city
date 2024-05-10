@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.big-form')
 
 @section('title')
     Администратор|Установка временного пароля
@@ -6,7 +6,7 @@
 
 @section('content')
     <h3> Установка временного пароля </h3>
-    <form action="{{route('admin.setTempPassword', ['user'=>$user])}}" method="POST">
+    <form action="{{route('setTempPassword', ['user'=>$user])}}" method="POST">
         @csrf
         <form>
             <div class="form-group">
@@ -21,7 +21,7 @@
                        value="{{$user->email}}" disabled>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mb-5">
                 <label for="tempPassword">Временный пароль</label>
                 <input type="password" class="form-control" id="tempPassword"
                        name="tempPassword">
@@ -31,7 +31,7 @@
             <button type="submit" class="btn btn-primary">
                 Изменить
             </button>
-            <a class="btn btn-secondary" href="{{route('admin.users')}}">Отмена</a>
+            <a class="btn btn-secondary" href="{{route('users')}}">Отмена</a>
 
         </form>
 

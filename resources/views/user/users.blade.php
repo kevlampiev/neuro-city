@@ -38,7 +38,7 @@
                 @forelse($users as $index => $user)
                     <tr @if ($user->is_superuser) class="table-warning"  @endif>
                         <th scope="row">{{$index+1}}</th>
-                        <td> @if ($user->is_superuser) <i class="bi bi-battery-charging"></i>  @endif</td>
+                        <td> @if ($user->is_superuser) <i class="bi bi-stop-circle-fill"></i>  @endif</td>
                         <td>{{$user->name}}</td>
                         <td>{{$user->email}}</td>
                         <td>{{$user->phone_number}}</td>
@@ -53,7 +53,7 @@
                                 <a href="{{route('setTempPassword',['user' => $user])}}"> <i class="bi bi-incognito"></i> Сменить
                                     пароль </a>
                             @else
-                                <a href="#"> <i class="bi bi-incognito"></i> Сменить пароль </a>
+                                <a href="{{route('password.expired')}}"> <i class="bi bi-incognito"></i> Сменить пароль </a>
                                                                 {{-- <a href="{{route('password.expired')}}"> &#9998;Сменить пароль </a> --}}
                             @endif
                         </td>

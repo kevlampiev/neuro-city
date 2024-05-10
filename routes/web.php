@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\ExpiredPasswordController;
 use App\Http\Requests\UserProfileRequest;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Counter;
@@ -15,3 +16,6 @@ Route::prefix('')->group(function () {
 });
 
 Auth::routes(['reset'=>false]);
+
+Route::get('update-password', [ExpiredPasswordController::class, 'expired'])->name('password.expired');
+Route::post('update-password', [ExpiredPasswordController::class, 'postExpired']);
