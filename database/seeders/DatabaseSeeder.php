@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Role;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,9 +17,23 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        User::factory()
+            ->count(20)
+            ->create();
+
+        DB::table('roles')->insert([
+            'name' => "Юрисконсульт",
+            'slug' => "urist1",
         ]);
+        DB::table('roles')->insert([
+            'name' => "Экономист",
+            'slug' => "econom1",
+        ]);
+        DB::table('roles')->insert([
+            'name' => "Программист",
+            'slug' => "programmer1",
+        ]);
+
     }
+
 }
