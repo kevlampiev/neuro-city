@@ -6,7 +6,7 @@
             <li>
                 Разрешение: {{$permission->name}} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                 <a onclick="return confirm('Действительно отозвать разрешение у пользователя')"
-                   href="{{route('admin.detachPermissionFromUser', ['user' => $user, 'permission' => $permission])}}">
+                   href="{{route('detachPermissionFromUser', ['user' => $user, 'permission' => $permission])}}">
                     &#10007;Отозвать разрешение
                 </a>
             </li>
