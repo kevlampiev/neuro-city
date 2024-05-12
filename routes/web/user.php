@@ -1,0 +1,19 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\UserProfileController;
+use App\Http\Middleware\PasswordExpired;
+
+Route::group(['middleware'=>['auth', PasswordExpired::class]], function () {
+    Route::get('/', function () {
+        return view('main');
+    });
+    // Route::get('/counter', Counter::class);
+    
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    
+    Route::get('/user-profile', [UserProfileController::class, 'edit'])->name('user.profileEdit');
+    Route::post('/user-profile', [UserProfileController::class, 'update']);
+    
+
+});

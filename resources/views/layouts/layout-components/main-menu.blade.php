@@ -70,31 +70,20 @@
                         <li><a class="dropdown-item" href="#">Компании группы</a></li>
                         <li><a class="dropdown-item" href="#">Центры финансовой
                                 ответственности</a></li>
+                       
                         <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Типы техники</a></li>
-                        <li><a class="dropdown-item" href="#">Производители</a></li>
-                        <li><a class="dropdown-item" href="#">Местонахождения техники</a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
+                        <hr class="dropdown-divider">
                         </li>
                         <li><a class="dropdown-item" href="#">Типы договоров</a></li>
-                        <li><a class="dropdown-item" href="#">Контрагенты</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Страховые компании</a>
-                        </li>
-                        <li><a class="dropdown-item" href="#">Тип страховок</a></li>
-                        {{-- @if (Auth::user()->role=='admin') --}}
+                        <li><a class="dropdown-item" href="#">Компании</a></li>
+                        
+                        @if (Auth::user()->is_superuser==true)
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="#">Пользователи</a></li>
-                            <li><a class="dropdown-item" href="#">Роли в системе</a></li>
-                        {{-- @endif --}}
+                            <li><a class="dropdown-item" href="{{route('users')}}">Пользователи</a></li>
+                            <li><a class="dropdown-item" href="{{route('roles')}}">Роли в системе</a></li>
+                        @endif
 
                     </ul>
                 </li>

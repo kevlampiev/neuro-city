@@ -26,7 +26,6 @@ class UserProfileDataservice
         if ($request->file('img_file')) {
             $file_path = $request->file('img_file')->store(config('paths.vehicles.put', 'img'));
             $user->photo = basename($file_path);
-            // dd(Storage::url($file_path));
         }
         $user->save();
     }
