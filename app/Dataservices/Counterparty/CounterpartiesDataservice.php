@@ -1,19 +1,19 @@
 <?php
 
 
-namespace App\DataServices\Company;
+namespace App\DataServices\Admin;
 
 
-use App\Models\Company;
+use App\Models\Counterparty;
 use Illuminate\Http\Request;
 
 
-class CompanyDataservice
+class CounterpartiesDataservice
 {
 
     public static function getAll()
     {
-        return Company::withCount('agreements')
+        return Counterparty::withCount('agreements')
             ->orderBy('name')->get();
     }
 
@@ -21,7 +21,7 @@ class CompanyDataservice
     public static function getFiltered(string $filter)
     {
         $searchStr = '%' . str_replace(' ', '%', $filter) . '%';
-        return Company::withCount('agreements')
+        return Counterparty::withCount('agreements')
             ->where('name', 'like', $searchStr)
             ->orderBy('name')->get();
     }
