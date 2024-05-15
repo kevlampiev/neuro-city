@@ -17,6 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
         // $middleware->append(RoleMiddleware::class);
         // $middleware->append(PermissionMiddleware::class);
         // $middleware->append(PasswordExpired::class);
+        $middleware->alias([
+            'permission' => PermissionMiddleware::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

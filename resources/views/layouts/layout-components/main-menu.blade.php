@@ -35,6 +35,7 @@
                         Договоры/расчеты
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{route('counterparties')}}">Контрагенты</a></li>
                         <li><a class="dropdown-item" href="#">Договоры</a></li>
                         <li>
                             <hr class="dropdown-divider">

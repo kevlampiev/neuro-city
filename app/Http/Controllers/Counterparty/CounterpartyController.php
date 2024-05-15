@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Company;
+namespace App\Http\Controllers\Counterparty;
 
-use App\DataServices\Company\CompanyDataService;
+use App\Dataservices\Counterparty\CounterpartyDataservice;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ManufacturerRequest;
 use App\Models\Company;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -18,7 +17,7 @@ class CounterpartyController extends Controller
 {
     public function index(Request $request)
     {
-        return view('Admin.counterparties.counterparties', CompanyDataservice::index($request));
+        return view('counterparties.counterparties', CounterpartyDataservice::index($request));
     }
 
     /**
@@ -32,10 +31,11 @@ class CounterpartyController extends Controller
         $counterparty = new Company();
         if (!empty($request->old())) {
             $counterparty->fill($request->old());
+            $counterparty->our_company = false;
         }
-        return view('Admin.counterparties.counterparty-edit', [
+        return view('counterparties.counterparty-edit', [
             'counterparty' => $counterparty,
-            'route' => 'admin.addCounterparty',
+            'route' => 'addCounterparty',
         ]);
     }
 
@@ -48,9 +48,11 @@ class CounterpartyController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $counterparty = new Company();
-        $counterparty->fill($request->all())->save();
+        $counterparty->fill($request->all());
+        $counterparty->our_company = false;
+        $counterparty->save();
         session()->flash('message', 'Добавлена новая компания');
-        return redirect()->route('companies');
+        return redirect()->route('counterparties');
     }
 
     /**
@@ -69,14 +71,14 @@ class CounterpartyController extends Controller
      * @param Counterparty $counterparty
      * @return View
      */
-    public function edit(Request $request, Company $company): View
+    public function edit(Request $request, Company $counterparty): View
     {
         if (!empty($request->old())) {
-            $company->fill($request->old());
+            $counterparty->fill($request->old());
         }
-        return view('Admin.counterparties.counterparty-edit', [
-            'company' => $company,
-            'route' => 'admin.editCounterparty',
+        return view('counterparties.counterparty-edit', [
+            'counterparty' => $counterparty,
+            'route' => 'editCounterparty',
         ]);
     }
 
@@ -87,12 +89,14 @@ class CounterpartyController extends Controller
      * @param Company $company
      * @return RedirectResponse
      */
-    public function update(Request $request, Company $company): RedirectResponse
+    public function update(Request $request, Company $counterparty): RedirectResponse
     {
 
-        $company->fill($request->all())->save();
+        $counterparty->fill($request->all());
+        $counterparty->our_company = false;
+        $counterparty->save();
         session()->flash('message', 'Информация о компании изменена');
-        return redirect()->route('companies');
+        return redirect()->route('counterparties');
     }
 
     /**
@@ -105,12 +109,12 @@ class CounterpartyController extends Controller
     {
         $company->delete();
         session()->flash('message', 'Информация о компании удалена');
-        return redirect()->route('admin.counterparties');
+        return redirect()->route('counterparties');
     }
 
-    public function summary(Company $company)
+    public function summary(Company $counterparty)
     {
-        return view('Admin.counterparties.counterparty-summary', ['company' => $company]);
+        return view('counterparties.counterparty-summary', ['company' => $counterparty]);
     }
 
 }

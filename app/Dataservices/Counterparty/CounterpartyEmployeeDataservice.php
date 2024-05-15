@@ -1,14 +1,15 @@
 <?php
 
 
-namespace App\DataServices\Admin;
+namespace App\DataServices\Counterparty;
 
 
 use App\Http\Requests\CounterpartyEmployeeRequest;
-use App\Models\Counterparty;
+use App\Models\Company;
 use App\Models\CounterpartyEmployee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Error;
 
 
 class CounterpartyEmployeesDataservice
@@ -18,7 +19,7 @@ class CounterpartyEmployeesDataservice
         return ['employee' => $employee];
     }
 
-    public static function create(Request $request, Counterparty $counterparty): CounterpartyEmployee
+    public static function create(Request $request, Company $counterparty): CounterpartyEmployee
     {
         $employee = new CounterpartyEmployee();
         $employee->counterparty_id = $counterparty->id;

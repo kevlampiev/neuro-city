@@ -5,7 +5,7 @@ namespace App\DataServices\Admin;
 
 
 use App\Http\Requests\CounterpartyNoteRequest;
-use App\Models\CounterpartyNote;
+use App\Models\CompanyNote;
 use Illuminate\Support\Facades\Auth;
 use PhpParser\Error;
 
@@ -13,26 +13,26 @@ class CounterpartyNotesDataservice
 {
     public static function provideData(): array
     {
-        return ['notes' => CounterpartyNote::all(), 'filter' => ''];
+        return ['notes' => CompanyNote::all(), 'filter' => ''];
     }
 
-    public static function provideEditor(CounterpartyNote $counterpartyNote): array
+    public static function provideEditor(CompanyNote $counterpartyNote): array
     {
-        return ['counterpartyNote' => $counterpartyNote, 'route' => ($counterpartyNote->id) ? 'admin.editCounterpartyNote' : 'admin.addACounterpartyNote'];
+        return ['counterpartyNote' => $counterpartyNote, 'route' => ($counterpartyNote->id) ? 'editCounterpartyNote' : 'admin.addACounterpartyNote'];
     }
 
     public static function storeNew(CounterpartyNoteRequest $request)
     {
-        $note = new CounterpartyNote();
+        $note = new CompanyNote();
         self::saveChanges($request, $note);
     }
 
-    public static function update(CounterpartyNoteRequest $request, CounterpartyNote $counterpartyNote)
+    public static function update(CounterpartyNoteRequest $request, CompanyNote $counterpartyNote)
     {
         self::saveChanges($request, $counterpartyNote);
     }
 
-    public static function saveChanges(CounterpartyNoteRequest $request, CounterpartyNote $counterpartyNote)
+    public static function saveChanges(CounterpartyNoteRequest $request, CompanyNote $counterpartyNote)
     {
         $counterpartyNote->fill($request->except(['id', 'created_at', 'updated_at', 'counterparty']));
         if (!$counterpartyNote->user_id) $counterpartyNote->user_id = Auth::user()->id;
@@ -47,7 +47,7 @@ class CounterpartyNotesDataservice
         }
     }
 
-    public static function erase(CounterpartyNote $agreementNote)
+    public static function erase(CompanyNote $agreementNote)
     {
         try {
             $agreementNote->delete();

@@ -2,8 +2,8 @@
 
 
 use App\Http\Controllers\Counterparty\CounterpartyController;
-use App\Http\Controllers\Counterparty\CounterpartyEmployeeController;
-use App\Http\Controllers\Counterparty\CounterpartyNoteController;
+use App\Http\Controllers\Counterperty\CounterpartyEmployeeController;
+use App\Http\Controllers\Counterperty\CounterpartyNoteController;
 use Illuminate\Support\Facades\Route;
 
 
