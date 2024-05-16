@@ -6,18 +6,18 @@
 
 @section('content')
     <h3> @if ($counterparty->id)
-            Редактирование контрагента
+            Редактирование данных о контрагенте
         @else
-            Добавить нового
+            Добавить нового контрагента
         @endif</h3>
     <form action="{{route($route, $counterparty->id)}}" method="POST">
         @csrf
         <form>
             <div class="form-group">
-                <label for="inputType">Краткое наименование</label>
+                <label for="inputName">Краткое наименование</label>
                 <input type="text"
                        class="{{($errors->has('name')?'form-control is-invalid':'form-control')}}"
-                       id="inputType" placeholder="Введите название" name="name"
+                       id="inputName" placeholder="Введите название" name="name"
                        value="{{$counterparty->name}}">
             </div>
             @if($errors->has('name'))
@@ -32,10 +32,10 @@
 
 
             <div class="form-group">
-                <label for="inputType">Полное наименование</label>
+                <label for="inputFullName">Полное наименование</label>
                 <input type="text"
                        class="{{($errors->has('fullname')?'form-control is-invalid':'form-control')}}"
-                       id="inputType" placeholder="Введите название" name="fullname"
+                       id="inputFullName" placeholder="Введите название" name="fullname"
                        value="{{$counterparty->fullname}}">
             </div>
             @if($errors->has('fullname'))
@@ -49,22 +49,27 @@
             @endif
 
             <div class="form-group">
-                <label for="company_type">Тип контрагента </label>
+                <label for="company_type">Тип контрагента </label> 
                 <select name="company_type"
                         class="form-control {{$errors->has('company_type')?'is-invalid':''}}"
-                        aria-describedby="company_type">
+                        aria-describedby="company_type" id="company_type">
                     <option
                         value="bank" {{($counterparty->company_type == 'bank') ? 'selected' : ''}}>
                         Банк
                     </option>
                     <option
-                        value="insurance_company" {{($counterparty->company_type == 'insurance_company') ? 'selected' : ''}}>
+                        value="insurer" {{($counterparty->company_type == 'insurer') ? 'selected' : ''}}>
                         Страховая компания
                     </option>
                     <option
                         value="lessor" {{($counterparty->company_type == 'lessor') ? 'selected' : ''}}>
                         Лизинговая компания
                     </option>
+                    <option
+                        value="government" {{($counterparty->company_type == 'goverтment') ? 'selected' : ''}}>
+                        Государственное учреждение
+                    </option>
+
                     <option
                         value="other" {{($counterparty->company_type == 'other') ? 'selected' : ''}}>
                         Прочее
@@ -82,10 +87,10 @@
             @endif
 
             <div class="form-group">
-                <label for="inputType">ИНН</label>
+                <label for="inputINN">ИНН</label>
                 <input type="text"
                        class="{{($errors->has('inn')?'form-control is-invalid':'form-control')}}"
-                       id="inputType" placeholder="Введите ИНН" name="inn"
+                       id="inputINN" placeholder="Введите ИНН" name="inn"
                        value="{{$counterparty->inn}}">
             </div>
             @if($errors->has('inn'))
@@ -100,10 +105,10 @@
 
 
             <div class="form-group">
-                <label for="inputType">ОГРН</label>
+                <label for="inputOGRN">ОГРН</label>
                 <input type="text"
                        class="{{($errors->has('ogrn')?'form-control is-invalid':'form-control')}}"
-                       id="inputType" placeholder="Введите ИНН" name="ogrn"
+                       id="inputOGRN" placeholder="Введите ИНН" name="ogrn"
                        value="{{$counterparty->ogrn}}">
             </div>
             @if($errors->has('ogrn'))
@@ -116,12 +121,31 @@
                 </div>
             @endif
 
+
             <div class="form-group">
-                <label for="inputType">Почтовый адрес</label>
+                <label for="established_date">Дата регистрации</label>
+                <input type="date"
+                       class="{{($errors->has('established_date')?'form-control is-invalid':'form-control')}}"
+                       id="established_date" name="established_date"
+                       value="{{$counterparty->established_date}}">
+            </div>
+            @if($errors->has('established_date'))
+                <div class="alert alert-danger">
+                    <ul class="p-0 m-0">
+                        @foreach($errors->get('established_date') as $error)
+                            <li class="m-0 p-0"> {{$error}}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+
+            <div class="form-group">
+                <label for="inputAdress">Почтовый адрес</label>
                 <input type="text"
                        class="{{($errors->has('post_adress')?'form-control is-invalid':'form-control')}}"
                        placeholder="Введите почтовый адрес"
-                       id="inputType" name="post_adress"
+                       id="inputAdress" name="post_adress"
                        value="{{$counterparty->post_adress}}">
             </div>
             @if($errors->has('post_adress'))
@@ -135,10 +159,10 @@
             @endif
 
             <div class="form-group">
-                <label for="inputType">Руководитель</label>
+                <label for="inputHeader">Руководитель</label>
                 <input type="text"
                        class="{{($errors->has('header')?'form-control is-invalid':'form-control')}}"
-                       id="inputType" name="header"
+                       id="inputHeader" name="header"
                        placeholder="Введите должность и ФИО руководителя"
                        value="{{$counterparty->header}}">
             </div>
@@ -153,10 +177,10 @@
             @endif
 
             <div class="form-group">
-                <label for="inputType">Контактный телефон</label>
+                <label for="inputPhone">Контактный телефон</label>
                 <input type="text"
                        class="{{($errors->has('phone')?'form-control is-invalid':'form-control')}}"
-                       id="inputType" name="phone"
+                       id="inputPhone" name="phone"
                        placeholder="+7 (XXX) XXX-XXXX"
                        value="{{$counterparty->phone}}">
             </div>
@@ -170,7 +194,8 @@
                 </div>
             @endif
 
-
+            <div class=" mb-5"> </div>
+            
             <button type="submit" class="btn btn-primary">
                 @if ($counterparty->id)
                     Изменить

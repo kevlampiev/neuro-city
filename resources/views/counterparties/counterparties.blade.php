@@ -13,7 +13,7 @@
     </div>
 
     @if ($filter!=='')
-        <div class="alert alert-primary" role="alert">
+        <div class="alert alert-info pt-0 pb-0" role="alert">
             Установлен фильтр по имени " <strong> {{$filter}} </strong> "
         </div>
     @endif
@@ -60,11 +60,14 @@
                                 @case('bank')
                                 <span> Банк</span>
                                 @break
-                                @case('insurance_company')
+                                @case('insurer')
                                 <span>Страховая компания</span>
                                 @break
                                 @case('lessor')
                                 <span>Лизинговая компания</span>
+                                @break
+                                @case('government')
+                                <span>Государственное учреждение</span>
                                 @break
                                 @case('other')
                                 <span>--</span>
@@ -98,6 +101,8 @@
                 @endforelse
                 </tbody>
             </table>
+            {{$counterparties->appends(['searchStr'=>$filter ])->links()}}
+
         </div>
     </div>
 @endsection

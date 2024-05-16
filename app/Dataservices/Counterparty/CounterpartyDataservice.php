@@ -16,7 +16,7 @@ class CounterpartyDataservice
         // return Company::withCount('agreements')
         //     ->orderBy('name')->get();
 
-        return Company::query()->orderBy('name')->get();
+        return Company::query()->where('our_company','=',false)->orderBy('name')->paginate(15);
 
     }
 
@@ -28,8 +28,9 @@ class CounterpartyDataservice
         //     ->where('name', 'like', $searchStr)
         //     ->orderBy('name')->get();
         return Company::query()
+            ->where('our_company','=',false)
             ->where('name', 'like', $searchStr)
-            ->orderBy('name')->get();
+            ->orderBy('name')->paginate(15);
     
     }
 
