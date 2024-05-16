@@ -2,8 +2,8 @@
 
 
 use App\Http\Controllers\Counterparty\CounterpartyController;
-use App\Http\Controllers\Counterperty\CounterpartyEmployeeController;
-use App\Http\Controllers\Counterperty\CounterpartyNoteController;
+use App\Http\Controllers\Counterparty\CounterpartyEmployeeController;
+use App\Http\Controllers\Counterparty\CounterpartyNoteController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -41,9 +41,9 @@ Route::group([
     'prefix' => 'counterparty-staff', 'middleware' => 'permission:e-counterparty'
 ],
     function () {
-        Route::get('{counterparty}/add', [CounterpartyEmployeeController::class, 'create'])
+        Route::get('{company}/add', [CounterpartyEmployeeController::class, 'create'])
             ->name('addCounterpartyEmployee');
-        Route::post('{counterparty}/add', [CounterpartyEmployeeController::class, 'store']);
+        Route::post('{company}/add', [CounterpartyEmployeeController::class, 'store']);
         Route::get('{employee}/edit', [CounterpartyEmployeeController::class, 'edit'])
             ->name('editCounterpartyEmployee');
         Route::post('{employee}/edit', [CounterpartyEmployeeController::class, 'update']);

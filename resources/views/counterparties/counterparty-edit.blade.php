@@ -66,7 +66,7 @@
                         Лизинговая компания
                     </option>
                     <option
-                        value="government" {{($counterparty->company_type == 'goverтment') ? 'selected' : ''}}>
+                        value="goverment" {{($counterparty->company_type == 'goverment') ? 'selected' : ''}}>
                         Государственное учреждение
                     </option>
 

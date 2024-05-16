@@ -1,7 +1,7 @@
 <div class="row m-1">
     <div class="col-md-12">
         @if(Gate::allows('e-counterparty'))
-            <a class="btn btn-outline-info" href="{{route('admin.addCounterpartyNote', ['counterparty'=>$counterparty])}}">Добавить
+            <a class="btn btn-outline-info" href="{{route('addCounterpartyNote', ['counterparty'=>$counterparty])}}">Добавить
                 заметку</a>
         @endif
         <div class="notes-container">
@@ -14,11 +14,11 @@
                     <div class="card-body">
                         <p>{{$note->note_body}}</p>
                     </div>
-                    @if(($note->user_id === Auth::user()->id)||(Auth::user()->role=="admin"))
+                    @if(($note->user_id === Auth::user()->id)||(Auth::user()->is_superuser))
                         <div class="card-footer text-muted">
-                            <a href="{{route('admin.editCounterpartyNote', ['counterpartyNote'=>$note])}}" class="mr-5">
+                            <a href="{{route('editCounterpartyNote', ['counterpartyNote'=>$note])}}" class="mr-5">
                                 &#9998;Изменить </a>
-                            <a href="{{route('admin.deleteCounterpartyNote', ['counterpartyNote' => $note])}}"
+                            <a href="{{route('deleteCounterpartyNote', ['counterpartyNote' => $note])}}"
                                onclick="return confirm('Действительно удалить заметку?')"> &#10008;Удалить </a>
                         </div>
                     @endif

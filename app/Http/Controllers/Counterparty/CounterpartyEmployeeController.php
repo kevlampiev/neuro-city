@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Counterperty;
+namespace App\Http\Controllers\Counterparty;
 
-use App\DataServices\Counterparty\CounterpartyEmployeesDataservice;
+use App\Dataservices\Counterparty\CounterpartyEmployeeDataservice;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CounterpartyEmployeeRequest;
+use App\Http\Requests\Company\CounterpartyEmployeeRequest;
 use App\Models\Company;
 use App\Models\CounterpartyEmployee;
 use Illuminate\Contracts\Foundation\Application;
@@ -22,11 +22,11 @@ class CounterpartyEmployeeController extends Controller
      * @param Request $request
      * @return Application|Factory|View|Response
      */
-    public function create(Request $request, Company $counterparty)
+    public function create(Request $request, Company $company)
     {
-        $employee = CounterpartyEmployeesDataservice::create($request, $counterparty);
+        $employee = CounterpartyEmployeeDataservice::create($request, $company);
         return view('counterparties.counterparty-employee-edit',
-            CounterpartyEmployeesDataservice::provideEditor($employee));
+            CounterpartyEmployeeDataservice::provideEditor($employee, $company));
     }
 
     /**
@@ -37,9 +37,9 @@ class CounterpartyEmployeeController extends Controller
      */
     public function store(CounterpartyEmployeeRequest $request): RedirectResponse
     {
-        CounterpartyEmployeesDataservice::store($request);
+        CounterpartyEmployeeDataservice::store($request);
         return redirect()->route('counterpartySummary',
-            ['counterparty' => $request->post('counterparty_id'),
+            ['counterparty' => $request->post('company_id'),
                 'page' => 'staff']);
     }
 
@@ -52,9 +52,9 @@ class CounterpartyEmployeeController extends Controller
      */
     public function edit(Request $request, CounterpartyEmployee $employee): View
     {
-        CounterpartyEmployeesDataservice::edit($request, $employee);
+        CounterpartyEmployeeDataservice::edit($request, $employee);
         return view('counterparties.counterparty-employee-edit',
-            CounterpartyEmployeesDataservice::provideEditor($employee)
+            CounterpartyEmployeeDataservice::provideEditor($employee, $employee->company)
         );
     }
 

@@ -114,7 +114,7 @@ class CounterpartyController extends Controller
 
     public function summary(Company $counterparty)
     {
-        return view('counterparties.counterparty-summary', ['company' => $counterparty]);
+        return view('counterparties.counterparty-summary', ['counterparty' => $counterparty]);
     }
 
 }

@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.big-form')
 
 @section('title')
     Администратор|Изменение заметки
@@ -11,20 +11,20 @@
             Добавить заметку
         @endif</h3>
     <form
-        @if($counterpartyNote->id)
+        {{-- @if($counterpartyNote->id)
             action="{{route('admin.editCounterpartyNote', ['counterpartyNote' => $counterpartyNote->id])}}"
         @else
             action="{{route('admin.addCounterpartyNote', ['counterparty' => $counterpartyNote->counterparty->id])}}"
-        @endif
+        @endif --}}
         method="POST">
         @csrf
         <form>
             <div class="form-group">
                 <label for="inputType">Контрагент</label>
                 <input type="hidden"
-                       id="counterparty_id" name="counterparty_id" value="{{$counterpartyNote->counterparty_id}}">
+                       id="counterparty_id" name="company_id" value="{{$counterpartyNote->company_id}}">
                 <input type="text"
-                       id="input-counterparty" name="counterparty" value="{{$counterpartyNote->counterparty->name}}" disabled>
+                       id="input-counterparty" name="counterparty" value="{{$company->name}}" disabled>
             </div>
 
             <div class="form-group">
@@ -52,7 +52,7 @@
                 @endif
             </button>
             <a class="btn btn-secondary"
-               href="{{route('admin.counterpartySummary',['counterparty'=>$counterpartyNote->counterparty_id, 'page' => 'notes'])}}">
+               href="{{route('counterpartySummary',['counterparty'=>$company, 'page' => 'notes'])}}">
                 Отмена
             </a>
 

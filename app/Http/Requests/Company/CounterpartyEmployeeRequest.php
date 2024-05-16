@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Company;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -26,7 +26,7 @@ class CounterpartyEmployeeRequest extends FormRequest
         return [
             'name' => 'required|string|min:5',
             'title' => 'nullable|string|min:5',
-            'counterparty_id' => 'required|exists:counterparties,id',
+            'company_id' => 'required|exists:companies,id',
             'email' => 'nullable|email',
             'birthday' => 'nullable|date',
             'description' => 'nullable|string',

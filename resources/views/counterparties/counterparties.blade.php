@@ -66,7 +66,7 @@
                                 @case('lessor')
                                 <span>Лизинговая компания</span>
                                 @break
-                                @case('government')
+                                @case('goverment')
                                 <span>Государственное учреждение</span>
                                 @break
                                 @case('other')

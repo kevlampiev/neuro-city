@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.big-form')
 
 @section('title')
     Администратор|Редактирование сотрудника контрагента
@@ -10,12 +10,11 @@
         @else
             Добавить нового
         @endif</h3>
-    <form method="POST"
-          action="{{$employee->id?route('admin.editCounterpartyEmployee',['employee'=>$employee]):route('admin.addCounterpartyEmployee',['counterparty'=>$employee->counterparty_id])}}">
+    <form method="POST">
 
         @csrf
 
-        <input type="hidden" name="counterparty_id" value="{{$employee->counterparty_id}}">
+        <input type="hidden" name="company_id" value="{{$employee->company_id}}">
         <div class="form-group">
             <label for="name">ФИО</label>
             <input type="text"
@@ -128,7 +127,7 @@
             @endif
         </button>
         <a class="btn btn-secondary"
-           href="{{route('admin.counterpartySummary', ['counterparty' => $employee->counterparty_id])}}">
+           href="{{route('counterpartySummary',['counterparty'=>$company, 'page' => 'staff'])}}">
             Отмена
         </a>
 

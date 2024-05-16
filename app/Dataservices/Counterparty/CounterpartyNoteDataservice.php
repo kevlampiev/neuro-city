@@ -1,24 +1,25 @@
 <?php
 
 
-namespace App\DataServices\Admin;
+namespace App\Dataservices\Counterparty;
 
 
-use App\Http\Requests\CounterpartyNoteRequest;
+use App\Http\Requests\Company\CounterpartyNoteRequest;
 use App\Models\CompanyNote;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Company;
 use PhpParser\Error;
 
-class CounterpartyNotesDataservice
+class CounterpartyNoteDataservice
 {
     public static function provideData(): array
     {
         return ['notes' => CompanyNote::all(), 'filter' => ''];
     }
 
-    public static function provideEditor(CompanyNote $counterpartyNote): array
+    public static function provideEditor(CompanyNote $counterpartyNote, Company $company): array
     {
-        return ['counterpartyNote' => $counterpartyNote, 'route' => ($counterpartyNote->id) ? 'editCounterpartyNote' : 'admin.addACounterpartyNote'];
+        return ['counterpartyNote' => $counterpartyNote, 'company' => $company] ;
     }
 
     public static function storeNew(CounterpartyNoteRequest $request)

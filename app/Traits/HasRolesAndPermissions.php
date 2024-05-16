@@ -28,7 +28,7 @@ trait HasRolesAndPermissions
      * @return bool
      */
     public function hasRole(... $roles ) {
-        if ($this->role == "admin") return true; // добавил от себя к тексту https://laravel.demiart.ru/guide-to-roles-and-permissions/ 
+        if ($this->is_superuser) return true; // добавил от себя к тексту https://laravel.demiart.ru/guide-to-roles-and-permissions/ 
         foreach ($roles as $role) {
             if ($this->roles->contains('slug', $role)) {
                 return true;
@@ -43,7 +43,7 @@ trait HasRolesAndPermissions
      */
     public function hasPermission($permission)
     {
-        if ($this->is_superuser == true) return true; // добавил от себя к тексту https://laravel.demiart.ru/guide-to-roles-and-permissions/ 
+        if ($this->is_superuser) return true; // добавил от себя к тексту https://laravel.demiart.ru/guide-to-roles-and-permissions/ 
         return (bool) $this->permissions->where('slug', $permission)->count();
     }
 
@@ -53,7 +53,7 @@ trait HasRolesAndPermissions
      */
     public function hasPermissionThroughRole($permission)
     {
-        if ($this->is_superuser == true) return true; // добавил от себя к тексту https://laravel.demiart.ru/guide-to-roles-and-permissions/ 
+        if ($this->is_superuser) return true; // добавил от себя к тексту https://laravel.demiart.ru/guide-to-roles-and-permissions/ 
         if (gettype($permission)=="string") {
             $permission = Permission::where('slug','=',$permission)->first();
             if (!$permission) return false;
@@ -73,7 +73,7 @@ trait HasRolesAndPermissions
      */
     public function hasPermissionTo($permission)
     {
-        if ($this->is_superuser == true) return true; // добавил от себя к тексту https://laravel.demiart.ru/guide-to-roles-and-permissions/ 
+        if ($this->is_superuser) return true; // добавил от себя к тексту https://laravel.demiart.ru/guide-to-roles-and-permissions/ 
             if (gettype($permission)=="string") {
                 $permission = Permission::where('slug','=',$permission)->first();
                 if (!$permission) return false;
@@ -87,7 +87,7 @@ trait HasRolesAndPermissions
      */
     public function getAllPermissions(array $permissions)
     {
-        if ($this->is_superuser == true) return Permission::all(); // добавил от себя к тексту https://laravel.demiart.ru/guide-to-roles-and-permissions/ 
+        if ($this->is_superuser) return Permission::all(); // добавил от себя к тексту https://laravel.demiart.ru/guide-to-roles-and-permissions/ 
         return Permission::whereIn('slug',$permissions)->get();
     }
 

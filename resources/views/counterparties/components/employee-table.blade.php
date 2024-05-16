@@ -2,7 +2,7 @@
     <div class="col-md-12">
         @if(Gate::allows('e-counterparty'))
             <a class="btn btn-outline-info"
-            href="{{route('admin.addCounterpartyEmployee', ['counterparty' => $counterparty])}}">
+            href="{{route('addCounterpartyEmployee', ['company' => $counterparty])}}">
                 Добавить сотрудника
             </a>
         @endif
@@ -37,14 +37,14 @@
                     <td>{{$employee->description}}</td>
                     <td>
                         @if(Gate::allows('e-counterparty'))
-                            <a href="{{route('admin.editCounterpartyEmployee', ['employee' => $employee])}}">
+                            <a href="{{route('editCounterpartyEmployee', ['employee' => $employee])}}">
                                 &#9776;Изменить
                             </a>
                         @endif
                     </td>
                     <td>
                         @if(Gate::allows('e-counterparty'))
-                            <a href="{{route('admin.deleteCounterpartyEmployee', ['employee' => $employee])}}"
+                            <a href="{{route('deleteCounterpartyEmployee', ['employee' => $employee])}}"
                             onclick="return confirm('Действительно удалить запись о сотруднике контргагента?')">
                                 &#10008;Удалить
                             </a>

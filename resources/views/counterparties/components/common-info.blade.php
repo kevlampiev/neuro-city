@@ -25,7 +25,7 @@
         <td class="text-right text-black-50"></td>
         <td>
              @if(Gate::allows('e-counterparty'))
-                <a href="{{route('admin.editCounterparty',['counterparty'=>$counterparty])}}"
+                <a href="{{route('editCounterparty',['counterparty'=>$counterparty])}}"
                    class="btn btn-outline-secondary" role="button" aria-pressed="true">Отредактировать</a>
             @endif
         </td>

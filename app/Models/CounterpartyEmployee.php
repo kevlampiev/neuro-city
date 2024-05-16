@@ -11,6 +11,7 @@ class CounterpartyEmployee extends Model
     use HasFactory;
 
     protected $table = 'company_employees';
+    protected $guarded = [];
 
     public function company():BelongsTo
     {

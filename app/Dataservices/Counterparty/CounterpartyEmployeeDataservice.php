@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\DataServices\Counterparty;
+namespace App\Dataservices\Counterparty;
 
 
-use App\Http\Requests\CounterpartyEmployeeRequest;
+use App\Http\Requests\Company\CounterpartyEmployeeRequest;
 use App\Models\Company;
 use App\Models\CounterpartyEmployee;
 use Illuminate\Http\Request;
@@ -12,17 +12,17 @@ use Illuminate\Support\Facades\Auth;
 use Error;
 
 
-class CounterpartyEmployeesDataservice
+class CounterpartyEmployeeDataservice
 {
-    public static function provideEditor(CounterpartyEmployee $employee): array
+    public static function provideEditor(CounterpartyEmployee $employee, Company $company): array
     {
-        return ['employee' => $employee];
+        return ['employee' => $employee, 'company'=>$company];
     }
 
     public static function create(Request $request, Company $counterparty): CounterpartyEmployee
     {
         $employee = new CounterpartyEmployee();
-        $employee->counterparty_id = $counterparty->id;
+        $employee->company_id = $counterparty->id;
         if (!empty($request->old())) $employee->fill($request->old());
         return $employee;
     }
