@@ -5,10 +5,10 @@ use App\Http\Controllers\Counterparty\CounterpartyController;
 use App\Http\Controllers\Counterparty\CounterpartyEmployeeController;
 use App\Http\Controllers\Counterparty\CounterpartyNoteController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Middleware\PasswordExpired;
 
 Route::group([
-    'prefix' => 'counterparties', 'middleware' => 'permission:s-counterparty'
+    'prefix' => 'counterparties', 'middleware' => ['auth:web',PasswordExpired::class,'permission:e-counterparty']
 ],
     function () {
         Route::get('/', [CounterpartyController::class, 'index'])
@@ -19,7 +19,7 @@ Route::group([
 );
 
 Route::group([
-    'prefix' => 'counterparties', 'middleware' => 'permission:e-counterparty'
+    'prefix' => 'counterparties', 'middleware' => ['auth:web',PasswordExpired::class,'permission:e-counterparty']
 ],
     function () {
         Route::get('add', [CounterpartyController::class, 'create'])
@@ -38,7 +38,7 @@ Route::group([
 
 
 Route::group([
-    'prefix' => 'counterparty-staff', 'middleware' => 'permission:e-counterparty'
+    'prefix' => 'counterparty-staff', 'middleware' => ['auth:web',PasswordExpired::class,'permission:e-counterparty']
 ],
     function () {
         Route::get('{company}/add', [CounterpartyEmployeeController::class, 'create'])
@@ -55,7 +55,7 @@ Route::group([
 );
 
 Route::group([
-    'prefix' => 'counterparty-notes', 'middleware' => 'permission:e-counterparty'
+    'prefix' => 'counterparty-notes', 'middleware' => ['auth:web',PasswordExpired::class,'permission:e-counterparty']
 ],
     function () {
         Route::get('{counterparty}/add', [CounterpartyNoteController::class, 'create'])
