@@ -24,7 +24,6 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {   
-        $confirmed = rand(true, false)?Carbon::now()->addDay(-10):null;
         
         return [
             'name' => fake()->name(),
@@ -32,9 +31,9 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
-            'is_superuser' => rand(true, false),
+            'is_superuser' => false,
             'birthday' =>fake()->date(),
-            'password_changed_at' => $confirmed,
+            'password_changed_at' => null,
         ];
     }
 
