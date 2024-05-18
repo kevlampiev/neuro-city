@@ -76,13 +76,15 @@
                         Справочники
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Компании группы</a></li>
+                     @if (Auth::user()->is_superuser==true)    
+                        <li><a class="dropdown-item" href="{{route('companies')}}">Компании группы</a></li>
                         <li><a class="dropdown-item" href="#">Центры финансовой
                                 ответственности</a></li>
                        
                         <li>
                         <hr class="dropdown-divider">
                         </li>
+                    @endif    
                         <li><a class="dropdown-item" href="#">Типы договоров</a></li>
                         <li><a class="dropdown-item" href="#">Компании</a></li>
                         

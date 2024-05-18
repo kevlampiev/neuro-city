@@ -1,16 +1,16 @@
 @extends('layouts.big-form')
 
 @section('title')
-    Администратор|Редактирование контрагента
+    Администратор|Редактирование компании
 @endsection
 
 @section('content')
-    <h3> @if ($counterparty->id)
-            Редактирование данных о контрагенте
+    <h3> @if ($company->id)
+            Редактирование компании
         @else
-            Добавить нового контрагента
+            Добавить новую
         @endif</h3>
-    <form action="{{route($route, $counterparty->id)}}" method="POST">
+    <form action="{{route($route, $company->id)}}" method="POST">
         @csrf
 
             <div class="form-group">
@@ -18,7 +18,7 @@
                 <input type="text"
                        class="{{($errors->has('name')?'form-control is-invalid':'form-control')}}"
                        id="inputName" placeholder="Введите название" name="name"
-                       value="{{$counterparty->name}}">
+                       value="{{$company->name}}">
             </div>
             @if($errors->has('name'))
                 <div class="alert alert-danger">
@@ -36,7 +36,7 @@
                 <input type="text"
                        class="{{($errors->has('fullname')?'form-control is-invalid':'form-control')}}"
                        id="inputFullName" placeholder="Введите название" name="fullname"
-                       value="{{$counterparty->fullname}}">
+                       value="{{$company->fullname}}">
             </div>
             @if($errors->has('fullname'))
                 <div class="alert alert-danger">
@@ -48,50 +48,14 @@
                 </div>
             @endif
 
-            <div class="form-group">
-                <label for="company_type">Тип контрагента </label> 
-                <select name="company_type"
-                        class="form-control {{$errors->has('company_type')?'is-invalid':''}}"
-                        aria-describedby="company_type" id="company_type">
-                    <option
-                        value="bank" {{($counterparty->company_type == 'bank') ? 'selected' : ''}}>
-                        Банк
-                    </option>
-                    <option
-                        value="insurer" {{($counterparty->company_type == 'insurer') ? 'selected' : ''}}>
-                        Страховая компания
-                    </option>
-                    <option
-                        value="lessor" {{($counterparty->company_type == 'lessor') ? 'selected' : ''}}>
-                        Лизинговая компания
-                    </option>
-                    <option
-                        value="goverment" {{($counterparty->company_type == 'goverment') ? 'selected' : ''}}>
-                        Государственное учреждение
-                    </option>
-
-                    <option
-                        value="other" {{($counterparty->company_type == 'other') ? 'selected' : ''}}>
-                        Прочее
-                    </option>
-                </select>
-            </div>
-            @if ($errors->has('company_id'))
-                <div class="alert alert-danger">
-                    <ul class="p-0 m-0">
-                        @foreach($errors->get('company_id') as $error)
-                            <li class="m-0 p-0"> {{$error}}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            <input type="text" name="company_type" value="other" hidden>
 
             <div class="form-group">
                 <label for="inputINN">ИНН</label>
                 <input type="text"
                        class="{{($errors->has('inn')?'form-control is-invalid':'form-control')}}"
                        id="inputINN" placeholder="Введите ИНН" name="inn"
-                       value="{{$counterparty->inn}}">
+                       value="{{$company->inn}}">
             </div>
             @if($errors->has('inn'))
                 <div class="alert alert-danger">
@@ -109,7 +73,7 @@
                 <input type="text"
                        class="{{($errors->has('ogrn')?'form-control is-invalid':'form-control')}}"
                        id="inputOGRN" placeholder="Введите ИНН" name="ogrn"
-                       value="{{$counterparty->ogrn}}">
+                       value="{{$company->ogrn}}">
             </div>
             @if($errors->has('ogrn'))
                 <div class="alert alert-danger">
@@ -127,7 +91,7 @@
                 <input type="date"
                        class="{{($errors->has('established_date')?'form-control is-invalid':'form-control')}}"
                        id="established_date" name="established_date"
-                       value="{{$counterparty->established_date}}">
+                       value="{{$company->established_date}}">
             </div>
             @if($errors->has('established_date'))
                 <div class="alert alert-danger">
@@ -146,7 +110,7 @@
                        class="{{($errors->has('post_adress')?'form-control is-invalid':'form-control')}}"
                        placeholder="Введите почтовый адрес"
                        id="inputAdress" name="post_adress"
-                       value="{{$counterparty->post_adress}}">
+                       value="{{$company->post_adress}}">
             </div>
             @if($errors->has('post_adress'))
                 <div class="alert alert-danger">
@@ -164,7 +128,7 @@
                        class="{{($errors->has('header')?'form-control is-invalid':'form-control')}}"
                        id="inputHeader" name="header"
                        placeholder="Введите должность и ФИО руководителя"
-                       value="{{$counterparty->header}}">
+                       value="{{$company->header}}">
             </div>
             @if($errors->has('header'))
                 <div class="alert alert-danger">
@@ -182,7 +146,7 @@
                        class="{{($errors->has('phone')?'form-control is-invalid':'form-control')}}"
                        id="inputPhone" name="phone"
                        placeholder="+7 (XXX) XXX-XXXX"
-                       value="{{$counterparty->phone}}">
+                       value="{{$company->phone}}">
             </div>
             @if($errors->has('phone'))
                 <div class="alert alert-danger">
@@ -197,13 +161,13 @@
             <div class=" mb-5"> </div>
             
             <button type="submit" class="btn btn-primary">
-                @if ($counterparty->id)
+                @if ($company->id)
                     Изменить
                 @else
                     Добавить
                 @endif
             </button>
-            <a class="btn btn-secondary" href="{{route('counterparties')}}">Отмена</a>
+            <a class="btn btn-secondary" href="{{route('companies')}}">Отмена</a>
 
 
     </form>
