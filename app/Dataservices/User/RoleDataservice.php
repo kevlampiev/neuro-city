@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\DataServices\User;
+namespace App\Dataservices\User;
 
 
 use App\Http\Requests\InsuranceRequest;

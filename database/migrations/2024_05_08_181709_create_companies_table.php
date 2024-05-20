@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('established_date')->nullable();
             $table->string('header')->nullable();
             $table->string('phone')->nullable();
-            $table->enum('company_type',['lessor', 'bank', 'insurer', 'government', 'other'])->default('other');
+            $table->enum('company_type',['lessor', 'bank', 'insurer', 'goverment', 'other'])->default('other');
             $table->boolean('our_company')->default(false);
             $table->string('post_adress')->nullable();
             $table->timestamps();

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Company;
 
-use App\DataServices\Company\CompanyDataService;
+use App\Dataservices\Company\CompanyDataservice;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ManufacturerRequest;
+use App\Http\Requests\Company\CompanyRequest;
 use App\Models\Company;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -13,12 +13,11 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-
-class CounterpartyController extends Controller
+class CompanyController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        return view('Admin.counterparties.counterparties', CompanyDataservice::index($request));
+        return view('companies.companies', CompanyDataservice::provideData());
     }
 
     /**
@@ -29,34 +28,36 @@ class CounterpartyController extends Controller
      */
     public function create(Request $request)
     {
-        $counterparty = new Company();
+        $company = new Company();
         if (!empty($request->old())) {
-            $counterparty->fill($request->old());
+            $company->fill($request->old());
         }
-        return view('Admin.counterparties.counterparty-edit', [
-            'counterparty' => $counterparty,
-            'route' => 'admin.addCounterparty',
+        return view('companies.company-edit', [
+            'company' => $company,
+            'route' => 'addCompany',
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param InsuranceCompanyRequest $request
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(CompanyRequest $request): RedirectResponse
     {
-        $counterparty = new Company();
-        $counterparty->fill($request->all())->save();
-        session()->flash('message', 'Добавлена новая компания');
+        $company = new Company();
+        $company->fill($request->all());
+        $company->our_company = true;
+        $company->save();
+        session()->flash('message', 'Добавлена новая компания группы');
         return redirect()->route('companies');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param Company $counterparty
+     * @param Company $company
      * @return void
      */
     public function show(Company $company)
@@ -66,7 +67,7 @@ class CounterpartyController extends Controller
     /**
      * Show the form for editing the specified resource.
      * @param Request $request
-     * @param Counterparty $counterparty
+     * @param Company $company
      * @return View
      */
     public function edit(Request $request, Company $company): View
@@ -74,23 +75,25 @@ class CounterpartyController extends Controller
         if (!empty($request->old())) {
             $company->fill($request->old());
         }
-        return view('Admin.counterparties.counterparty-edit', [
+        return view('companies.company-edit', [
             'company' => $company,
-            'route' => 'admin.editCounterparty',
+            'route' => 'editCompany',
         ]);
     }
 
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
+     * @param InsuranceCompanyRequest $request
      * @param Company $company
      * @return RedirectResponse
      */
-    public function update(Request $request, Company $company): RedirectResponse
+    public function update(CompanyRequest $request, Company $company): RedirectResponse
     {
 
-        $company->fill($request->all())->save();
+        $company->fill($request->all());
+        $company->our_company = true;
+        $company->save();
         session()->flash('message', 'Информация о компании изменена');
         return redirect()->route('companies');
     }
@@ -101,16 +104,15 @@ class CounterpartyController extends Controller
      * @param Company $company
      * @return RedirectResponse
      */
-    public function destroy(Company $company): RedirectResponse
+    public function destroy(Company $company)
     {
         $company->delete();
         session()->flash('message', 'Информация о компании удалена');
-        return redirect()->route('admin.counterparties');
+        return redirect()->route('companies');
     }
 
     public function summary(Company $company)
     {
-        return view('Admin.counterparties.counterparty-summary', ['company' => $company]);
+        return view('companies.company-summary', ['company' => $company]);
     }
-
 }
