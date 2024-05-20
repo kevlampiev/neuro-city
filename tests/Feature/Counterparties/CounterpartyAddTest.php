@@ -10,7 +10,7 @@ use App\Models\Role;
 use App\Models\Company;
 use Illuminate\Support\Carbon;
 
-class CounterpartyEditTest extends TestCase
+class CounterpartyAddTest extends TestCase
 {
 
     use RefreshDatabase;
@@ -21,8 +21,7 @@ class CounterpartyEditTest extends TestCase
     //Вспомогательная функция, которая возращает подопытный rout
     public function routeForCounterpartyEdit():string
     {
-        $counterparty =Company::where('our_company', false)->inRandomOrder()->first();
-        return route('editCounterparty', ['counterparty' => $counterparty]);
+        return route('addCounterparty');
     }
 
         
@@ -74,7 +73,7 @@ class CounterpartyEditTest extends TestCase
         $response = $this->actingAs($user)->get($this->routeForCounterpartyEdit());
 
         $response->assertStatus(200)
-        ->assertSee('Редактирование данных о контрагенте')
+        ->assertSee('Добавить нового контрагента')
         ->assertSee('Краткое наименование')
         ->assertSee('Полное наименование')
         ->assertSee('Тип контрагента');
@@ -94,7 +93,7 @@ class CounterpartyEditTest extends TestCase
         $response = $this->actingAs($user)->get($this->routeForCounterpartyEdit());
 
         $response->assertStatus(200)
-        ->assertSee('Редактирование данных о контрагенте')
+        ->assertSee('Добавить нового контрагента')
         ->assertSee('Краткое наименование')
         ->assertSee('Полное наименование')
         ->assertSee('Тип контрагента');
@@ -114,7 +113,7 @@ class CounterpartyEditTest extends TestCase
         $response = $this->actingAs($user)->get($this->routeForCounterpartyEdit());
 
         $response->assertStatus(200)
-        ->assertSee('Редактирование данных о контрагенте')
+        ->assertSee('Добавить нового контрагента')
         ->assertSee('Краткое наименование')
         ->assertSee('Полное наименование')
         ->assertSee('Тип контрагента');
@@ -132,7 +131,7 @@ class CounterpartyEditTest extends TestCase
 
         ])
         ->assertRedirect(route('counterparties'))
-        ->assertSessionHas('message', 'Информация о компании изменена');
+        ->assertSessionHas('message', 'Добавлена новая компания');
 
     }
 
@@ -153,7 +152,7 @@ class CounterpartyEditTest extends TestCase
 
         ])
         ->assertRedirect(route('counterparties'))
-        ->assertSessionHas('message', 'Информация о компании изменена');
+        ->assertSessionHas('message', 'Добавлена новая компания');
 
     }
 
@@ -173,7 +172,7 @@ class CounterpartyEditTest extends TestCase
 
         ])
         ->assertRedirect(route('counterparties'))
-        ->assertSessionHas('message', 'Информация о компании изменена');
+        ->assertSessionHas('message', 'Добавлена новая компания');
 
     }
 }

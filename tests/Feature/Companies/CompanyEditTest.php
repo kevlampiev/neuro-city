@@ -78,5 +78,23 @@ class CompanyEditTest extends TestCase
         ->assertSee('Руководитель');
     }
 
+
+    // public function testEditCompanyAsSuperuser():void
+    // {
+    //     $user = User::query()->where('password_changed_at',">",Carbon::now()->addDay(-30))->where('is_superuser','=',true)->inRandomOrder()->first();
+    //     $response = $this->actingAs($user)->post($this->routeForCompanyEdit(), 
+    //     [
+    //         'name' => 'Edited By Superuser Test',
+    //         'fullname' => 'Edited By Superuser Test',
+    //         'inn' => 111111111111,
+    //         'ogrn' => 22222222222,
+    //         'established_date' => fake()->date(),
+
+    //     ])
+    //     ->assertRedirect('/')
+    //     ->assertSessionHas('message', 'Информация о компании изменена');
+
+    // }
+
 }
 
