@@ -20,10 +20,10 @@ class AgreementType extends Model
         ];
     }
 
-    // public function agreements(): HasMany
-    // {
-    //     return $this->hasMany(Agreement::class);
-    // }
+    public function agreements(): HasMany
+    {
+        return $this->hasMany(Agreement::class);
+    }
 
 
 }
