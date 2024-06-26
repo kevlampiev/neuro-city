@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\AgreementType;
 use App\Models\User;
 use App\Models\Company;
 use App\Models\Role;
@@ -20,6 +21,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CompanySeeder::class,
             RoleSeeder::class,
+            AgreementTypeSeeder::class,
         ]);
  
         

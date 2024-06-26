@@ -85,7 +85,7 @@
                         <hr class="dropdown-divider">
                         </li>
                     @endif    
-                        <li><a class="dropdown-item" href="#">Типы договоров</a></li>
+                        <li><a class="dropdown-item" href="{{route('agrTypes')}}">Типы договоров</a></li>
                         <li><a class="dropdown-item" href="#">Компании</a></li>
                         
                         @if (Auth::user()->is_superuser==true)
