@@ -20,12 +20,12 @@ class Agreement extends Model
 
     public function seller(): BelongsTo
     {
-        return $this->belongsTo(Company::class, 'agreements_seller_id_foreing');
+        return $this->belongsTo(Company::class, 'seller_id');
     }
 
     public function buyer(): BelongsTo
     {
-        return $this->belongsTo(Company::class, 'agreements_buyer_id_foreing');
+        return $this->belongsTo(Company::class, 'buyer_id');
     }
 
     public function creator(): BelongsTo

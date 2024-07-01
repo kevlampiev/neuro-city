@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.big-form')
 
 @section('title')
     Администратор|Редактирование договора
@@ -10,7 +10,7 @@
         @else
             Добавить новый договор
         @endif</h3>
-    <form action="{{route($route, $agreement->id)}}" method="POST">
+    <form  method="POST">
         @csrf
         <div class="row">
             <div class="col-md-6">
@@ -33,22 +33,22 @@
                 @endif
 
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="companies">Компания группы </span>
-                    <select name="company_id"
-                            class="form-control {{$errors->has('company_id')?'is-invalid':''}}"
-                            aria-describedby="companies">
-                        @foreach ($companies as $company)
+                    <span class="input-group-text" id="companies">Продавец </span>
+                    <select name="seller_id"
+                            class="form-control {{$errors->has('seller_id')?'is-invalid':''}}"
+                            aria-describedby="sellers">
+                        @foreach ($sellers as $seller)
                             <option
-                                value="{{$company->id}}" {{($company->id == $agreement->company_id) ? 'selected' : ''}}>
-                                {{$company->name}}
+                                value="{{$seller->id}}" {{($seller->id == $agreement->seller_id) ? 'selected' : ''}}>
+                                {{$seller->name}}
                             </option>
                         @endforeach
                     </select>
                 </div>
-                @if ($errors->has('company_id'))
+                @if ($errors->has('seller_id'))
                     <div class="alert alert-danger">
                         <ul class="p-0 m-0">
-                            @foreach($errors->get('company_id') as $error)
+                            @foreach($errors->get('seller_id') as $error)
                                 <li class="m-0 p-0"> {{$error}}</li>
                             @endforeach
                         </ul>
@@ -56,23 +56,23 @@
                 @endif
 
                 <div class="input-group mb-3">
-                    <span class="input-group-text" >Контрагент </span>
-                    <select name="counterparty_id"
-                            id="counterparties"
-                            class="form-control {{$errors->has('counterparty_id')?'is-invalid':''}}"
-                            aria-describedby="counterparties">
-                        @foreach ($counterparties as $counterparty)
+                    <span class="input-group-text" >Покупатель </span>
+                    <select name="buyer_id"
+                            id="buyers"
+                            class="form-control {{$errors->has('buyer_id')?'is-invalid':''}}"
+                            aria-describedby="buyers">
+                        @foreach ($buyers as $buyer)
                             <option
-                                value="{{$counterparty->id}}" {{($counterparty->id == $agreement->counterparty_id) ? 'selected' : ''}}>
-                                {{$counterparty->name}}
+                                value="{{$buyer->id}}" {{($buyer->id == $agreement->buyer_id) ? 'selected' : ''}}>
+                                {{$buyer->name}}
                             </option>
                         @endforeach
                     </select>
                 </div>
-                @if ($errors->has('counterparty_id'))
+                @if ($errors->has('buyer_id'))
                     <div class="alert alert-danger">
                         <ul class="p-0 m-0">
-                            @foreach($errors->get('counterparty_id') as $error)
+                            @foreach($errors->get('buyer_id') as $error)
                                 <li class="m-0 p-0"> {{$error}}</li>
                             @endforeach
                         </ul>
@@ -154,60 +154,6 @@
                     </div>
                 @endif
 
-                @php $currencies = \Illuminate\Support\Facades\Config::get('constants.currencies') @endphp
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="principal_amount">Основной долг/стоимость имущества</span>
-                    <input type="number" step="0.01" min="0"
-                           class="form-control {{$errors->has('principal_amount')?'is-invalid':''}}"
-                           aria-describedby="principal_amount"
-                           placeholder="Основной долг/стоимость имущества (для лизингов)" name="principal_amount"
-                           value="{{$agreement->principal_amount}}">
-                    <select name="currency" id="currency"
-                            class="form-control {{$errors->has('currency')?'is-invalid':''}}">
-                        @foreach ($currencies as $currency)
-                            <option value="{{$currency}}" {{($currency == $agreement->currency) ? 'selected' : ''}}>
-                                {{$currency}}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                @if ($errors->has('principal_amount'))
-                    <div class="alert alert-danger">
-                        <ul class="p-0 m-0">
-                            @foreach($errors->get('principal_amount') as $error)
-                                <li class="m-0 p-0"> {{$error}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-                @if ($errors->has('currency'))
-                    <div class="alert alert-danger">
-                        <ul class="p-0 m-0">
-                            @foreach($errors->get('currency') as $error)
-                                <li class="m-0 p-0"> {{$error}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="interest_rate">Процентная ставка (% годовых)</span>
-                    <input type="number" step="0.01" min="0" placeholder="0,00"
-                           class="form-control {{$errors->has('interest_rate')?'is-invalid':''}}"
-                           aria-describedby="interest_rate"
-                           name="interest_rate"
-                           value="{{$agreement->interest_rate}}">
-                </div>
-                @if ($errors->has('interest_rate'))
-                    <div class="alert alert-danger">
-                        <ul class="p-0 m-0">
-                            @foreach($errors->get('interest_rate') as $error)
-                                <li class="m-0 p-0"> {{$error}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="real_date_close">Реальная дата закрытия</span>
                     <input type="date"
@@ -232,68 +178,7 @@
 
 
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="VAT">Ставка НДС, %</span>
-                    <input type="number" step="0.01" min="0"
-                           class="form-control {{$errors->has('VAT')?'is-invalid':''}}"
-                           aria-describedby="VAT"
-                           name="VAT"
-                           value="{{$agreement->VAT}}">
-                </div>
-                @if ($errors->has('VAT'))
-                    <div class="alert alert-danger">
-                        <ul class="p-0 m-0">
-                            @foreach($errors->get('VAT') as $error)
-                                <li class="m-0 p-0"> {{$error}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="payment_term">Срок оплаты (дней)</span>
-                    <input type="number" step="1" min="0"
-                           class="form-control {{$errors->has('payment_term')?'is-invalid':''}}"
-                           aria-describedby="payment_term"
-                           name="payment_term"
-                           value="{{$agreement->payment_term}}">
-                </div>
-                @if ($errors->has('payment_term'))
-                    <div class="alert alert-danger">
-                        <ul class="p-0 m-0">
-                            @foreach($errors->get('payment_term') as $error)
-                                <li class="m-0 p-0"> {{$error}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="unitOfMeasurement">Единица измерения работ/услуг </span>
-                    <select name="unit_of_measurement_id"
-                            class="form-control {{$errors->has('unit_of_measurement_id')?'is-invalid':''}}"
-                            aria-describedby="unitOfMeasurements">
-                        @foreach ($unitOfMeasurements as $unit)
-                            <option
-                                value="{{$unit->id}}" {{($unit->id == $agreement->unit_of_measurement_id) ? 'selected' : ''}}>
-                                {{$unit->name}}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                @if ($errors->has('unit_of_measurement_id'))
-                    <div class="alert alert-danger">
-                        <ul class="p-0 m-0">
-                            @foreach($errors->get('unit_of_measurement_id') as $error)
-                                <li class="m-0 p-0"> {{$error}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-
-                 <div class="input-group mb-3">
+                 {{-- <div class="input-group mb-3">
                     <span class="input-group-text" id="project">Проект к которому относится договор </span>
                     <select name="project_id"
                             class="form-control {{$errors->has('project_id')?'is-invalid':''}}"
@@ -315,8 +200,8 @@
                         </ul>
                     </div>
                 @endif
-
-                <div class="input-group mb-3">
+ --}}
+                {{-- <div class="input-group mb-3">
                     <span class="input-group-text" id="cfsItem">Статья ОДДС </span>
                     <select name="cfs_item_id"
                             class="selectpicker {{$errors->has('cfs_item_id')?'is-invalid':''}}"
@@ -339,7 +224,7 @@
                         </ul>
                     </div>
                 @endif
-
+ --}}
                 <div class="form-group">
                     <label for="description">Комментарий</label>
                     <textarea class="form-control {{$errors->has('description')?'is-invalid':''}}"
@@ -367,7 +252,7 @@
                 Добавить
             @endif
         </button>
-        <a class="btn btn-secondary" href="{{session('previous_url', route('admin.agreements'))}}">Отмена</a>
+        <a class="btn btn-secondary" href="{{session('previous_url', route('agreements'))}}">Отмена</a>
 
     </form>
 

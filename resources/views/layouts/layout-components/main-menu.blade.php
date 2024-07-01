@@ -39,7 +39,7 @@
                             <li><a class="dropdown-item" href="{{route('counterparties')}}">Контрагенты</a></li>
                         @endif
                         @if(Gate::allows('s-agreements'))
-                            <li><a class="dropdown-item" href="#">Договоры</a></li>
+                            <li><a class="dropdown-item" href="{{route('agreements')}}">Договоры</a></li>
                         @endif    
 
                         @if(Gate::allows('s-agreements')||Gate::allows('s-counterparty'))

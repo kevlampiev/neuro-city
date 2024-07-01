@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             CompanySeeder::class,
             RoleSeeder::class,
             AgreementTypeSeeder::class,
+            AgreementSeeder::class,
         ]);
  
         

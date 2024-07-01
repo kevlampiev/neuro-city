@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.big-form')
 
 @section('title')
     Администратор| Договоры
@@ -12,41 +12,36 @@
     </div>
 
     @if ($filter!=='')
-        <div class="alert alert-primary" role="alert">
+        <div class="alert alert-secondary m=0 pl-5 pt-0 pb-0" role="alert">
             Установлен фильтр по номеру договора " <strong> {{$filter}} </strong> "
         </div>
     @endif
 
     <div class="row">
-        @if(Gate::allows('e-agreement'))
+        @if(Gate::allows('e-agreements'))
         <div class="col-md-2">
-            <a class="btn btn-outline-info" href="{{route('admin.addAgreement')}}">Новый договор</a>
+            <a class="btn btn-outline-info" href="{{route('addAgreement')}}">Новый договор</a>
         </div>
         @endif
         <div class="col-md-10">
             <form class="form-inline my-2 my-lg-0" method="GET">
-
-                <span class="input-group-text" id="cfsItem">Статус </span>
-                <select class="form-control" id="exampleFormControlSelect1" name="status" value="{{$agreementStatus}}">
-                    <option value="all" {{($agreementStatus=='all'?'selected':'')}}>Действующие и закрытые</option>
-                    <option value="current" {{($agreementStatus=='current'?'selected':'')}}>Только действующие</option>
-                    <option value="closed" {{($agreementStatus=='closed'?'selected':'')}}>Только закрытые</option>
-                </select>
-                
-               <span class="input-group-text" id="cfsItem">Статья ДДС</span> 
-               <select class="form-control" id="CFSItemsSelect" name="cfs_item_id" value="{{$cfs_item_id}}">
-                    <option value="all" {{($cfs_item_id=='all')?'selected':''}}>*Все статьи*</option>
-                    <option value="none" {{($cfs_item_id=='none')?'selected':''}}>*нет*</option>
-                    @foreach ($cfsItems as $item)
-                        <option value="{{$item->id}}" {{($cfs_item_id==$item->id?'selected':'')}}>{{$item->group->name}} / {{$item->name}}</option>    
-                    @endforeach
-                </select>
-
-                <span class="input-group-text" id="cfsItem">Текст для поиска </span>
-                <input class="form-control mr-sm-2" type="search" placeholder="Поиск в договорах" aria-label="Search"
-                       name="searchStr"
-                       value="{{isset($filter)?$filter:''}}">
-                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Поиск</button>
+                <div class="d-flex align-items-center">
+                    <div class="input-group me-2">
+                        <span class="input-group-text" id="cfsItem">Статус</span>
+                        <select class="form-control" id="exampleFormControlSelect1" name="status" value="{{$agreementStatus}}">
+                            <option value="all" {{($agreementStatus=='all'?'selected':'')}}>Действующие и закрытые</option>
+                            <option value="current" {{($agreementStatus=='current'?'selected':'')}}>Только действующие</option>
+                            <option value="closed" {{($agreementStatus=='closed'?'selected':'')}}>Только закрытые</option>
+                        </select>
+                    </div>
+                    <div class="input-group me-2">
+                        <span class="input-group-text" id="cfsItem">Текст для поиска</span>
+                        <input class="form-control" type="search" placeholder="Поиск в договорах" aria-label="Search"
+                            name="searchStr"
+                            value="{{isset($filter)?$filter:''}}">
+                    </div>
+                    <button class="btn btn-outline-primary" type="submit">Поиск</button>
+                </div>
             </form>
         </div>
 
@@ -59,8 +54,8 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Наименование</th>
-                    <th scope="col">Компания</th>
-                    <th scope="col">Контрагент</th>
+                    <th scope="col">Поставщик</th>
+                    <th scope="col">Покупатель</th>
                     <th scope="col">Тип договора</th>
                     <th scope="col">Номер договора</th>
                     <th scope="col">Дата договора</th>
@@ -79,8 +74,8 @@
                     <tr @if($agreement->real_date_close&&$agreement->real_date_close<=now()) class="text-light text-decoration-line-through"@endif>
                         <th scope="row">{{($index+1)}}</th>
                         <td>{{$agreement->name}}</td>
-                        <td>{{$agreement->company->name}}</td>
-                        <td>{{$agreement->counterparty->name}}</td>
+                        <td>{{$agreement->seller->name}}</td>
+                        <td>{{$agreement->buyer->name}}</td>
                         <td>{{$agreement->agreementType->name}}</td>
                         <td>{{$agreement->agr_number}}</td>
                         <td>{{\Illuminate\Support\Carbon::parse($agreement->date_open)->format('d.m.Y')}}</td>
@@ -88,19 +83,19 @@
                         <td>{{$agreement->project?$agreement->project->subject:'--'}}</td>
                         <td>{{$agreement->cfsItem?$agreement->cfsItem->name:'--'}}</td>
                         <td>
-                            {{number_format(max($agreement->payments->where('payment_date',"<",now())->sum('amount')-$agreement->realPayments->where('payment_date',"<",now())->sum('amount'),0),2)}}
+                            {{-- {{number_format(max($agreement->payments->where('payment_date',"<",now())->sum('amount')-$agreement->realPayments->where('payment_date',"<",now())->sum('amount'),0),2)}} --}}
                         </td>
 
-                        <td><a href="{{route('admin.agreementSummary',['agreement'=>$agreement])}}">
+                        <td><a href="{{route('agreementSummary',['agreement'=>$agreement])}}">
                                 &#9776;Карточка </a></td>
                         <td>
-                            @if(Gate::allows('e-agreement'))
-                            <a href="{{route('admin.editAgreement',['agreement'=>$agreement])}}"> &#9998;Изменить </a>
+                            @if(Gate::allows('e-agreements'))
+                            <a href="{{route('editAgreement',['agreement'=>$agreement])}}"> &#9998;Изменить </a>
                             @endif
                         </td>
                         <td>
-                            @if(Gate::allows('e-agreement'))
-                            <a href="{{route('admin.deleteAgreement',['agreement'=>$agreement])}}"
+                            @if(Gate::allows('e-agreements'))
+                            <a href="{{route('deleteAgreement',['agreement'=>$agreement])}}"
                                onclick="return confirm('Действительно удалить данные о договоре?')">
                                 &#10008;Удалить </a>
                             @endif    

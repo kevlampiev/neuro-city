@@ -14,12 +14,12 @@
         <td class="text-left p-2">{{$agreement->AgreementType->name}}</td>
     </tr>
     <tr>
-        <td class="text-right text-black-50">Компания</td>
-        <td class="text-left p-2">{{$agreement->Company->name}}</td>
+        <td class="text-right text-black-50">Продавец</td>
+        <td class="text-left p-2">{{$agreement->seller->name}}</td>
     </tr>
     <tr>
-        <td class="text-right text-black-50">Контрагент</td>
-        <td class="text-left p-2">{{$agreement->Counterparty->name}}</td>
+        <td class="text-right text-black-50">Покупатель</td>
+        <td class="text-left p-2">{{$agreement->buyer->name}}</td>
     </tr>
     <tr>
         <td class="text-right text-black-50">Проект</td>
@@ -32,7 +32,7 @@
 
     <tr>
         <td class="text-right text-black-50">Просроченная задолженность</td>
-        <td class="text-left p-2">{{number_format($agreement->payments->where('payment_date',"<",now())->sum('amount')-$agreement->realPayments->where('payment_date',"<",now())->sum('amount'),2)}}</td>
+        {{-- <td class="text-left p-2">{{number_format($agreement->payments->where('payment_date',"<",now())->sum('amount')-$agreement->realPayments->where('payment_date',"<",now())->sum('amount'),2)}}</td> --}}
     </tr>
 
     <tr>
