@@ -223,8 +223,8 @@
     <script>
         function autoSelectPage() {
             let urlArr = document.location.pathname.split('/')
-            if (urlArr.length === 6) {
-                let tabName = '[data-bs-target="#' + urlArr[5] + '"'
+            if (urlArr.length ===5) {
+                let tabName = '[data-bs-target="#' + urlArr[urlArr.length-1] + '"'
                 $(tabName).tab('show')
             }
         }

@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Dataservices\Document\DocumentDataservice;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DocumentAddRequest;
+use App\Http\Requests\Agreement\DocumentAddRequest;
 use App\Http\Requests\DocumentEditRequest;
 use App\Models\Agreement;
 use App\Models\Document;
-use App\Models\Vehicle;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
 
 class DocumentController extends Controller
 {
@@ -39,30 +40,14 @@ class DocumentController extends Controller
             DocumentDataservice::provideAgreementDocumentEditor($Document, $agreement, 'addDocument'));
     }
 
-    public function storeAgreementDocument(Request $request)
+    public function storeAgreementDocument(DocumentAddRequest $request)
     {
-        // Сохранение файла на сервере
-        if ($request->hasFile('document_file')) {
-            $file = $request->file('document_file');
-            $path = $file->store('documents');
-
-            // Сохранение информации о файле в базе данных
-            $document = new Document();
-            $document->file_name = $path;
-            $document->description = $request->input('description');
-            $document->created_by = Auth::id(); // или другой пользовательский ID
-            // $document->path = $path;
-            $document->save();
-
-            // Создание связи между договором и документом
+        if (DocumentDataservice::storeNewAgreementDocument($request)) {
             $agreement = Agreement::find($request->input('agreement_id'));
-            $agreement->documents()->attach($document->id);
-
-            return redirect()->route("agreementSummary", ['agreement'=>$agreement])->with('message', 'Документ успешно загружен и связан с договором.');
+            return redirect()->route("agreementSummary", ['agreement'=>$agreement, 'page' =>'documents'])->with('message', 'Документ успешно загружен и связан с договором.');
+        } else {
+            return redirect()->back()->with('error', 'Ошибка при загрузке файла.');
         }
-
-        return redirect()->back()->with('error', 'Ошибка при загрузке файла.');
-
     }
 
 
@@ -87,8 +72,12 @@ class DocumentController extends Controller
     public function preview(Document $document)
     {
         $filename =storage_path('app/public/documents/' . $document->file_name);
+        $mimeType = mime_content_type($filename);
         // $filename = Storage::url($document->file_name);
-        return response()->file($filename);
+        return response()->file($filename, [
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => 'inline; filename="' . basename($filename) . '"'
+        ]);
     }
 
 //     public function delete(Document $Document): RedirectResponse
