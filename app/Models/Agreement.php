@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Agreement extends Model
 {
@@ -36,6 +38,11 @@ class Agreement extends Model
     public function destroyer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'agreements_droped_by_foreing');
+    }   
+
+    public function documents(): BelongsToMany
+    {
+        return $this->belongsToMany(Document::class, 'agreement_document');
     }   
 
 }

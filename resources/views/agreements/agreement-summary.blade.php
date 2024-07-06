@@ -137,11 +137,11 @@
             <h4>Связанные файлы</h4>
             <div class="row m-1">
                 <div class="col-md-12">
-                    {{-- <a class="btn btn-outline-primary"
-                       href="{{route('admin.addAgreementDocument',['agreement' => $agreement])}}">
+                    <a class="btn btn-outline-primary"
+                       href="{{route('addAgreementDocument',['agreement' => $agreement])}}">
                         Добавить документ
-                    </a> --}}
-                    {{-- @include('agreements.agreement-summary.agreement-files') --}}
+                    </a>
+                    @include('agreements.agreement-summary.agreement-files')
                 </div>
             </div>
         </div>

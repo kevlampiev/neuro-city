@@ -1,8 +1,7 @@
-@extends('layouts.admin')
+@extends('layouts.big-form')
 
 @section('title')
-    Администратор|Изменение документа
-@endsection
+    Договор|Добавить файл
 
 @section('content')
     <h3> @if ($document->id)
@@ -15,38 +14,9 @@
 
         <div class="row">
             <div class="col-md-12">
-                {{--                    связанная задача --}}
-                <input type="hidden" name="task_id" value="{{$document->task_id}}">
-
-                {{--                    Связанная техника--}}
-                @if($document->vehicle_id)
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="vehicle">Связанная техника </span>
-                        <select name="vehicle_id"
-                                class="form-control {{$errors->has('vehicle_id')?'is-invalid':''}}"
-                                aria-describedby="vehicle">
-                            @foreach ($vehicles as $vehicle)
-                                <option
-                                    value="{{$vehicle->id}}" {{($vehicle->id == $document->vehicle_id) ? 'selected' : ''}}>
-                                    {{$vehicle->name}} - {{$vehicle->vin}} - {{$vehicle->bort_number}}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @if ($errors->has('vehicle_id'))
-                        <div class="alert alert-danger">
-                            <ul class="p-0 m-0">
-                                @foreach($errors->get('vehicle_id') as $error)
-                                    <li class="m-0 p-0"> {{$error}}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
-                @endif {{-- END связанная техника  --}}
-
+                
                 {{--  связанный договор    --}}
-                @if($document->agreement_id)
+                
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="agreement">Договор </span>
                         <select name="agreement_id"
@@ -54,9 +24,9 @@
                                 aria-describedby="agreement">
                             @foreach ($agreements as $agreement)
                                 <option
-                                    value="{{$agreement->id}}" {{($agreement->id == $document->agreement_id) ? 'selected' : ''}}>
+                                    value="{{$agreement->id}}" {{($agreement->id ==  $agreement_id) ? 'selected' : ''}}>
                                     {{$agreement->name}} № {{$agreement->agr_number}}
-                                    от {{$agreement->date_open}} {{$agreement->counterparty->name}}
+                                    от {{$agreement->date_open}} между {{$agreement->buyer->name}} и {{$agreement->seller->name}}
                                 </option>
                             @endforeach
                         </select>
@@ -71,36 +41,7 @@
                         </div>
                     @endif
 
-                @endif {{--  END связанный договор    --}}
-
-
-                {{--  связанная страховка  --}}
-                @if($document->insurance_id)
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="insurance">Страховой полис </span>
-                        <select name="insurance_id"
-                                class="form-control {{$errors->has('insurance_id')?'is-invalid':''}}"
-                                aria-describedby="insurance">
-                            @foreach ($insurances as $insurance)
-                                <option
-                                    value="{{$insurance->id}}" {{($insurance->id == $document->insurance_id) ? 'selected' : ''}}>
-                                    {{$insurance->insuranceCompany->name}} полис {{$insurance->insuranceType->name}}
-                                    № {{$insurance->policy_number}}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @if ($errors->has('insurance_id'))
-                        <div class="alert alert-danger">
-                            <ul class="p-0 m-0">
-                                @foreach($errors->get('insurance_id') as $error)
-                                    <li class="m-0 p-0"> {{$error}}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
-                @endif {{--  END связанная страховка  --}}
+                {{--  END связанный договор    --}}
 
                 {{--  название файла  --}}
                 <div class="input-group mb-3">
@@ -162,7 +103,7 @@
                 Добавить
             @endif
         </button>
-        <a class="btn btn-secondary" href="{{session('previous_url', route('admin.agreements'))}}">Отмена</a>
+        <a class="btn btn-secondary" href="{{session('previous_url', route('agreements'))}}">Отмена</a>
 
     </form>
 

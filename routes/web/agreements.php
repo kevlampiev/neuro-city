@@ -110,12 +110,11 @@ Route::group([
         ],
         function () {
     
-            Route::get('add/agreement/{agreement}', [DocumentController::class, 'create'])
+            Route::get('add/agreement/{agreement}', [DocumentController::class, 'createAgreementDocument'])
                 ->name('addAgreementDocument');
-            Route::post('add/agreement/{agreement}', [DocumentController::class, 'store']);
-            //Не понял в чем тут прикол. Зачем такой специализированный роут как и в случае с vehicle
-            Route::get('edit/agreement/{document}', [DocumentController::class, 'edit'])
-                ->name('editAgreementDocument');
-            Route::post('edit/agreement/{document}', [DocumentController::class, 'update']);
+            Route::post('add/agreement/{agreement}', [DocumentController::class, 'storeAgreementDocument']);
+            // Route::get('edit/agreement/{document}', [DocumentController::class, 'edit'])
+            //     ->name('editAgreementDocument');
+            // Route::post('edit/agreement/{document}', [DocumentController::class, 'update']);
             
         });
