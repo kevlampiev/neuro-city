@@ -39,7 +39,7 @@
                             <li><a class="dropdown-item" href="{{route('counterparties')}}">Контрагенты</a></li>
                         @endif
                         @if(Gate::allows('s-agreements'))
-                            <li><a class="dropdown-item" href="#">Договоры</a></li>
+                            <li><a class="dropdown-item" href="{{route('agreements')}}">Договоры</a></li>
                         @endif    
 
                         @if(Gate::allows('s-agreements')||Gate::allows('s-counterparty'))
@@ -85,7 +85,7 @@
                         <hr class="dropdown-divider">
                         </li>
                     @endif    
-                        <li><a class="dropdown-item" href="#">Типы договоров</a></li>
+                        <li><a class="dropdown-item" href="{{route('agrTypes')}}">Типы договоров</a></li>
                         <li><a class="dropdown-item" href="#">Компании</a></li>
                         
                         @if (Auth::user()->is_superuser==true)
