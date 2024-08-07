@@ -4,7 +4,7 @@
 namespace App\Dataservices\Document;
 
 use App\Http\Requests\Agreement\DocumentAddRequest;
-use App\Http\Requests\DocumentEditRequest;
+use App\Http\Requests\Agreement\DocumentEditRequest;
 use App\Models\Agreement;
 use App\Models\Document;
 use Illuminate\Http\Request;
@@ -63,7 +63,7 @@ class DocumentDataservice
     /**
      * Сохраняет полученный из запроса файл в директорию public/documents
      */
-    public static function uploadNewFile(DocumentAddRequest $request):string
+    public static function uploadNewFile(Request $request):string
     {
         try {
             $file = $request->file('document_file');
@@ -78,6 +78,7 @@ class DocumentDataservice
     }
 
 
+    //Сохраняем новые документ и присоединяем его к договору
     public static function storeNewAgreementDocument(DocumentAddRequest $request):bool
     {
         try {
@@ -108,8 +109,50 @@ class DocumentDataservice
             // session()->flash('error', 'Не удалось добавить новый документ');
             return false;
         }
-
     }
+
+
+
+    //Редактируем документ, привязанный к договору
+
+    public static function updateAgreementDocument(DocumentEditRequest $request):bool
+    {
+        try {
+            if ($request->hasFile('document_file')) {
+                $filename = self::uploadNewFile($request);
+    
+    
+                // Сохранение информации о файле в базе данных
+                $document = new Document();
+                $document->file_name = $filename;
+                $document->description = $request->input('description');
+                $document->created_by = Auth::id(); // или другой пользовательский ID
+                // $document->path = $path;
+                $document->save();
+    
+                // Создание связи между договором и документом
+                $agreement = Agreement::find($request->input('agreement_id'));
+                $agreement->documents()->attach($document->id);
+                // session()->flash('message', 'Документ успешно загружен и связан с договором.');
+                return true;
+ 
+            } else  {
+                // session()->flash('error', 'Не удалось добавить новый документ.');
+                return false;
+            }
+               
+        } catch (Error $err) {
+            // session()->flash('error', 'Не удалось добавить новый документ');
+            return false;
+        }
+    }
+
+
+
+
+
+
+
 
     // public static function update(DocumentEditRequest $request, Document $document)
     // {
