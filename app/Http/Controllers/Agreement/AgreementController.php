@@ -10,18 +10,19 @@ use App\Models\Agreement;
 use App\Models\Vehicle;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 
 class AgreementController extends Controller
 {
     public function index(Request $request)
     {
-
         return view('agreements.agreements', AgreementDataservice::index($request));
     }
 
     public function create(Request $request)
     {
         //event(new RealTimeMessage('Начинваем создавать новый договор'));
+        if (url()->previous() !== url()->current()) session(['previous_url' => url()->previous()]);
         $agreement = AgreementDataservice::create($request);
         return view('agreements.agreement-edit',
             AgreementDataservice::provideAgreementEditor($agreement, 'addAgreement'));

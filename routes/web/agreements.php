@@ -32,20 +32,20 @@ Route::group([
 
 Route::group([
     'prefix' => 'agreements',
-    'middleware' => ['auth:web',PasswordExpired::class, CheckSuperuser::class],
+    'middleware' => ['auth:web',PasswordExpired::class],
 ],
     function () {
-        Route::middleware('permission:s-agreement')->get('/list', [AgreementController::class, 'index'])
+        Route::middleware('permission:s-agreements')->get('/list', [AgreementController::class, 'index'])
             ->name('agreements');
-        Route::middleware('permission:e-agreement')->get('add', [AgreementController::class, 'create'])
+        Route::middleware('permission:e-agreements')->get('add', [AgreementController::class, 'create'])
             ->name('addAgreement');
-        Route::middleware('permission:e-agreement')->post('add', [AgreementController::class, 'store']);
-        Route::middleware('permission:e-agreement')->get('{agreement}/edit', [AgreementController::class, 'edit'])
+        Route::middleware('permission:e-agreements')->post('add', [AgreementController::class, 'store']);
+        Route::middleware('permission:e-agreements')->get('{agreement}/edit', [AgreementController::class, 'edit'])
             ->name('editAgreement');
-        Route::middleware('permission:e-agreement')->post('{agreement}/edit', [AgreementController::class, 'update']);
-        Route::middleware('permission:e-agreement')->match(['post', 'get'], '{agreement}/delete', [AgreementController::class, 'delete'])
+        Route::middleware('permission:e-agreements')->post('{agreement}/edit', [AgreementController::class, 'update']);
+        Route::middleware('permission:e-agreements')->match(['post', 'get'], '{agreement}/delete', [AgreementController::class, 'delete'])
             ->name('deleteAgreement');
-        Route::get('{agreement}/summary/{page?}', [AgreementController::class, 'summary'])
+        Route::middleware('permission:s-agreements')->get('{agreement}/summary/{page?}', [AgreementController::class, 'summary'])
             ->name('agreementSummary');
         // Route::middleware('permission:e-agreement')->match(['get', 'post'], '{agreement}/add-vehicle', [AgreementController::class, 'addVehicle'])
         //     ->name('agreementAddVehicle');
@@ -106,7 +106,7 @@ Route::group([
 
 
     Route::group([
-        'prefix' => 'documents', 'middleware' => 'permission:e-agreement'
+        'prefix' => 'documents', 'middleware' => 'permission:e-agreements'
         ],
         function () {
     

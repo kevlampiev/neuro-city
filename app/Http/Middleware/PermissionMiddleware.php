@@ -2,8 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Permission;
 use Closure;
 use Illuminate\Http\Request;
+
+use function PHPSTORM_META\type;
 
 class PermissionMiddleware
 {
@@ -16,10 +19,17 @@ class PermissionMiddleware
      */
     public function handle(Request $request, Closure $next, $permission)
     {
+        if ($request->is('storage/*')) {
+            return $next($request);
+        }
+        if (gettype($permission)=="string") {
+                $permission = Permission::where('slug','=',$permission)->first();
+                if (!$permission) return false;
+            }
         if(!auth()->user()->hasPermissionTo($permission)) 
         {
-            abort(404);
-        }
+                abort(404);
+        } 
         return $next($request);
     }
 }

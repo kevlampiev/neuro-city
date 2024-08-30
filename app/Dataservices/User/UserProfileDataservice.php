@@ -6,6 +6,7 @@ namespace App\DataServices\User;
 use App\Http\Requests\UserProfileRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class UserProfileDataservice
 {
@@ -24,8 +25,10 @@ class UserProfileDataservice
         $user->fill($request->only('name', 'email', 'phone_number', 'birthday'));
         $user->updated_at = now();
         if ($request->file('img_file')) {
-            $file_path = $request->file('img_file')->store(config('paths.vehicles.put', 'img'));
-            $user->photo = basename($file_path);
+            $file = $request->file('img_file');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public/img/avatars', $filename); // Сохраняем файл в директорию 'public/img/avatars'
+            $user->photo = $filename;
         }
         $user->save();
     }
