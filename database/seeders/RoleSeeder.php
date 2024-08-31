@@ -23,6 +23,8 @@ class RoleSeeder extends Seeder
 
         $urist->permissions()->attach(Permission::where('slug','s-counterparty')->first());
         $urist->permissions()->attach(Permission::where('slug','e-counterparty')->first());
+        $urist->permissions()->attach(Permission::where('slug','s-agreements')->first());
+        $urist->permissions()->attach(Permission::where('slug','e-agreements')->first());
 
         $economist = new Role();
         $economist->name = "Экономист";
@@ -36,21 +38,27 @@ class RoleSeeder extends Seeder
         $programmer->slug = 'programmer';
         $programmer->save();
 
-        $users = User::query()->where('is_superuser','=',false)->inRandomOrder()->limit(3)->get();
+        $users = User::query()->where('is_superuser','=',false)->inRandomOrder()->limit(4)->get();
         $user1 = $users[0];
         $user1->roles()->attach($urist);
         $user1->password_changed_at=now();
         $user1->save();
 
         $user2 = $users[1];
-        $user2->roles()->attach($economist);
-        $user2->password_changed_at=now();
+        $user2->roles()->attach($urist);
+        $user2->password_changed_at=null;
         $user2->save();
 
+
         $user3 = $users[2];
-        $user3->roles()->attach($programmer);
+        $user3->roles()->attach($economist);
         $user3->password_changed_at=now();
         $user3->save();
+
+        $user4 = $users[3];
+        $user4->roles()->attach($programmer);
+        $user4->password_changed_at=now();
+        $user4->save();
 
     }
 }

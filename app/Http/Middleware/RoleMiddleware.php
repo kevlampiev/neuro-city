@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Permission;
+use App\Models\Role;
 use Closure;
 
 class RoleMiddleware
@@ -14,12 +16,12 @@ class RoleMiddleware
      * @param null $permission
      * @return mixed
      */
-    public function handle($request, Closure $next, $role, $permission = null)
+    public function handle($request, Closure $next, Role $role, Permission $permission = null)
     {
         if(!auth()->user()->hasRole($role)) {
             abort(404);
         }
-        if($permission !== null && !auth()->user()->can($permission)) {
+        if($permission !== null && !auth()->user()->hasPermissionTo($permission)) {
             abort(404);
         }
         return $next($request);

@@ -28,15 +28,15 @@ class AgreementDataservice
         $query->where(function (Builder $query) use ($searchStr) {
             $query->where('name', 'like', $searchStr)
                 ->orWhere('agr_number', 'like', $searchStr)
-                // ->orWhereHas('buyer', function (Builder $query) use ($searchStr) {
-                //     $query->where('name', 'like', $searchStr);
-                // })
+                ->orWhereHas('buyer', function (Builder $query) use ($searchStr) {
+                    $query->where('name', 'like', $searchStr);
+                })
                 ->orWhereHas('AgreementType', function (Builder $query) use ($searchStr) {
                     $query->where('name', 'like', $searchStr);
                 })
-                // ->orWhereHas('seller', function (Builder $query) use ($searchStr) {
-                //     $query->where('name', 'like', $searchStr);
-                // })
+                ->orWhereHas('seller', function (Builder $query) use ($searchStr) {
+                    $query->where('name', 'like', $searchStr);
+                })
                 ;
         });
 
@@ -90,6 +90,11 @@ class AgreementDataservice
         // $projects->push(new Task(['id'=>null, 'subject' => "Без проекта"]));
         // $cfsGroups = CFSGroup::orderBy('cfs_section')->orderBy('name')->get();
         // $unitOfMeasurements = UnitOfMeasurement::orderBy('name')->get();
+        if (!$agreement->agr_number) {
+            $agreement->agr_number = now()->format('Y-m/').(Agreement::count() + 1);
+            $agreement->date_open = now()->format('Y-m-d');
+            $agreement->date_close = now()->addDays(365)->format('Y-m-d');
+        }
         return [
             'agreement' => $agreement,
             'route' => $routeName,

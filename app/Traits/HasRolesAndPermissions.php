@@ -41,10 +41,10 @@ trait HasRolesAndPermissions
      * @param $permission
      * @return bool
      */
-    public function hasPermission($permission)
+    public function hasPermission(Permission $permission)
     {
         if ($this->is_superuser) return true; // добавил от себя к тексту https://laravel.demiart.ru/guide-to-roles-and-permissions/ 
-        return (bool) $this->permissions->where('slug', $permission)->count();
+        return (bool) $this->permissions->where('slug', $permission->slug)->count();
     }
 
     /**
@@ -77,8 +77,8 @@ trait HasRolesAndPermissions
             if (gettype($permission)=="string") {
                 $permission = Permission::where('slug','=',$permission)->first();
                 if (!$permission) return false;
-            }
-        return $this->hasPermissionThroughRole($permission) || $this->hasPermission($permission->slug);
+            }           
+        return $this->hasPermissionThroughRole($permission) || $this->hasPermission($permission);
     }
 
     /**

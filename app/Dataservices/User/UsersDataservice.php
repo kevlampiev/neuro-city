@@ -12,6 +12,7 @@ use App\Models\User;
 use Error;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UsersDataservice
 {
@@ -43,10 +44,16 @@ class UsersDataservice
         // dd($request);
         $user->fill($request->except(['photo_file']));
         if (!$user->id) $user->password = Hash::make('12345678');
-        if ($request->file('photo_file')) {
-            $file_path = $request->file('photo_file')->store(config('paths.users.put', 'img/avatars'));
-            $user->photo = basename($file_path);
+
+
+        if ($request->file('img_file')) {
+            $file = $request->file('img_file');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            dd($filename);
+            $file->storeAs('public/img/avatars', $filename); // Сохраняем файл в директорию 'public/img/avatars'
+            $user->photo = $filename;
         }
+        
         $is_superuser = $request->has('is_superuser');
         $user->is_superuser = $is_superuser;
         $user->save();
