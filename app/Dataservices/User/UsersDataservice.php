@@ -50,7 +50,7 @@ class UsersDataservice
             $file = $request->file('img_file');
             $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
             dd($filename);
-            $file->storeAs('public/img/avatars', $filename); // Сохраняем файл в директорию 'public/img/avatars'
+            $file->storeAs('public/img', $filename); // Сохраняем файл в директорию 'public/img/avatars'
             $user->photo = $filename;
         }
         
