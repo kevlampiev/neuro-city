@@ -14,7 +14,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                <li class="nav-item dropdown">
+                {{-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#"
                        id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Дроиды
@@ -26,7 +26,7 @@
                         </li>
                         <li><a class="dropdown-item disabled" href="#">Производство</a></li>
                     </ul>
-                </li>
+                </li> --}}
 
 
                 <li class="nav-item dropdown">
@@ -42,13 +42,12 @@
                             <li><a class="dropdown-item" href="{{route('agreements')}}">Договоры</a></li>
                         @endif    
 
-                        @if(Gate::allows('s-agreements')||Gate::allows('s-counterparty'))
+                        {{-- @if(Gate::allows('s-agreements')||Gate::allows('s-counterparty'))
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        @endif
-                        
-                        <li><a class="dropdown-item" href="#">Состояние расчетов по
+                        @endif 
+                         <li><a class="dropdown-item" href="#">Состояние расчетов по
                                 компаниям</a></li>
                         <li><a class="dropdown-item" href="#">Состояние расчетов по
                                 контрагентам</a></li>
@@ -65,7 +64,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li><a class="dropdown-item" href="#">Предстоящие платежи
-                                12 месяцев</a></li>
+                                12 месяцев</a></li> --}}
                     </ul>
                 </li>
 
