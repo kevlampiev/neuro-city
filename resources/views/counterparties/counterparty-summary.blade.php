@@ -21,7 +21,7 @@
                 Основная информация
             </button>
 
-             {{-- @if(Gate::allows('s-agreement'))
+             @if(Gate::allows('s-agreements'))
                 <button class="nav-link"
                         id="agreements-tab"
                         data-bs-toggle="tab"
@@ -33,7 +33,7 @@
                     <i class="fa fa-file-text" aria-hidden="true"></i>
                     Заключенные договоры
                 </button>
-            @endif --}}
+            @endif
             <button class="nav-link"
                     id="staff-tab"
                     data-bs-toggle="tab"
@@ -76,12 +76,12 @@
             <h4>Основные данные</h4>
             @include('counterparties.components.common-info')
         </div>
-        {{-- @if(Gate::allows('e-agreement'))
+        @if(Gate::allows('e-agreements'))
             <div class="tab-pane fade" id="agreements" role="tabpanel" aria-labelledby="agreements-tab">
                 <h4>Договора, заключенные с контрагентом</h4>
                 @include('counterparties.components.agreements-table')
             </div>
-        @endif --}}
+        @endif
 
         <div class="tab-pane fade" id="staff" role="tabpanel" aria-labelledby="staff-tab">
             <h4>Сотрудники контрагента</h4>

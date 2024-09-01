@@ -8,20 +8,22 @@
                 <th scope="col">#</th>
                 <th scope="col">Тип договора</th>
                 <th scope="col">Номер и дата</th>
-                <th scope="col">Компания</th>
+                <th scope="col">Продавец</th>
+                <th scope="col">Покупатель</th>
                 <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
-            @forelse($counterparty->agreements as $index => $agreement)
+            @forelse($counterparty->agreements_sail->merge($counterparty->agreements_buy)->unique('id') as $index => $agreement)
                 <tr @if($agreement->real_date_close&&$agreement->real_date_close<=now()) class="text-black-50 agreement-close"@endif>
                     <th scope="row">{{$loop->index+1}}</th>
                     <td>{{$agreement->agreementType->name}}</td>
                     <td>№ {{$agreement->agr_number}}
                         от {{\Carbon\Carbon::parse($agreement->date_open)->format('d.m.Y')}} </td>
-                    <td>{{$agreement->company->name}}</td>
+                    <td>{{$agreement->seller->name}}</td>
+                    <td>{{$agreement->buyer->name}}</td>
                     <td>
-                        <a href="{{route('admin.agreementSummary',['agreement'=>$agreement])}}">
+                        <a href="{{route('agreementSummary',['agreement'=>$agreement])}}">
                             &#9776;Карточка
                         </a>
                     </td>
@@ -33,6 +35,8 @@
                     <th colspan="7">1</th>
                 </tr>
             @endforelse
+            
+
             </tbody>
         </table>
     </div>

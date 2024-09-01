@@ -27,4 +27,14 @@ class Company extends Model
     {
         return $this->hasMany(CounterpartyEmployee::class);
     }
+
+    public function agreements_sail():HasMany
+    {
+        return $this->hasMany(Agreement::class, 'seller_id', 'id');
+    }
+
+    public function agreements_buy():HasMany
+    {
+        return $this->hasMany(Agreement::class, 'buyer_id', 'id');
+    }
 }
