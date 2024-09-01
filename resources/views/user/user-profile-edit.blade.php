@@ -92,9 +92,11 @@
                                 {{-- <img src="{{ Storage::url('img/avatars/'.$user->photo) }}" alt="User photo"
                                     class="rounded-circle float-start border-info"
                                     style="width: 200px; height:200px; object-fit: cover;" id="img-viewer"> --}}
-                                 <img src="/storage/img/avatars/{{ $user->photo }}" alt="User photo"
+                                 <img src={{ url('storage/img/' . $user->photo) }} alt="User photo"
                                     class="rounded-circle float-start border-info"
-                                    style="width: 200px; height:200px; object-fit: cover;" id="img-viewer">    
+                                    style="width: 200px; height:200px; object-fit: cover;" id="img-viewer">   
+
+            
                             @endif
                         </div>    
                         
