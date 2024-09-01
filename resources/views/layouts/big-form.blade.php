@@ -27,6 +27,7 @@
 <body class="bg-primary ">
     <div class="bg-main-image spread">
         @include("layouts.layout-components.main-menu")
+        @include("layouts.layout-components.quick-access-toolbar")
 
 
         <main class="pl-4 pr-4 pb-2 pt-1">
