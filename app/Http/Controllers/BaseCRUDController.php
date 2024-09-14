@@ -10,12 +10,14 @@ abstract class BaseCrudController extends Controller
     protected $dataservice;
     protected $modelClass;
     protected $routePrefix; // Префикс маршрутов для редиректов
+    protected $editViewName;
 
-    public function __construct(BaseCRUDDataservice $dataservice, $modelClass, $routePrefix)
+    public function __construct(BaseCRUDDataservice $dataservice, $modelClass, $routePrefix, $editViewName=null)
     {
         $this->dataservice = $dataservice;
         $this->modelClass = $modelClass;
         $this->routePrefix = $routePrefix;
+        $this->editViewName = $editViewName??"edit";
         
     }
 
@@ -30,7 +32,7 @@ abstract class BaseCrudController extends Controller
     public function create(Request $request)
     {
         $model = $this->dataservice->create($request);
-        return view("{$this->routePrefix}.create", ['model' => $model]);
+        return view("{$this->routePrefix}.{$this->editViewName}", ['model' => $model]);
     }
 
     // Сохранение нового элемента
@@ -45,7 +47,7 @@ abstract class BaseCrudController extends Controller
     {
         $model = $this->modelClass::findOrFail($id); // Поиск модели
         $this->dataservice->edit($request, $model);
-        return view("{$this->routePrefix}.edit", ['model' => $model]);
+        return view("{$this->routePrefix}.{$this->editViewName}", ['model' => $model]);
     }
 
     // Обновление существующего элемента
@@ -61,6 +63,6 @@ abstract class BaseCrudController extends Controller
     {
         $model = $this->modelClass::findOrFail($id);
         $this->dataservice->delete($model);
-        return redirect()->route("{$this->routePrefix}.index")->with('message', 'ЗАпись удалена');
+        return redirect()->route("{$this->routePrefix}.index")->with('message', 'Запись удалена');
     }
 }
