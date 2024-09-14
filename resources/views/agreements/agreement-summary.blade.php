@@ -197,7 +197,7 @@
 
         <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
             <h4>Заметки по договору </h4>
-            {{-- @include('Admin.agreements.agreement-summary.agreement-notes') --}}
+            @include('agreements.agreement-summary.agreement-notes')
         </div>
 
         @if(Gate::allows('e-real_payment'))        
