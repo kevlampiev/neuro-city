@@ -220,6 +220,7 @@
 @endsection
 
 @section('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Подключаем jQuery -->
     <script>
         function autoSelectPage() {
             let urlArr = document.location.pathname.split('/')

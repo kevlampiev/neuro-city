@@ -164,15 +164,15 @@ class DocumentDataservice
     //     }
     // }
 
-    // public static function delete(Document $document)
-    // {
-    //     try {
-    //         Storage::delete('public/documents/' . $document->file_name);
-    //         $document->delete();
-    //         session()->flash('message', 'Документ удален');
-    //     } catch (Error $err) {
-    //         session()->flash('error', 'Не удалось удалить документ');
-    //     }
-    // }
+    public static function delete(Document $document)
+    {
+        try {
+            Storage::delete('public/documents/' . $document->file_name);
+            $document->delete();
+            session()->flash('message', 'Документ удален');
+        } catch (Error $err) {
+            session()->flash('error', 'Не удалось удалить документ');
+        }
+    }
 
 }

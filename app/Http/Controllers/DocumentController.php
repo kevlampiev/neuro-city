@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Dataservices\Agreement\AgreementDataservice;
 use App\Dataservices\Document\DocumentDataservice;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Agreement\DocumentAddRequest;
@@ -80,12 +81,12 @@ class DocumentController extends Controller
         ]);
     }
 
-//     public function delete(Document $Document): RedirectResponse
-//     {
-//         DocumentsDataservice::delete($Document);
-// //        $route = session()->pull('previous_url');
-//         return redirect()->back();
-//     }
+    public function delete(Agreement $agreement, Document $document): RedirectResponse
+    {
+        AgreementDataservice::detachDocumentFromAgreements($agreement, $document);
+        $route = session()->pull('previous_url');
+        return redirect()->back();
+    }
 
 
 }

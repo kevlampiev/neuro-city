@@ -5,6 +5,7 @@ namespace App\Dataservices\Agreement;
 
 use App\Http\Requests\Agreement\AgreementRequest;
 use App\Models\Agreement;
+use App\Models\Document;
 use App\Models\AgreementType;
 use App\Models\Company;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,41 +22,37 @@ class AgreementDataservice
     public static function getData(string $filter, string $status, string $cfs_item_id)
     {
 
-        $searchStr = ($filter === "") ? "%" : ('%' . str_replace(' ', '%', $filter) . '%');
+        $searchStr = ($filter === "") ? "%" : ('%' . str_replace(' ', '%', strtolower($filter)) . '%');
 
         $query = Agreement::query();
-
+    
         $query->where(function (Builder $query) use ($searchStr) {
-            $query->where('name', 'like', $searchStr)
-                ->orWhere('agr_number', 'like', $searchStr)
+            $query->whereRaw('LOWER(name) like ?', [$searchStr])
+                ->orWhereRaw('LOWER(agr_number) like ?', [$searchStr])
                 ->orWhereHas('buyer', function (Builder $query) use ($searchStr) {
-                    $query->where('name', 'like', $searchStr);
+                    $query->whereRaw('LOWER(name) like ?', [$searchStr]);
                 })
                 ->orWhereHas('AgreementType', function (Builder $query) use ($searchStr) {
-                    $query->where('name', 'like', $searchStr);
+                    $query->whereRaw('LOWER(name) like ?', [$searchStr]);
                 })
                 ->orWhereHas('seller', function (Builder $query) use ($searchStr) {
-                    $query->where('name', 'like', $searchStr);
-                })
-                ;
+                    $query->whereRaw('LOWER(name) like ?', [$searchStr]);
+                });
         });
-
+    
         if ($status == "closed") {
             $query->whereNotNull('real_date_close');
         } elseif ($status == "current") {
             $query->whereNull('real_date_close');
         }
-
+    
         if ($cfs_item_id != "all") {
-
-            $cfsItemCode = ($cfs_item_id != "none")?$cfs_item_id:null;
-            $query->where('cfs_item_id',$cfsItemCode);
-        } 
-
-         
-        $agreements = $query->orderByDesc('date_open')
-            ->paginate(15);
-
+            $cfsItemCode = ($cfs_item_id != "none") ? $cfs_item_id : null;
+            $query->where('cfs_item_id', $cfsItemCode);
+        }
+    
+        $agreements = $query->orderByDesc('date_open')->paginate(15);
+    
         return $agreements;
     }
 
@@ -150,35 +147,15 @@ class AgreementDataservice
         }
     }
 
-    public static function delete(Agreement $agreement)
+    public static function detachDocumentFromAgreements(Agreement $agreement, Document $document)
     {
         try {
-            $agreement->delete();
-            session()->flash('message', 'Договор удален');
+            $agreement->documents()->detach($document);
+            session()->flash('message', 'Документ откреплен от договора');
         } catch (Error $err) {
-            session()->flash('error', 'Не удалось удалить договор');
+            session()->flash('error', 'Не удалось открепить документ от договора');
         }
     }
 
-    // public static function addVehicle(Request $request, Agreement $agreement)
-    // {
-    //     try {
-    //         $vehicle = Vehicle::find($request->vehicle_id);
-    //         $agreement->vehicles()->save($vehicle);
-    //         session()->flash('message', 'Техника прикреплена к договору');
-    //     } catch (Error $err) {
-    //         session()->flash('error', 'Не удалось связать спецтехнику с договором');
-    //     }
-    // }
-
-    // public static function detachVehicle(Agreement $agreement, Vehicle $vehicle)
-    // {
-    //     try {
-    //         $agreement->vehicles()->detach($vehicle);
-    //         session()->flash('message', 'Разорвана связь техники и договора');
-    //     } catch (Error $err) {
-    //         session()->flash('error', 'Не удалось разорвать связь');
-    //     }
-    // }
-
+    
 }
