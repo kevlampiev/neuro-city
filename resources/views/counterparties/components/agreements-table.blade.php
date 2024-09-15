@@ -1,5 +1,12 @@
 <div class="row">
+    @if(Gate::allows('e-agreements'))
+        <div class="col-md-2">
+            <a class="btn btn-outline-info" href="{{route('addAgreement')}}">Новый договор</a>
+        </div>
+    @endif
     <div class="col-md-12">
+        
+
 
 
         <table class="table table-hover">

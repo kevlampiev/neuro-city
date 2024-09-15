@@ -7,6 +7,7 @@ use App\DataServices\AgreementsRepo;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Agreement\AgreementRequest;
 use App\Models\Agreement;
+use App\Models\Document;
 use App\Models\Vehicle;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -52,11 +53,11 @@ class AgreementController extends Controller
     }
 
 
-    public function delete(Agreement $agreement): RedirectResponse
+    public function detachDocument(Agreement $agreement, Document $document): RedirectResponse
     {
-        AgreementDataservice::delete($agreement);
-        $route = session('previous_url');
-        return redirect()->to($route);
+        AgreementDataservice::detachDocumentFromAgreements($agreement, $document);
+        $route = session()->pull('previous_url');
+        return redirect()->back();
     }
 
     public function summary(Agreement $agreement)

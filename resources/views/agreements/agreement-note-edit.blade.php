@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.big-form')
 
 @section('title')
     Администратор|Изменение заметки
@@ -10,33 +10,37 @@
         @else
             Добавить заметку
         @endif</h3>
-    <form
-        @if($agreementNote->id)
-            action="{{route('admin.editAgreementNote', ['agreementNote' => $agreementNote->id])}}"
-        @else
-            action="{{route('admin.addAgreementNote', ['agreement' => $agreementNote->agreement->id])}}"
-        @endif
-        method="POST">
+    <form method="POST">
         @csrf
-        <form>
             <div class="form-group">
-                <label for="inputType">Договор</label>
+                <label for="input-agreement">Договор</label>
                 <input type="hidden"
-                       id="agreement_id" name="agreement_id" value="{{$agreementNote->agreement_id}}">
+                       id="agreement_id" name="agreement_id" value="{{$agreement->id}}">
+                <input type="hidden"
+                       id="note_id" name="id" value="{{$agreementNote->id}}">       
                 <input type="text"
-                       id="input-agreement" name="agreement" value="{{$agreementNote->agreement->name}}" disabled>
+                       id="input-agreement" name="agreement" value="{{$agreement->name.' '.$agreement->agr_number}}" disabled>
+                 @if ($errors->has('agreement_id'))
+                    <div class="alert alert-danger">
+                        <ul class="p-0 m-0">
+                            @foreach($errors->get('agreement-id') as $error)
+                                <li class="m-0 p-0"> {{$error}}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif       
             </div>
 
             <div class="form-group">
                 <label for="description">Текст заметки</label>
-                <textarea class="form-control {{$errors->has('note_body')?'is-invalid':''}}"
-                          id="note_body"
-                          rows="13" name="note_body">{{$agreementNote->note_body}}</textarea>
+                <textarea class="form-control {{$errors->has('description')?'is-invalid':''}}"
+                          id="description"
+                          rows="13" name="description">{{$agreementNote->description}}</textarea>
             </div>
-            @if ($errors->has('note_body'))
+            @if ($errors->has('description'))
                 <div class="alert alert-danger">
                     <ul class="p-0 m-0">
-                        @foreach($errors->get('note_body') as $error)
+                        @foreach($errors->get('description') as $error)
                             <li class="m-0 p-0"> {{$error}}</li>
                         @endforeach
                     </ul>
@@ -52,12 +56,9 @@
                 @endif
             </button>
             <a class="btn btn-secondary"
-               href="{{route('admin.agreementSummary',['agreement'=>$agreementNote->agreement_id, 'page' => 'notes'])}}">
+               href="{{route('agreementSummary',['agreement'=>$agreement, 'page' => 'notes'])}}">
                 Отмена
             </a>
-
-        </form>
-
     </form>
 
 @endsection

@@ -197,7 +197,7 @@
 
         <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
             <h4>Заметки по договору </h4>
-            {{-- @include('Admin.agreements.agreement-summary.agreement-notes') --}}
+            @include('agreements.agreement-summary.agreement-notes')
         </div>
 
         @if(Gate::allows('e-real_payment'))        
@@ -220,6 +220,7 @@
 @endsection
 
 @section('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Подключаем jQuery -->
     <script>
         function autoSelectPage() {
             let urlArr = document.location.pathname.split('/')

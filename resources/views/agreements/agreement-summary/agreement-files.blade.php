@@ -1,26 +1,27 @@
-<div class="d-flex flex-wrap">
+<div class="row">
 
     @forelse($agreement->documents as $index=>$document)
-        <div class="card m-2" style="width: 18rem;">
-            <div class="card-body">
-                <a
-                    href="{{route('documentPreview', ['document'=>$document] ) }}"
-                    class="text-dark"
-                    target="_blank">
-                    <img src="{{asset(File::extension($document->file_name).'.png')}}" style="width: 25px;">
-                    <p class="card-text clr-gray mb-2 p-2">{{$document->description}}</p>
-                </a>
-                @if(Gate::allows('e-agreements'))
-                {{-- <a href="{{route('editAgreementDocument', ['document'=>$document])}}"
-                   class="m-2 btn btn-outline-secondary">
-                    &#9998;Изменить
-                </a>
-                <a href="{{route('deleteDocument', ['document'=>$document])}}"
-                   class="m-2 btn btn-outline-secondary"
-                   onclick="return confirm('Действиетльно удалить запись?')">
-                    &#10008;Удалить
-                </a> --}}
-                @endif
+        <div class="col-sm-6 col-md-4 col-lg-3 d-flex">
+            <div class="card m-2 flex-fill" style="min-width: 18rem; position: relative;">
+                <div class="card-body">
+                    <a
+                        href="{{route('documentPreview', ['document'=>$document] ) }}"
+                        class="text-dark"
+                        target="_blank">
+                        <img src="{{asset(File::extension($document->file_name).'.png')}}" style="width: 25px;">
+                        <p class="card-text clr-gray mb-2 p-2">{{$document->description}}</p>
+                    </a>
+                    
+                    @if(Gate::allows('e-agreements'))
+                    <!-- Кнопка в верхнем правом углу -->
+                    <a href="{{route('detachAgreementDocument', ['agreement' =>$agreement, 'document'=>$document])}}"
+                       class="btn btn-outline-secondary"
+                       style="position: absolute; top: 5px; right: 5px;"
+                       onclick="return confirm('Действительно открепить документ?')">
+                        &#10008;
+                    </a>
+                    @endif
+                </div>
             </div>
         </div>
 

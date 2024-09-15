@@ -45,4 +45,9 @@ class Agreement extends Model
         return $this->belongsToMany(Document::class, 'agreement_document');
     }   
 
+    public function notes(): BelongsToMany
+    {
+        return $this->belongsToMany(Note::class, 'agreement_note');
+    }   
+
 }
