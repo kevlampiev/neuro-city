@@ -16,11 +16,11 @@ class Note extends Model
     public $incrementing = true; // Автоинкремент
     protected $fillable = ['user_id', 'description']; // Поля, которые заполняются
 
-    public function agreements():BelongsToMany
+    public function agreements(): BelongsToMany
     {
-        return $this->belongsToMany(Agreement::class);
+        return $this->belongsToMany(Agreement::class, 'agreement_note', 'note_id', 'agreement_id');
     }
-
+    
     public function user():BelongsTo
     {
         return $this->belongsTo(User::class);
