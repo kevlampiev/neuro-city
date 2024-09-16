@@ -22,7 +22,8 @@ class AgreementDataservice
     public static function getData(string $filter, string $status, string $cfs_item_id)
     {
 
-        $searchStr = ($filter === "") ? "%" : ('%' . str_replace(' ', '%', strtolower($filter)) . '%');
+        $searchStr = ($filter === "") ? "%" : ('%' . str_replace(' ', '%', $filter) . '%');
+        $searchStr = strtolower($searchStr);
 
         $query = Agreement::query();
     
