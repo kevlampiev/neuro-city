@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\BelongsToManyRelationship;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -47,7 +48,7 @@ class Agreement extends Model
 
     public function notes(): BelongsToMany
     {
-        return $this->belongsToMany(Note::class, 'agreement_note');
-    }   
+        return $this->belongsToMany(Note::class, 'agreement_note', 'agreement_id', 'note_id');
+    }
 
 }
