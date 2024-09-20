@@ -5,7 +5,7 @@ use App\Dataservices\BaseCRUDDataservice;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 
-abstract class BaseCrudController extends Controller
+abstract class BaseCRUDController extends Controller
 {
     protected $dataservice;
     protected $modelClass;
