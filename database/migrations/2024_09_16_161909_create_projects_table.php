@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('projects', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('name')->nullable(false);
-            $table->string('descripion')->nullable();
+            $table->string('description')->nullable();
             $table->string('adesk_id')->nullable();
             $table->date('date_open')->nullable();
             $table->date('date_close')->nullable();

@@ -4,6 +4,7 @@
 namespace App\Dataservices;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BaseCRUDDataservice
 {
@@ -34,7 +35,8 @@ class BaseCRUDDataservice
     public function store(Request $request): void
     {
         $model = new $this->model;
-        $model->fill($request->all());
+        $model->fill($request->except('id'));
+        $model->created_by = Auth::user()->id;
         $model->save();
     }
 

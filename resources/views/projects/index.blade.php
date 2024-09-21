@@ -47,7 +47,7 @@
                             {{-- <a href="{{route('userSummary', ['user' => $item])}}"> <i class="bi bi-card-heading"></i> Карточка </a> --}}
                         </td>
                         <td>
-                            {{-- <a href="{{route('editUser', ['user' => $item])}}"> <i class="bi bi-pencil-square"></i> Изменить </a> --}}
+                            <a href="{{route('projects.edit', ['project' => $item])}}"> <i class="bi bi-pencil-square"></i> Изменить </a>
                         </td>
                         <td> 
                             {{-- @if (Auth::user()->id!==$item->id)

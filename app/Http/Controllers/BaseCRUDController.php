@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Dataservices\BaseCRUDDataservice;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseCRUDController extends Controller
@@ -36,7 +37,7 @@ abstract class BaseCRUDController extends Controller
     }
 
     // Сохранение нового элемента
-    public function store(Request $request)
+    public function store(FormRequest $request)
     {
         $this->dataservice->store($request);
         return redirect()->route("{$this->routePrefix}.index")->with('message', 'Запись успешно создана');
@@ -51,7 +52,7 @@ abstract class BaseCRUDController extends Controller
     }
 
     // Обновление существующего элемента
-    public function update(Request $request, $id)
+    public function update(FormRequest $request, $id)
     {
         $model = $this->modelClass::findOrFail($id);
         $this->dataservice->update($request, $model);
