@@ -10,9 +10,12 @@
         @else
             Добавление проекта
         @endif</h3>
-    <form method="{{$model->id?'PUT':'POST'}}" enctype="multipart/form-data" 
+    <form method="POST" enctype="multipart/form-data" 
         action="{{$model->id?route('projects.update', ['project' => $model]):route('projects.store')}}"">
         @csrf
+        @if ($model->id)
+            @method('PUT')
+        @endif
         <form>
             <div class="row">
                 <div class="col-md-12">

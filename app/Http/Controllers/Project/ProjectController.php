@@ -18,21 +18,45 @@ class ProjectController extends BaseCRUDController
     }
 
     // Переопределяем метод store с использованием ProjectRequest
-    public function store(FormRequest $request)
+    public function store(Request $request)
     {
-        //Проработать валидацию
-
-        $validatedRequest = ProjectRequest::createFrom($request); // Преобразуем в нужный тип
-        // $validatedRequest->validate();
-        return parent::store($validatedRequest);
+        $validated = $this->validate($request, [
+            'name' => 'required|string|min:4',
+            'description' => 'string|nullable',
+            'date_open' => 'required|date',
+            'date_close' => 'nullable|date|after_or_equal:date_open',
+        ], 
+        [
+            'name.required' => 'Поле "Название проекта" обязательно для заполнения.',
+            'name.min' => 'Поле "Название проекта" должно содержать минимум :min символа.',
+            'date_open.required' => 'Поле "Дата начала проекта" обязательно для заполнения.',
+            'date_open.date' => 'Поле "Дата начала проекта" должно быть корректной датой.',
+            'date_close.date' => 'Поле "Дата окончания проекта" должно быть корректной датой.',
+            'date_close.after_or_equal' => 'Поле "Дата окончания проекта" должно быть позже или равно дате начала.',
+        ]);
+        return parent::store($request);
     }
 
     // Переопределяем метод update с использованием ProjectRequest
-    public function update(FormRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $validatedRequest = ProjectRequest::createFrom($request); // Преобразуем в нужный тип
+        // $validatedRequest = ProjectRequest::createFrom($request); // Преобразуем в нужный тип
         // $validatedRequest->validate();
-        return parent::update($validatedRequest, $id);
+        $validated = $this->validate($request, [
+            'name' => 'required|string|min:4',
+            'description' => 'string|nullable',
+            'date_open' => 'required|date',
+            'date_close' => 'nullable|date|after_or_equal:date_open',
+        ], 
+        [
+            'name.required' => 'Поле "Название проекта" обязательно для заполнения.',
+            'name.min' => 'Поле "Название проекта" должно содержать минимум :min символа.',
+            'date_open.required' => 'Поле "Дата начала проекта" обязательно для заполнения.',
+            'date_open.date' => 'Поле "Дата начала проекта" должно быть корректной датой.',
+            'date_close.date' => 'Поле "Дата окончания проекта" должно быть корректной датой.',
+            'date_close.after_or_equal' => 'Поле "Дата окончания проекта" должно быть позже или равно дате начала.',
+        ]);
+        return parent::update($request, $id);
     }
 
 

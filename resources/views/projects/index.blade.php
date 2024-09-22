@@ -31,7 +31,6 @@
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
-                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -49,21 +48,17 @@
                         <td>
                             <a href="{{route('projects.edit', ['project' => $item])}}"> <i class="bi bi-pencil-square"></i> Изменить </a>
                         </td>
-                        <td> 
-                            {{-- @if (Auth::user()->id!==$item->id)
-                                <a href="{{route('setTempPassword',['user' => $item])}}"> <i class="bi bi-incognito"></i> Сменить
-                                    пароль </a>
-                            @else
-                                <a href="{{route('password.expired')}}"> <i class="bi bi-incognito"></i> Сменить пароль </a>
-                                                                {{-- <a href="{{route('password.expired')}}"> &#9998;Сменить пароль </a> 
-                            @endif --}}
-                        </td>
+                        
                         <td>
-                            {{-- @if (Auth::user()->id!==$item->id)
-                                <a href="{{route('deleteUser', ['user' => $item])}}"
-                                   onclick="return confirm('Действительно удалить данные о пользователе?')"> &#10008;Удалить </a>
-                            @endif --}}
+                            @if (Auth::user()->is_superuser)
+                                <form action="{{ route('projects.destroy', ['project' => $item->id]) }}" method="POST" onsubmit="return confirm('Действительно удалить данные о проекте?')">
+                                    @csrf
+                                    @method('DELETE') <!-- Указываем метод DELETE -->
+                                    <button type="submit" class="btn btn-outline-danger" style="border: none;">&#10008;Удалить</button>
+                                </form>
+                            @endif
                         </td>
+
                     </tr>
                 @empty
                     <td colspan="9">Нет записей</td>

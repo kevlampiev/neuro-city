@@ -37,7 +37,7 @@ abstract class BaseCRUDController extends Controller
     }
 
     // Сохранение нового элемента
-    public function store(FormRequest $request)
+    public function store(Request $request)
     {
         $this->dataservice->store($request);
         return redirect()->route("{$this->routePrefix}.index")->with('message', 'Запись успешно создана');
@@ -52,7 +52,7 @@ abstract class BaseCRUDController extends Controller
     }
 
     // Обновление существующего элемента
-    public function update(FormRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $model = $this->modelClass::findOrFail($id);
         $this->dataservice->update($request, $model);
