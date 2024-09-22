@@ -15,25 +15,38 @@
     </tr>
     <tr>
         <td class="text-right text-black-50">Продавец</td>
-        <td class="text-left p-2">{{$agreement->seller->name}}</td>
+        <td class="text-left p-2">
+            @if(!$agreement->seller->our_company)
+                <a href="{{route('counterpartySummary', ['counterparty'=>$agreement->seller])}}"> {{$agreement->seller->name}} </a>
+            @else
+                {{$agreement->seller->name}}
+            @endif    
+        </td>
     </tr>
     <tr>
         <td class="text-right text-black-50">Покупатель</td>
-        <td class="text-left p-2">{{$agreement->buyer->name}}</td>
+        <td class="text-left p-2">
+            @if(!$agreement->buyer->our_company)
+                <a href="{{route('counterpartySummary', ['counterparty'=>$agreement->buyer])}}"> {{$agreement->buyer->name}} </a>
+            @else
+                {{$agreement->buyer->name}}
+            @endif    
+
+        </td>
     </tr>
     <tr>
         <td class="text-right text-black-50">Проект</td>
-        <td class="text-left p-2">{{$agreement->project?$agreement->project->subject:'--'}}</td>
+        <td class="text-left p-2">{{$agreement->project?$agreement->project->name:'--'}}</td>
     </tr>
     <tr>
         <td class="text-right text-black-50">Описание</td>
         <td class="text-left p-2">{{$agreement->description}}</td>
     </tr>
 
-    <tr>
+    {{-- <tr>
         <td class="text-right text-black-50">Просроченная задолженность</td>
-        {{-- <td class="text-left p-2">{{number_format($agreement->payments->where('payment_date',"<",now())->sum('amount')-$agreement->realPayments->where('payment_date',"<",now())->sum('amount'),2)}}</td> --}}
-    </tr>
+        <td class="text-left p-2">{{number_format($agreement->payments->where('payment_date',"<",now())->sum('amount')-$agreement->realPayments->where('payment_date',"<",now())->sum('amount'),2)}}</td> 
+    </tr> --}}
 
     <tr>
         <td class="text-right text-black-50">Дата окончания</td>

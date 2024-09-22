@@ -180,6 +180,10 @@
                             aria-describedby="projects" id="projects" 
                             {{-- style="display: max-widh:300px;" --}}
                             >
+                            <option
+                                value="" {{($agreement->project_id == null) ? 'selected' : ''}}>
+                                * Без проекта
+                            </option>
                         @foreach ($projects as $project)
                             <option
                                 value="{{$project->id}}" {{($project->id == $agreement->project_id) ? 'selected' : ''}}>
@@ -201,43 +205,14 @@
 
             </div>
 
-            {{-- @dd($projects); --}}
 
             <div class="col-md-6 pl-3">
 
-
-
-                
-
-                {{-- <div class="input-group mb-3">
-                    <span class="input-group-text" id="cfsItem">Статья ОДДС </span>
-                    <select name="cfs_item_id"
-                            class="selectpicker {{$errors->has('cfs_item_id')?'is-invalid':''}}"
-                            aria-describedby="cfsItems" data-live-search="true" id="cfsItems">
-                            <option value=""> *Нет статьи*  </option>
-                        @foreach ($cfsGroups as $cfsGrpoup)
-                            <option value=""> {{strtoupper($cfsGrpoup->name)}} </option>
-                            @foreach($cfsGrpoup->items as $item)
-                                <option value={{$item->id}} {{($item->id==$agreement->cfs_item_id)?'selected':''}}> -- {{$item->name}}</option>
-                            @endforeach
-                        @endforeach
-                    </select>
-                </div>
-                @if ($errors->has('cfs_item_id'))
-                    <div class="alert alert-danger">
-                        <ul class="p-0 m-0">
-                            @foreach($errors->get('cfs_item_id') as $error)
-                                <li class="m-0 p-0"> {{$error}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
- --}}
                 <div class="form-group">
                     <label for="description">Комментарий</label>
                     <textarea class="form-control {{$errors->has('description')?'is-invalid':''}}"
                               id="description"
-                              rows="7" name="description">{{$agreement->description}}</textarea>
+                              rows="16" name="description">{{$agreement->description}}</textarea>
                 </div>
                 @if ($errors->has('description'))
                     <div class="alert alert-danger">
