@@ -51,4 +51,10 @@ class Agreement extends Model
         return $this->belongsToMany(Note::class, 'agreement_note', 'agreement_id', 'note_id');
     }
 
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+
 }

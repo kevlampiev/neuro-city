@@ -172,21 +172,18 @@
                     </div>
                 @endif
 
-            </div>
 
-            <div class="col-md-6 pl-3">
-
-
-
-                 {{-- <div class="input-group mb-3">
+                <div class="input-group mb-3">
                     <span class="input-group-text" id="project">Проект к которому относится договор </span>
                     <select name="project_id"
                             class="form-control {{$errors->has('project_id')?'is-invalid':''}}"
-                            aria-describedby="projects" id="projects" style="display: max-widh:300px;">
+                            aria-describedby="projects" id="projects" 
+                            {{-- style="display: max-widh:300px;" --}}
+                            >
                         @foreach ($projects as $project)
                             <option
                                 value="{{$project->id}}" {{($project->id == $agreement->project_id) ? 'selected' : ''}}>
-                                {{$project->subject}}
+                                {{$project->name}}
                             </option>
                         @endforeach
                     </select>
@@ -200,7 +197,18 @@
                         </ul>
                     </div>
                 @endif
- --}}
+
+
+            </div>
+
+            {{-- @dd($projects); --}}
+
+            <div class="col-md-6 pl-3">
+
+
+
+                
+
                 {{-- <div class="input-group mb-3">
                     <span class="input-group-text" id="cfsItem">Статья ОДДС </span>
                     <select name="cfs_item_id"
@@ -258,35 +266,3 @@
 
 @endsection
 
-@section('scripts')
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-{{-- <script src="/select2/dist/js/select2.min.js"></script> --}}
-<script src="/select2/dist/js/i18n/ru.js"></script>
-
-<script>
-    $(document).ready(function() {
-    $('#cfsItems').select2({
-            placeholder: "Выберите Статью БДДС",
-            maximumSelectionLength: 2,
-            language: "ru"
-        });
-    $('#projects').select2({
-            placeholder: "Выберите проект",
-            maximumSelectionLength: 2,
-            language: "ru"
-        });
-        
-    });
-    $('#counterparties').select2({
-            placeholder: "Выберите контрагента",
-            maximumSelectionLength: 2,
-            language: "ru"
-        });
-        
-    
-    
-</script>
-@endsection

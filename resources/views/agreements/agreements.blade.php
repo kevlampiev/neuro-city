@@ -58,12 +58,11 @@
                     <th scope="col">Покупатель</th>
                     <th scope="col">Тип договора</th>
                     <th scope="col">Номер договора</th>
-                    <th scope="col">Дата договора</th>
-                    <th scope="col">Дата завершения</th>
+                    <th scope="col">Срок действия по договору</th>
+                    <th scope="col">Дата реального завершения</th>
                     <th scope="col">Проект</th>
-                    <th scope="col">Статья</th>
-                    <th scope="col">Просроченная оплата на сегодня, руб</th>
-
+                    {{-- <th scope="col">Статья</th> --}}
+                    {{-- <th scope="col">Просроченная оплата на сегодня, руб</th> --}}
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
@@ -78,13 +77,12 @@
                         <td>{{$agreement->buyer->name}}</td>
                         <td>{{$agreement->agreementType->name}}</td>
                         <td>{{$agreement->agr_number}}</td>
-                        <td>{{\Illuminate\Support\Carbon::parse($agreement->date_open)->format('d.m.Y')}}</td>
-                        <td>{{\Illuminate\Support\Carbon::parse($agreement->real_date_close)->format('d.m.Y')}}</td>
-                        <td>{{$agreement->project?$agreement->project->subject:'--'}}</td>
-                        <td>{{$agreement->cfsItem?$agreement->cfsItem->name:'--'}}</td>
-                        <td>
-                            {{-- {{number_format(max($agreement->payments->where('payment_date',"<",now())->sum('amount')-$agreement->realPayments->where('payment_date',"<",now())->sum('amount'),0),2)}} --}}
+                        <td>{{\Illuminate\Support\Carbon::parse($agreement->date_open)->format('d.m.Y')}} - 
+                            {{$agreement->date_close?\Illuminate\Support\Carbon::parse($agreement->date_close)->format('d.m.Y'):'--'}}
                         </td>
+                        <td>{{$agreement->real_date_close?\Illuminate\Support\Carbon::parse($agreement->real_date_close)->format('d.m.Y'):'--'}}</td>
+                        <td>{{$agreement->project?$agreement->project->name:'--'}}</td>
+                        
 
                         <td><a href="{{route('agreementSummary',['agreement'=>$agreement])}}">
                                 &#9776;Карточка </a></td>
