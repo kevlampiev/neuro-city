@@ -43,7 +43,7 @@
                         <td>{{$item->date_close}}</td>
                         <td>{{$item->role}}</td>
                         <td>
-                            {{-- <a href="{{route('userSummary', ['user' => $item])}}"> <i class="bi bi-card-heading"></i> Карточка </a> --}}
+                            <a href="{{route('projects.summary', ['project' => $item])}}"> <i class="bi bi-card-heading"></i> Карточка </a>
                         </td>
                         <td>
                             @if(Gate::allows('e-projects'))
