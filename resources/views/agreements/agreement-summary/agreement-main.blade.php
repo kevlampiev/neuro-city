@@ -38,8 +38,13 @@
     <tr>
         <td class="text-right text-black-50">Проект</td>
         <td class="text-left p-2">
-            <a href="{{route('projects.summary', ['project'=> $agreement->project])}}">
-            {{$agreement->project->name}}
+            @if(Gate::allows('s-projects'))
+                <a href="{{route('projects.summary', ['project'=> $agreement->project])}}">
+                    {{$agreement->project->name}}
+                </a>
+            @else
+                {{$agreement->project->name}}
+            @endif    
         </td>
     </tr>
     @endif
