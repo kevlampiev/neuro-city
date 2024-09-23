@@ -17,6 +17,7 @@
             </tr>
             </thead>
             <tbody>
+            {{-- @dd($model->agreements) --}}
             @forelse($model->agreements as $index => $agreement)
                 <tr @if($agreement->real_date_close&&$agreement->real_date_close<=now()) class="text-black-50 agreement-close"@endif>
                     <th scope="row">{{$loop->index+1}}</th>

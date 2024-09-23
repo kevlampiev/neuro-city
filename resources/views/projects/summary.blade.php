@@ -50,7 +50,7 @@
             </div>
         @endif --}}
 
-        <div class="tab-pane fade" id="staff" role="tabpanel" aria-labelledby="staff-tab">
+        <div class="tab-pane fade" id="agreements" role="tabpanel" aria-labelledby="agreements">
             <h4>Договоры, относящиеся к проекту</h4>
             @include('projects.components.agreements-table')
         </div>
