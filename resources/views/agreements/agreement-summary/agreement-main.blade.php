@@ -34,10 +34,15 @@
 
         </td>
     </tr>
+    @if($agreement->project)
     <tr>
         <td class="text-right text-black-50">Проект</td>
-        <td class="text-left p-2">{{$agreement->project?$agreement->project->name:'--'}}</td>
+        <td class="text-left p-2">
+            <a href="{{route('projects.summary', ['project'=> $agreement->project])}}">
+            {{$agreement->project->name}}
+        </td>
     </tr>
+    @endif
     <tr>
         <td class="text-right text-black-50">Описание</td>
         <td class="text-left p-2">{{$agreement->description}}</td>
@@ -68,8 +73,8 @@
     <tr>
         <td class="text-right text-black-50"></td>
         <td>
-            @if(Gate::allows('e-agreement'))
-                <a href="{{route('admin.editAgreement',['agreement'=>$agreement])}}"
+            @if(Gate::allows('e-agreements'))
+                <a href="{{route('editAgreement',['agreement'=>$agreement])}}"
                    class="btn btn-outline-secondary" role="button" aria-pressed="true">Отредактировать</a>
             @endif
         </td>
