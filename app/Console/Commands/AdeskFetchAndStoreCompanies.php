@@ -27,7 +27,12 @@ class AdeskFetchAndStoreCompanies extends Command
             $contractors = $response->json('contractors');
 
             foreach ($contractors as $contractor) {
+                $contractorId = $contractor['id'];
                 $contractorName = $contractor['name'];
+
+                // Разбиваем имя на ИНН и Имя
+                $inn = null;
+                $name = $contractorName;
 
                 // Проверяем, содержит ли строка запятую
                 if (strpos($contractorName, ',') !== false) {
@@ -36,32 +41,43 @@ class AdeskFetchAndStoreCompanies extends Command
                     $inn = trim($nameParts[0]); // ИНН
                     $name = trim($nameParts[1]); // Имя
 
-                    // Проверяем, если ИНН состоит только из цифр
-                    if (is_numeric($inn)) {
-                        // Проверка, существует ли запись в таблице companies
-                        $existingCompany = Company::where('inn', $inn)->first();
-
-                        if (!$existingCompany) {
-                            // Создаем новую запись
-                            Company::create([
-                                'inn' => $inn,
-                                'name' => $name,
-                                'fullname' => $name,
-                                'company_type' => 'other',
-                                'our_company' => false,
-                                'created_at' => Carbon::now(),
-                            ]);
-
-                            $this->info("Компания с ИНН $inn добавлена.");
-                        } else {
-                            $this->info("Компания с ИНН $inn уже существует.");
-                        }
-                    } else {
-                        $this->info("Неправильный формат ИНН: $inn. Пропуск записи.");
+                    // Если ИНН не является числом, считаем его невалидным и сбрасываем в null
+                    if (!is_numeric($inn)) {
+                        $inn = null;
                     }
+                }
+
+                // Если у контрагента есть ИНН, проверяем его наличие
+                if ($inn) {
+                    $existingCompanyByInn = Company::where('inn', $inn)->first();
+                    if ($existingCompanyByInn) {
+                        // Обновляем adesk_id для записи с совпадающим ИНН
+                        $existingCompanyByInn->update([
+                            'adesk_id' => $contractorId
+                        ]);
+                        $this->info("Обновлена запись с ИНН $inn, установлен adesk_id $contractorId.");
+                        continue; // Переходим к следующей записи
+                    }
+                }
+
+                // Проверяем, если запись с таким adesk_id уже существует
+                $existingCompanyById = Company::where('adesk_id', $contractorId)->first();
+
+                if (!$existingCompanyById) {
+                    // Создаем новую запись в таблице companies
+                    Company::create([
+                        'inn' => $inn??'0'.now()->getTimestampMs(),
+                        'name' => $name,
+                        'fullname' => $name,
+                        'company_type' => 'other',
+                        'our_company' => false,
+                        'created_at' => Carbon::now(),
+                        'adesk_id' => $contractorId,
+                    ]);
+
+                    $this->info("Компания с adesk_id $contractorId добавлена.");
                 } else {
-                    // Пропускаем запись без запятой
-                    $this->info("Пропуск записи без ИНН: {$contractorName}");
+                    $this->info("Компания с adesk_id $contractorId уже существует.");
                 }
             }
         } else {

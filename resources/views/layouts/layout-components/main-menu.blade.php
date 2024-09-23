@@ -28,6 +28,7 @@
                     </ul>
                 </li> --}}
 
+                @if(Gate::allows('s-projects'))
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#"
                        id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -41,6 +42,7 @@
                         <li><a class="dropdown-item disabled" href="#">Производство</a></li>
                     </ul>
                 </li>
+                @endif
 
 
                 <li class="nav-item dropdown">

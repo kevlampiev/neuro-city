@@ -46,11 +46,13 @@
                             {{-- <a href="{{route('userSummary', ['user' => $item])}}"> <i class="bi bi-card-heading"></i> Карточка </a> --}}
                         </td>
                         <td>
-                            <a href="{{route('projects.edit', ['project' => $item])}}"> <i class="bi bi-pencil-square"></i> Изменить </a>
+                            @if(Gate::allows('e-projects'))
+                                <a href="{{route('projects.edit', ['project' => $item])}}"> <i class="bi bi-pencil-square"></i> Изменить </a>
+                            @endif    
                         </td>
                         
                         <td>
-                            @if (Auth::user()->is_superuser)
+                            @if(Gate::allows('e-projects'))
                                 <form action="{{ route('projects.destroy', ['project' => $item->id]) }}" method="POST" onsubmit="return confirm('Действительно удалить данные о проекте?')">
                                     @csrf
                                     @method('DELETE') <!-- Указываем метод DELETE -->
