@@ -47,13 +47,13 @@
                         </td>
                         <td>
                             @if(Gate::allows('e-projects'))
-                                <a href="{{route('projects.edit', ['project' => $item])}}"> <i class="bi bi-pencil-square"></i> Изменить </a>
+                                <a href="{{route('projects.edit', ['id' => $item->id])}}"> <i class="bi bi-pencil-square"></i> Изменить </a>
                             @endif    
                         </td>
                         
                         <td>
                             @if(Gate::allows('e-projects'))
-                                <form action="{{ route('projects.destroy', ['project' => $item->id]) }}" method="POST" onsubmit="return confirm('Действительно удалить данные о проекте?')">
+                                <form action="{{ route('projects.destroy', ['id' => $item->id]) }}" method="POST" onsubmit="return confirm('Действительно удалить данные о проекте?')">
                                     @csrf
                                     @method('DELETE') <!-- Указываем метод DELETE -->
                                     <button type="submit" class="btn btn-outline-danger" style="border: none;">&#10008;Удалить</button>

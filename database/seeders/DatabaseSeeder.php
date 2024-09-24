@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
             AgreementTypeSeeder::class,
             AgreementSeeder::class,
         ]);
+
+        $this->call(ProjectSeeder::class);
  
         
     }

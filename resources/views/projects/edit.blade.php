@@ -11,7 +11,7 @@
             Добавление проекта
         @endif</h3>
     <form method="POST" enctype="multipart/form-data" 
-        action="{{$model->id?route('projects.update', ['project' => $model]):route('projects.store')}}"">
+        action="{{$model->id?route('projects.update', ['id' => $model->id]):route('projects.store')}}"">
         @csrf
         @if ($model->id)
             @method('PUT')
