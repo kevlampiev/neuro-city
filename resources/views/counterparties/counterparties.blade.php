@@ -95,13 +95,15 @@
                                 <a href="{{route('editCounterparty',['counterparty'=>$counterparty])}}"> &#9998;Изменить </a>
                             @endif
                         </td>
-                        @if (($counterparty->agreements_count===0)&&(Gate::allows('e-counterparty')))
+                        @if ($counterparty->agreements_sail->isEmpty()&&$counterparty->agreements_buy->isEmpty()&&Gate::allows('e-counterparty'))                            
                             <td><a href="{{route('deleteCounterparty',['counterparty'=>$counterparty])}}"
                                    onclick="return confirm('Действительно удалить данные о контрагенте?')">
                                     &#10008;Удалить </a>
                             </td>
                         @else
-                            <td><p class="text-muted">&#10008;Удалить </p></td>
+                            <td>
+                                <p class="text-muted">&#10008;Удалить </p>
+                            </td>
                         @endif
                     </tr>
                 @empty
