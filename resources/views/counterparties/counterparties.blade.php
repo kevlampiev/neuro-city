@@ -42,6 +42,7 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col"></th>
                     <th scope="col">Наименование</th>
                     <th scope="col">Тип</th>
                     <th scope="col">ИНН</th>
@@ -54,6 +55,13 @@
                 @forelse($counterparties as $index=>$counterparty)
                     <tr>
                         <th scope="row">{{$index + 1}}</th>
+                        <td scope="row">
+                            @if($counterparty->adesk_id)
+                            <i class="bi bi-arrow-left-right"></i> ADesk
+                            @else
+                            --
+                            @endif
+                        </td>
                         <td>{{$counterparty->name}}</td>
                         <td>
                             @switch($counterparty->company_type)

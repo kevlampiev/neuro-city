@@ -24,6 +24,7 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col"></th>
                     <th scope="col">Наименование</th>
                     <th scope="col">ИНН</th>
                     <th scope="col">ОГРН</th>
@@ -36,6 +37,7 @@
                 @forelse($companies as $index=>$company)
                     <tr>
                         <th scope="row">{{$index+1}}</th>
+                        <th scope="row">{{$company->adesk_id?'ADESK':''}}</th>
                         <td>{{$company->name}}</td>
                         <td>{{$company->inn}}</td>
                         <td>{{$company->ogrn}}</td>
