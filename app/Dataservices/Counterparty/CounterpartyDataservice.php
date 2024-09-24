@@ -23,13 +23,13 @@ class CounterpartyDataservice
 
     public static function getFiltered(string $filter)
     {
-        $searchStr = '%' . str_replace(' ', '%', $filter) . '%';
+        $searchStr = '%' . preg_replace('/\s+/', '%', mb_strtolower($filter??"")) . '%';
         // return Company::withCount('agreements')
         //     ->where('name', 'like', $searchStr)
         //     ->orderBy('name')->get();
         return Company::query()
             ->where('our_company','=',false)
-            ->where('name', 'like', $searchStr)
+            ->whereRaw('LOWER(name) like ?',[$searchStr])
             ->orderBy('name')->paginate(15);
     
     }

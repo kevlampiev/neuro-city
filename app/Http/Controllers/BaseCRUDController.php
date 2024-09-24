@@ -3,9 +3,10 @@ namespace App\Http\Controllers;
 
 use App\Dataservices\BaseCRUDDataservice;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Database\Eloquent\Model;
 
-abstract class BaseCrudController extends Controller
+abstract class BaseCRUDController extends Controller
 {
     protected $dataservice;
     protected $modelClass;
@@ -65,4 +66,12 @@ abstract class BaseCrudController extends Controller
         $this->dataservice->delete($model);
         return redirect()->route("{$this->routePrefix}.index")->with('message', 'Запись удалена');
     }
+
+        // Выведение карточки
+        public function summary($id)
+        {
+            $model = $this->modelClass::findOrFail($id);
+            return view("{$this->routePrefix}.summary", ['model' => $model]); // Переход на представление с элементами
+        }
+    
 }

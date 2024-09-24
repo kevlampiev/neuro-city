@@ -8,6 +8,7 @@ use App\Models\Agreement;
 use App\Models\Document;
 use App\Models\AgreementType;
 use App\Models\Company;
+use App\Models\Project;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,9 @@ class AgreementDataservice
                     $query->whereRaw('LOWER(name) like ?', [$searchStr]);
                 })
                 ->orWhereHas('AgreementType', function (Builder $query) use ($searchStr) {
+                    $query->whereRaw('LOWER(name) like ?', [$searchStr]);
+                })
+                ->orWhereHas('project', function (Builder $query) use ($searchStr) {
                     $query->whereRaw('LOWER(name) like ?', [$searchStr]);
                 })
                 ->orWhereHas('seller', function (Builder $query) use ($searchStr) {
@@ -83,7 +87,7 @@ class AgreementDataservice
      */
     public static function provideAgreementEditor(Agreement $agreement, $routeName): array
     {
-        // $projects = Task::query()->where('parent_task_id','=',null)->select('id','subject')->get();
+        // $projects = Project::query()->orderBy('name')->get();
         // $projects->push(new Task(['id'=>null, 'subject' => "Без проекта"]));
         // $cfsGroups = CFSGroup::orderBy('cfs_section')->orderBy('name')->get();
         // $unitOfMeasurements = UnitOfMeasurement::orderBy('name')->get();
@@ -98,7 +102,7 @@ class AgreementDataservice
             'agreementTypes' => AgreementType::query()->orderBy('name')->get(),
             'sellers' => Company::query()->orderBy('name')->get(),
             'buyers' => Company::query()->orderBy('name')->get(),
-            // 'projects' => $projects,
+            'projects' => Project::query()->orderBy('name')->get(),
             // 'cfsGroups' => $cfsGroups,
             // 'unitOfMeasurements' => $unitOfMeasurements
         ];

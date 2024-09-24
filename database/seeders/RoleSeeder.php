@@ -37,6 +37,8 @@ class RoleSeeder extends Seeder
         $programmer->name = "Программист";
         $programmer->slug = 'programmer';
         $programmer->save();
+        $programmer->permissions()->attach(Permission::where('slug','s-projects')->first());
+        $programmer->permissions()->attach(Permission::where('slug','e-projects')->first());
 
         $users = User::query()->where('is_superuser','=',false)->inRandomOrder()->limit(4)->get();
         $user1 = $users[0];
