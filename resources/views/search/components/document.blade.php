@@ -1,5 +1,5 @@
 <div class="card-body">
-    <h5 class="card-title">{{$index}} Документ</h5>
+    <h5 class="card-title">Документ</h5>
     <p class="card-text">{{$item->obj_text}}</p>
     @php
         $document = App\Models\Document::findOrFail($item->id);
