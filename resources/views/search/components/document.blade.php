@@ -5,6 +5,6 @@
         $document = App\Models\Document::findOrFail($item->id);
     @endphp
     @foreach($document->agreements as $agreement)
-        <a href="{{route('agreementSummary', ['agreement'=>$agreement])}}" class="card-link">Догвор {{$agreemens->agr_number}} от {{$agreements->date_open}}</a>
+        <a href="{{route('agreementSummary', ['agreement'=>$agreement])}}" class="card-link">Догвор {{$agreement->agr_number}} от {{$agreement->date_open}}</a>
     @endforeach    
 </div>
