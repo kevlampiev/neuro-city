@@ -22,7 +22,7 @@
         <td class="text-right text-black-50"></td>
         <td>
             @if(Auth::user()->is_superuser)
-                <a href="{{route('projects.edit',['project'=>$model])}}"
+                <a href="{{route('projects.edit',['id'=>$model->id])}}"
                    class="btn btn-outline-secondary" role="button" aria-pressed="true">Отредактировать</a>
             @endif
         </td>
