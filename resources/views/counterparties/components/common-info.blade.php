@@ -22,6 +22,11 @@
     </tr>
 
     <tr>
+        <td class="text-right text-black-50">Идентификатор ADesk </td>
+        <td class="text-left p-2"> {{$counterparty->adesk_id}}</td>
+    </tr>
+
+    <tr>
         <td class="text-right text-black-50"></td>
         <td>
              @if(Gate::allows('e-counterparty'))

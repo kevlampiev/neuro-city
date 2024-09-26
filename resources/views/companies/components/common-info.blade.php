@@ -17,6 +17,11 @@
     </tr>
 
     <tr>
+        <td class="text-right text-black-50">Идентификатор ADesk </td>
+        <td class="text-left p-2"> {{$company->adesk_id}}</td>
+    </tr>
+    
+    <tr>
         <td class="text-right text-black-50"></td>
         <td>
             @if(Auth::user()->is_superuser)
