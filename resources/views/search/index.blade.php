@@ -17,16 +17,13 @@
             
             @forelse($searchResult as $index=>$item)
             <div class="card m-2">
-                <div class="card-body">
-                    <h5 class="card-title">{{$index}} {{$item->obj_type}}</h5>
-                    <p class="card-text">{{$item->obj_text}}</p>
-                    <a href="#" class="card-link">Another link</a>
-                </div>
+                @include('search.components.'.$item->obj_type)
             </div>    
             @empty
                 <p> Нет данных для отображения </p>
             @endforelse    
-            
+            {{ $searchResult->appends(['searchStr' => $searchStr])->links() }}    
         </div>
+
     </div>
 @endsection

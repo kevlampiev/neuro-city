@@ -18,13 +18,13 @@ return new class extends Migration
             SELECT id, 'company' as obj_type, CONCAT(name, CHR(10), fullname , CHR(10), header, CHR(10), post_adress) AS obj_text, search_vector 
             FROM companies c  
             union all
-            select id, 'company_note' as obj_type, note_body as obj_text, search_vector  from company_notes 
+            select company_id, 'company_note' as obj_type, note_body as obj_text, search_vector  from company_notes 
             union all
             select id, 'document' as obj_type, description as obj_text, search_vector from documents
             union all
             select id, 'project' as obj_type, CONCAT(name, CHR(10), description) as obj_text, search_vector from projects
             union all
-            select id, 'company_employee' as obj_type, CONCAT(name, CHR(10), title, CHR(10), description) as obj_text, search_vector from company_employees   
+            select company_id, 'company_employee' as obj_type, CONCAT(name, CHR(10), title, CHR(10), description) as obj_text, search_vector from company_employees   
         ");
     }
 

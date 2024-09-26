@@ -11,8 +11,8 @@ class BigSearchController extends Controller
     {
         $searchStr = $request->post('searchStr');
         if (!$searchStr||(trim($searchStr)=="")) 
-          return redirect()->back();
+          return redirect()->route('home');
 
-        return view('searchresult',BigSearchDataservice::index($searchStr));
+        return view('search.index',BigSearchDataservice::index($searchStr));
     }
 }
