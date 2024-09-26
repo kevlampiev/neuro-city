@@ -39,7 +39,8 @@
                             aria-describedby="sellers">
                         @foreach ($sellers as $seller)
                             <option
-                                value="{{$seller->id}}" {{($seller->id == $agreement->seller_id) ? 'selected' : ''}}>
+                                value="{{$seller->id}}" {{($seller->id == $agreement->seller_id) ? 'selected' : ''}}
+                                class="{{$seller->our_company?'bg-warning':''}} {{(!$seller->adesk_id?'text-danger':'')}}">
                                 {{$seller->name}}
                             </option>
                         @endforeach
@@ -63,7 +64,9 @@
                             aria-describedby="buyers">
                         @foreach ($buyers as $buyer)
                             <option
-                                value="{{$buyer->id}}" {{($buyer->id == $agreement->buyer_id) ? 'selected' : ''}}>
+                                value="{{$buyer->id}}" {{($buyer->id == $agreement->buyer_id) ? 'selected' : ''}}
+                                    class="{{$buyer->our_company?'bg-warning':''}} {{(!$buyer->adesk_id?'text-danger':'')}}">
+                                
                                 {{$buyer->name}}
                             </option>
                         @endforeach
