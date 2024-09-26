@@ -118,7 +118,7 @@
             <form class="d-flex" method="POST" action="{{route('bigSearch')}}">
                 @csrf
                 <input class="form-control me-2" type="search" placeholder="глобальный поиск ..." aria-label="Search"
-                       name="searchStr">
+                       name="searchStr" value="{{$searchStr??''}}">
                 <button class="btn btn-outline-info" type="submit">Искать</button>
             </form>
             <ul class="navbar-nav ml-auto">
