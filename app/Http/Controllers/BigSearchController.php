@@ -9,7 +9,7 @@ class BigSearchController extends Controller
 {
     public function index(Request $request)
     {
-        $searchStr = $request->post('searchStr');
+        $searchStr = $request->get('searchStr');
         if (!$searchStr||(trim($searchStr)=="")) 
           return redirect()->route('home');
 

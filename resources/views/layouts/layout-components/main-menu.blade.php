@@ -115,8 +115,8 @@
                 </li>
 
             </ul>
-            <form class="d-flex" method="POST" action="{{route('bigSearch')}}">
-                @csrf
+            <form class="d-flex" method="GET" action="{{route('bigSearch')}}">
+                {{-- @csrf --}}
                 <input class="form-control me-2" type="search" placeholder="глобальный поиск ..." aria-label="Search"
                        name="searchStr" value="{{$searchStr??''}}">
                 <button class="btn btn-outline-info" type="submit">Искать</button>
