@@ -1,7 +1,9 @@
 <div class="row m-1">
     <div class="col-md-12">
-        <a class="btn btn-outline-info mb-2" href="{{route('addProjectNote', ['project'=>$model])}}">Добавить
-            заметку</a>
+        @if(Gate::allows('s-projects'))
+            <a class="btn btn-outline-info mb-2" href="{{route('addProjectNote', ['project'=>$model])}}">Добавить
+                заметку</a>
+        @endif        
 
         <div class="notes-container row">
 

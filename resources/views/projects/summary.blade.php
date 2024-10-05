@@ -80,7 +80,6 @@
             if (urlArr.length === 5) {
                 let tabName = '[data-bs-target="#' + urlArr[4] + '"'
                 $(tabName).tab('show')
-                alert(urlArr[3])
             }
         }
 

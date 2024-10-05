@@ -1,7 +1,9 @@
 <div class="row m-1">
     <div class="col-md-12">
-        <a class="btn btn-outline-info mb-2" href="{{route('addAgreementNote', ['agreement'=>$agreement])}}">Добавить
-            заметку</a>
+        @if(Gate::allows('s-agreements'))
+            <a class="btn btn-outline-info mb-2" href="{{route('addAgreementNote', ['agreement'=>$agreement])}}">Добавить
+                заметку</a>
+        @endif    
 
         <div class="notes-container row">
 
