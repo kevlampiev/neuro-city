@@ -34,6 +34,18 @@
                     Заключенные договоры
                 </button>
             @endif
+
+            <button class="nav-link"
+                    id="notes-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#notes"
+                    type="button"
+                    role="tab"
+                    aria-controls="notes"
+                    aria-selected="true">
+                <i class="fa fa-file-text" aria-hidden="true"></i>
+                Заметки по проекту
+            </button>
         </div>
     </nav>
 
@@ -43,22 +55,16 @@
             <h4>Основные данные</h4>
             @include('projects.components.common-info')
         </div>
-        {{-- @if(Gate::allows('e-agreements'))
-            <div class="tab-pane fade" id="agreements" role="tabpanel" aria-labelledby="agreements-tab">
-                <h4>Договора, заключенные с контрагентом</h4>
-                @include('counterparties.components.agreements-table')
-            </div>
-        @endif --}}
 
         <div class="tab-pane fade" id="agreements" role="tabpanel" aria-labelledby="agreements">
             <h4>Договоры, относящиеся к проекту</h4>
             @include('projects.components.agreements-table')
         </div>
 
-        {{-- <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
-            <h4>Заметки по контрагенту</h4>
-            @include('counterparties.components.counterparty-notes')
-        </div> --}}
+        <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
+            <h4>Заметки по проекту</h4>
+            @include('projects.components.notes-table')
+        </div>
 
     </div>
 
@@ -66,11 +72,7 @@
 
 @section('scripts')
 
-    <script
-        src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-        crossorigin="anonymous"></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Подключаем jQuery -->
 
     <script>
         function autoSelectPage() {

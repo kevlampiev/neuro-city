@@ -20,6 +20,12 @@ class Note extends Model
     {
         return $this->belongsToMany(Agreement::class, 'agreement_note', 'note_id', 'agreement_id');
     }
+
+
+    public function projects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'note_project', 'note_id', 'project_id');
+    }
     
     public function user():BelongsTo
     {
