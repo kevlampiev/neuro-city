@@ -15,7 +15,7 @@ class BigSearchDataservice
     public static function availableObjects(): array 
     {
         $doumentCounter = 0;
-        $result = ['document'];
+        $result = ['document', 'note'];
         if (Auth::user()->hasPermissionTo('s-agreements')) $result[]='agreement';
         if (Auth::user()->hasPermissionTo('s-counterparty')) {
              $result[]='company';
@@ -65,6 +65,7 @@ class BigSearchDataservice
         ['path' => request()->url(), 'query' => request()->query()] // Параметры запроса для сохранения
     );
 
+    
     // Возвращаем результат с параметрами
     return [
         'searchStr' => $searchStr,
