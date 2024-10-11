@@ -33,9 +33,12 @@
 
             <div class="form-group">
                 <label for="description">Текст заметки</label>
-                <textarea class="form-control {{$errors->has('description')?'is-invalid':''}}"
-                          id="description"
-                          rows="13" name="description">{{$agreementNote->description}}</textarea>
+                <textarea class="form-control {{$errors->has('description') ? 'is-invalid' : ''}}"
+                        id="description"
+                        rows="13" name="description" maxlength="255">{{$agreementNote->description}}</textarea>
+                <small id="charCount" class="form-text text-muted">
+                    0 / 255 символов
+                </small>
             </div>
             @if ($errors->has('description'))
                 <div class="alert alert-danger">
@@ -61,4 +64,33 @@
             </a>
     </form>
 
+@endsection
+
+@section("scripts")
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const textarea = document.getElementById('description');
+            const charCountDisplay = document.getElementById('charCount');
+            const maxLength = 255;
+
+            // Функция для обновления счетчика символов
+            const updateCharCount = () => {
+                const currentLength = textarea.value.length;
+                charCountDisplay.textContent = `${currentLength} / ${maxLength} символов`;
+
+                // Добавляем класс для красного текста, если символов больше 255
+                if (currentLength > maxLength) {
+                    charCountDisplay.classList.add('text-danger');
+                } else {
+                    charCountDisplay.classList.remove('text-danger');
+                }
+            };
+
+            // Инициализация начального значения
+            updateCharCount();
+
+            // Событие на ввод текста в textarea
+            textarea.addEventListener('input', updateCharCount);
+        });
+    </script>
 @endsection
