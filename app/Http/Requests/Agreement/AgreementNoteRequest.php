@@ -24,7 +24,7 @@ class AgreementNoteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => 'string|required',
+            'description' => 'string|required|max:254',
             'agreement_id' => 'exists:agreements,id'
         ];
     }
