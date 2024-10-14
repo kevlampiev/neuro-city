@@ -111,6 +111,14 @@
                             <li><a class="dropdown-item" href="{{route('roles')}}">Роли в системе</a></li>
                         @endif
 
+                        @if (Auth::user()->is_superuser==true)
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="{{route('droidTypes.index')}}">Пользователи</a></li>
+                            
+                        @endif
+
                     </ul>
                 </li>
 
