@@ -26,7 +26,7 @@ class DroidTypeController extends BaseCRUDController
     {
         $validated = $this->validate($request, [
             'name' => 'required|string|min:4',
-            'description' => 'string|nullable',
+            'description' => 'string|required',
             
         ], 
         [
@@ -41,7 +41,7 @@ class DroidTypeController extends BaseCRUDController
     {
         $validated = $this->validate($request, [
             'name' => 'required|string|min:4',
-            'description' => 'string|nullable',
+            'description' => 'string|required',
         ], 
         [
             'name.required' => 'Поле "Название проекта" обязательно для заполнения.',
