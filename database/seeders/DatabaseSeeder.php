@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\AgreementType;
 use App\Models\User;
 use App\Models\Company;
+use App\Models\DroidType;
 use App\Models\Role;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -26,6 +27,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(ProjectSeeder::class);
+        $this->call(DroidTypeSeeder::class);
  
         
     }
