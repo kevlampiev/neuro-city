@@ -115,7 +115,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="{{route('droidTypes.index')}}">Модели дроидов</a></li>
+                            <li><a class="dropdown-item" href="{{route('droidTypes.index')}}">Модели</a></li>
                             
                         @endif
 
