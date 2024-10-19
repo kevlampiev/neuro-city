@@ -117,6 +117,14 @@
                             </li>
                             <li><a class="dropdown-item" href="{{route('droidTypes.index')}}">Модели</a></li>
                             
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="{{route('cfsGroups')}}">Группы статей CFS</a>
+                            </li>
+
+                            
                         @endif
 
                     </ul>
