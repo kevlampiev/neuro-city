@@ -11,7 +11,7 @@
 
     </div>
 
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-md-12">
             <a class="btn btn-outline-info" href="{{route('addPlGroup')}}">Новая группа</a>
         </div>
@@ -19,51 +19,51 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h3> Выручка </h3>
-            <div class = "pr-5"> 
+            <h4> Выручка </h4>
+            <div class = "m-3"> 
                 @include('cfss.pl-groups.pl-group-record',['groups'=>$sales])
             </div>    
             
-            <h4> Себестоимость </h4>
-            <div class = "pr-5"> 
+            <h5> Себестоимость </h5>
+            <div class = "m-3"> 
                 @include('cfss.pl-groups.pl-group-record',['groups'=>$cogs])
             </div>    
 
-            <hr>
-            <h3> Валовая прибыль </h3>
+            <hr class="hr hr-blurry" />
+            <h4> Валовая прибыль </h4>
 
-            <h4> Косвенные расходы </h4>
-            <div class = "pr-5"> 
+            <h5> Косвенные расходы </h5>
+            <div class = "m-3"> 
                 @include('cfss.pl-groups.pl-group-record',['groups'=>$indirect_costs])
             </div>    
 
-            <hr>
-            <h3> EBITDA </h3>
+            <hr class="hr hr-blurry" />
+            <h4> EBITDA </h4>
 
 
-            <h4> Амортизация </h4>
-            <div class = "pr-5"> 
+            <h5> Амортизация </h5>
+            <div class = "m-3"> 
                 @include('cfss.pl-groups.pl-group-record',['groups'=>$DA])
             </div>    
 
-            <hr>
-            <h3> EBIT </h3>
+            <hr class="hr hr-blurry" />
+            <h4> EBIT </h4>
 
-            <h4> Проценты </h4>
-            <div class = "pr-5"> 
+            <h5> Проценты </h5>
+            <div class = "m-3"> 
                 @include('cfss.pl-groups.pl-group-record',['groups'=>$interests])
             </div>    
 
-            <hr>
-            <h3> EBT </h3>
+            <hr class="hr hr-blurry" />
+            <h4> EBT </h4>
 
-            <h4> Налог на прибыль </h4>
-            <div class = "pr-5"> 
+            <h5> Налог на прибыль </h5>
+            <div class = "m-3"> 
                 @include('cfss.pl-groups.pl-group-record',['groups'=>$tax])
             </div>    
 
-            <hr>
-            <h3> NP </h3>
+            <hr class="hr hr-blurry" />
+            <h4> NP </h4>
 
         </div>
     </div>
