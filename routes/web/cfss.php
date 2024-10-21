@@ -3,13 +3,21 @@
 use App\Http\Controllers\Budget\CFSGroupController;
 use App\Http\Controllers\Budget\CFSItemController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\PasswordExpired;
 
 Route::group([
-    'prefix' => 'cfs-groups', 'middleware' =>'permission:e-ref_books'
+    'prefix' => 'cfs-groups', 'middleware' =>['auth:web',PasswordExpired::class]
 ],
     function () {
         Route::get('/', [CFSGroupController::class, 'index'])
             ->name('cfsGroups');
+    }
+);
+
+Route::group([
+    'prefix' => 'cfs-groups', 'middleware' =>['auth:web',PasswordExpired::class, 'permission:e-ref_books']
+],
+    function () {
         Route::get('add', [CFSGroupController::class, 'create'])
             ->name('addCfsGroup');
         Route::post('add', [CFSGroupController::class, 'store']);
@@ -22,8 +30,9 @@ Route::group([
     }
 );
 
+
 Route::group([
-    'prefix' => 'cfs-items', 'middleware' =>'permission:e-ref_books'
+    'prefix' => 'cfs-items', 'middleware' =>['auth:web',PasswordExpired::class, 'permission:e-ref_books']
 ],
     function () {
         Route::get('add/{cfsGroup}', [CFSItemController::class, 'create'])
