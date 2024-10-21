@@ -24,11 +24,12 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             AgreementTypeSeeder::class,
             AgreementSeeder::class,
+            ProjectSeeder::class,
+            DroidTypeSeeder::class,
+            CFSItemGroupSeeder::class,
+            PlItemGroupSeeder::class,
         ]);
-
-        $this->call(ProjectSeeder::class);
-        $this->call(DroidTypeSeeder::class);
- 
+      
         
     }
 
