@@ -38,4 +38,9 @@ class Company extends Model
     {
         return $this->hasMany(Agreement::class, 'buyer_id', 'id');
     }
+
+    public function bankAccounts():HasMany
+    {
+        return $this->hasMany(BankAccount::class, 'owner_id', 'id');
+    }
 }

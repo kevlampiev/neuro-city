@@ -28,9 +28,7 @@ class DatabaseSeeder extends Seeder
             DroidTypeSeeder::class,
             CFSItemGroupSeeder::class,
             PlItemGroupSeeder::class,
+            BankAccountSeeder::class,
         ]);
-      
-        
     }
-
 }

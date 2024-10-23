@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-12">
         <a class="btn btn-outline-secondary"
-           href="{{route('admin.addBankAccount', ['account_owner_id' => $company->id])}}">
+           href="{{route('accounts.create')}}">
             Добавить счет
         </a>
     </div>
@@ -34,12 +34,12 @@
                     <td>{{\Carbon\Carbon::parse($bankAccount->date_open)->format('d.m.Y')}}</td>
                     <td>{{\Carbon\Carbon::parse($bankAccount->date_close)->format('d.m.Y')}}</td>
                     <td>
-                        <a href="{{route('admin.editBankAccount', ['bankAccount' => $bankAccount])}}">
+                        <a href="{{route('accounts.edit', ['bankAccount' => $bankAccount])}}">
                             &#9776;Изменить
                         </a>
                     </td>
                     <td>
-                        <a href="{{route('admin.deleteBankAccount', ['bankAccount' => $bankAccount])}}"
+                        <a href="{{route('accounts.destroy', ['bankAccount' => $bankAccount])}}"
                            onclick="return confirm('Действительно удалить банковский счет?')">
                             &#10008;Удалить
                         </a>
