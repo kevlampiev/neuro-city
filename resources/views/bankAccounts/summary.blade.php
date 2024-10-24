@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <h3>Карточка счета {{$model->name}}</h3>
+    <h3>Карточка счета {{$model->bank_account}}</h3>
 
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">

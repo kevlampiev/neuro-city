@@ -8,9 +8,10 @@ use App\Models\BankAccount;
 use Illuminate\Http\Request;
 use App\Http\Requests\Payment\BankAccountRequest;
 use App\Models\Company;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Error;   
-
+use Error;
+use Illuminate\Support\Carbon as SupportCarbon;
 
 class BankAccountDataservice
 {
@@ -50,7 +51,7 @@ class BankAccountDataservice
     public static function provideBankAccountEditor(BankAccount $bankAccount):array
     {
         $banks = Company::where('company_type', 'bank')->orderBy('name')->get();
-        $companies = Company::where('company_type', '<>', 'bank')->orderBy('name')->get();
+        $companies = Company::where('our_company', true)->orderBy('name')->get();
         return [
             'model' => $bankAccount,
             'owners' => $companies,
@@ -58,11 +59,13 @@ class BankAccountDataservice
         ];
     }
 
-    public static function create(Request $request): BankAccount
+    public static function create(Request $request, $company): BankAccount
     {
-        $BankAccount = new BankAccount();
-        if (!empty($request->old())) $BankAccount->fill($request->old());
-        return $BankAccount;
+        $bankAccount = new BankAccount();
+        $bankAccount->owner_id= $company;
+        $bankAccount->date_open = Carbon::now()->format('Y-m-d');
+        if (!empty($request->old())) $bankAccount->fill($request->old());
+        return $bankAccount;
     }
 
     public static function edit(Request $request, BankAccount $BankAccount)
@@ -85,8 +88,8 @@ class BankAccountDataservice
     public static function store(BankAccountRequest $request)
     {
         try {
-            $BankAccount = new BankAccount();
-            self::saveChanges($request, $BankAccount);
+            $bankAccount = new BankAccount();
+            self::saveChanges($request, $bankAccount);
             session()->flash('message', 'Добавлен новый договор');
         } catch (Error $err) {
             session()->flash('error', 'Не удалось добавить новый договор');

@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-12">
         <a class="btn btn-outline-secondary"
-           href="{{route('accounts.create')}}">
+           href="{{route('accounts.create', ['company' => $company->id])}}">
             Добавить счет
         </a>
     </div>

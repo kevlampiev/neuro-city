@@ -17,11 +17,10 @@ class BankAccountController extends Controller
         return view('bankAccounts.index', BankAccountDataservice::index($request));
     }
 
-    public function create(Request $request)
+    public function create(Request $request, $company = null)
     {
-        //event(new RealTimeMessage('Начинваем создавать новый договор'));
         if (url()->previous() !== url()->current()) session(['previous_url' => url()->previous()]);
-        $bankAccount = BankAccountDataservice::create($request);
+        $bankAccount = BankAccountDataservice::create($request, $company);
         return view('bankAccounts.edit',
             BankAccountDataservice::provideBankAccountEditor($bankAccount));
     }
@@ -51,7 +50,7 @@ class BankAccountController extends Controller
 
     public function summary(BankAccount $bankAccount)
     {
-        return view('bankAccounts.summary', ['account' => $bankAccount]);
+        return view('bankAccounts.summary', ['model' => $bankAccount]);
     }
 
     public function destroy(BankAccount $bankAccount): RedirectResponse

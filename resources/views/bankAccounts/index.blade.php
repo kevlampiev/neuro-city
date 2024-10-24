@@ -41,10 +41,10 @@
                         <td> {{$item->owner->name}}</td>
                         <td>{{$item->bank->name}}</td>
                         <td>{{$item->account_number}}</td>
-                        <td>{{$item->date_open}}</td>
-                        <td>{{$item->date_close}}</td>
+                        <td>{{\Carbon\Carbon::parse($item->date_open)->format('d.m.Y')}}</td>
+                        <td>{{$item->date_close?\Carbon\Carbon::parse($item->date_close)->format('d.m.Y'):'--'}}</td>
                         <td>
-                            <a href="{{route('accounts.summary', ['account' => $item])}}"> <i class="bi bi-card-heading"></i> Карточка </a>
+                            <a href="{{route('accounts.summary', ['bankAccount' => $item])}}"> <i class="bi bi-card-heading"></i> Карточка </a>
                         </td>
                         <td>
                             @if(Gate::allows('e-accounts'))
