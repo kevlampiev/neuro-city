@@ -27,7 +27,7 @@
                     <th scope="col">Владелец счета</th>
                     <th scope="col">Банк</th>
                     <th scope="col">Номер счета</th>
-                    <th scope="col">Дата окрытия</th>
+                    <th scope="col">Дата открытия</th>
                     <th scope="col">Дата закрытия</th>
                     <th scope="col"></th>
                     <th scope="col"></th>

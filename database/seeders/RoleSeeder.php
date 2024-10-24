@@ -43,6 +43,8 @@ class RoleSeeder extends Seeder
         $programmer->permissions()->attach(Permission::where('slug','e-droid_types')->first());
         $programmer->permissions()->attach(Permission::where('slug','s-ref_books')->first());
         $programmer->permissions()->attach(Permission::where('slug','e-ref_books')->first());
+        $programmer->permissions()->attach(Permission::where('slug','s-accounts')->first());
+        $programmer->permissions()->attach(Permission::where('slug','e-accounts')->first());
 
         $users = User::query()->where('is_superuser','=',false)->inRandomOrder()->limit(4)->get();
         $user1 = $users[0];
