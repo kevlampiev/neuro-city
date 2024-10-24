@@ -33,7 +33,7 @@
                 <i class="fa fa-file-text-o" aria-hidden="true"></i>
                 Выданные доверенности
             </button> --}}
-            {{-- <button class="nav-link"
+            <button class="nav-link"
                     id="bankAccounts-tab"
                     data-bs-toggle="tab"
                     data-bs-target="#bankAccounts"
@@ -43,7 +43,7 @@
                     aria-selected="true">
                 <i class="fa fa-credit-card" aria-hidden="true"></i>
                 Банковские счета
-            </button> --}}
+            </button>
         </div>
     </nav>
 
@@ -60,11 +60,11 @@
                     @include('Admin.companies.components.poas-table')
                 </div>
             </div>
-        </div>
+        </div> --}}
         <div class="tab-pane fade" id="bankAccounts" role="tabpanel" aria-labelledby="bankAccounts-tab">
             <h4>Банковские счета</h4>
-            @include('Admin.companies.components.bank-accounts-table')
-        </div> --}}
+            @include('companies.components.bank-accounts-table')
+        </div> 
     </div>
 
 @endsection

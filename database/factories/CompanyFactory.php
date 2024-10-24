@@ -24,6 +24,7 @@ class CompanyFactory extends Factory
             'ogrn' => fake()->numberBetween(11111111111,99911111111),
             'post_adress' => fake()->address(),
             'our_company' => ($someInt === 4),
+            'company_type' => ['bank','other'][rand(0,1)],
             'phone' =>fake()->phoneNumber(),
             'created_at'=>now(),
         ];

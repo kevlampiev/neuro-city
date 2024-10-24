@@ -58,32 +58,24 @@
                             <li><a class="dropdown-item" href="{{route('agreements')}}">Договоры</a></li>
                         @endif    
 
-                        {{-- @if(Gate::allows('s-agreements')||Gate::allows('s-counterparty'))
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        @endif 
-                         <li><a class="dropdown-item" href="#">Состояние расчетов по
-                                компаниям</a></li>
-                        <li><a class="dropdown-item" href="#">Состояние расчетов по
-                                контрагентам</a></li>
-                        <li><a class="dropdown-item" href="#">Получить
-                                кредитно-лизинговый портфель</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Предстоящие платежи</a>
-                        </li>
-                        <li><a class="dropdown-item" href="#">Платежный календарь на 2
-                                недели</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Предстоящие платежи
-                                12 месяцев</a></li> --}}
+                        {{-- @if(Gate::allows('s-bank_accounts')) --}}
+                            <li><a class="dropdown-item" href="{{route('accounts.index')}}">Банковские счета</a></li>
+                        {{-- @endif --}}
+                     
                     </ul>
                 </li>
 
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#"
+                       id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Платежи
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                       
+                   
+                    </ul>
+                </li>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
