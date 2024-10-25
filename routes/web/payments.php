@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\PasswordExpired;
 use App\Http\Controllers\Payment\BankAccountController;
+use App\Http\Controllers\Payment\PaymentController;
 
 
 Route::middleware(['auth:web',PasswordExpired::class,'permission:s-accounts'])->group(function () {
@@ -19,3 +20,15 @@ Route::middleware(['auth:web',PasswordExpired::class,'permission:e-accounts'])->
     Route::delete('accounts/{bankAccount}', [BankAccountController::class, 'destroy'])->name('accounts.destroy');
 });
 
+Route::middleware(['auth:web',PasswordExpired::class,'permission:s-payments'])->group(function () {
+    Route::get('payments', [PaymentController::class, 'index'])
+    ->name('payments.index');
+});
+
+Route::middleware(['auth:web',PasswordExpired::class,'permission:e-payments'])->group(function () {
+    Route::get('payments/create', [PaymentController::class, 'create'])->name('payments.create');
+    Route::post('payments', [PaymentController::class, 'store'])->name('payments.store');
+    Route::get('payments/{payment}/edit', [PaymentController::class, 'edit'])->name('payments.edit');
+    Route::put('payments/{payment}', [PaymentController::class, 'update'])->name('payments.update');
+    Route::delete('payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy');
+});

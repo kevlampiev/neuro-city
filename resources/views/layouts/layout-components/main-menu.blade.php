@@ -61,6 +61,9 @@
                         {{-- @if(Gate::allows('s-bank_accounts')) --}}
                             <li><a class="dropdown-item" href="{{route('accounts.index')}}">Банковские счета</a></li>
                         {{-- @endif --}}
+                        @if(Gate::allows('s-payments'))
+                            <li><a class="dropdown-item" href="{{route('payments.index')}}">Платежи</a></li>
+                        @endif
                      
                     </ul>
                 </li>
