@@ -66,6 +66,7 @@
                         <td>{{$item->cfs_name}}</td>
                         <td class="text-end">{{number_format($item->amount, 2, ',', ' ')}}</td>
                         <td class="text-end">{{number_format($item->VAT, 2, ',', ' ')}}</td>
+                        <td>{{$item->description}}</td>
                         <td>
                             @if(Gate::allows('e-payments'))
                                 <a href="{{route('payments.edit', ['payment' => $item->id])}}"> <i class="bi bi-pencil-square"></i> Изменить </a>

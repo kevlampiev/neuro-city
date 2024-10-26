@@ -34,6 +34,7 @@ class PaymentController extends Controller
 
     public function edit(Request $request, Payment $payment)
     {
+        
         if (url()->previous() !== url()->current()) session(['previous_url' => url()->previous()]);
         PaymentDataservice::edit($request, $payment);
         return view('payments.edit',

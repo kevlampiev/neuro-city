@@ -30,10 +30,10 @@ class PaymentRequest extends FormRequest
             'date_open' => 'date|nullable',
             'bank_account_id' => 'required|exists:bank_accounts,id',
             'agreement_id' => 'required|exists:agreements,id',
-            'amount' => 'required|number',
-            'VAT' => 'required|number',
+            'amount' => 'required|numeric',
+            'VAT' => 'required|numeric',
             'description' => 'required|string|min:5',
-            'project_id' => 'required|exists:projects,id',
+            'project_id' => 'nullable|exists:projects,id',
             'cfs_item_id' => 'required|exists:cfs_items,id',
         ];
     }

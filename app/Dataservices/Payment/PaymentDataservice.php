@@ -56,8 +56,7 @@ class PaymentDataservice
      */
     public static function providePaymentEditor(Payment $payment): array
     {
-
-        return [
+            return [
             'model' => $payment,
             'accounts' => BankAccount::orderBy('account_number')->get(),
             'agreements' => Agreement::orderBy('agr_number')->get(),
@@ -79,12 +78,10 @@ class PaymentDataservice
     }
 
 
-// Я ТУТ!!!!!!!!!!!!!!!!!!!!
-
     public static function saveChanges(PaymentRequest $request, Payment $payment)
     {
         $payment->fill($request->all());
-        if (!$payment->created_by) $payment->created_by = Auth::user()->id;
+        // if (!$payment->created_by) $payment->created_by = Auth::user()->id;
         if ($payment->id) $payment->updated_at = now();
         else $payment->created_at = now();
         $payment->save();
