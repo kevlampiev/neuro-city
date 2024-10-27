@@ -27,7 +27,7 @@ class PaymentController extends Controller
     public function store(PaymentRequest $request): RedirectResponse
     {
         PaymentDataservice::store($request);
-        $route = session('previous_url', route('payments'));
+        $route = session('previous_url', route('payments.index'));
         return redirect()->to($route);
     }
 
@@ -47,5 +47,12 @@ class PaymentController extends Controller
         $route = session('previous_url');
         return redirect()->to($route);
     }
-   
+ 
+    public function destroy(Payment $payment): RedirectResponse
+    {
+        // if (url()->previous() !== url()->current()) $route = url()->previous();
+        PaymentDataservice::delete($payment);
+        return redirect()->route('payments.index');
+    }
+
 }

@@ -32,6 +32,8 @@ class PaymentDataservice
             ->orWhereRaw('LOWER(bank_name) LIKE ?', [$searchStr])
             ->orWhereRaw('LOWER(description) LIKE ?', [$searchStr])
             ->orWhereRaw('LOWER(agreement_name) LIKE ?', [$searchStr])
+            ->orderByDesc('date_open')
+            ->orderBy('bank_name')
             ->paginate($perPage); // Возвращаем результат с пагинацией
     }
 
@@ -80,7 +82,11 @@ class PaymentDataservice
 
     public static function saveChanges(PaymentRequest $request, Payment $payment)
     {
-        $payment->fill($request->all());
+        if ($payment->id) 
+            {$payment->fill($request->all());}
+        else 
+            $payment->fill($request->except('id'));
+
         // if (!$payment->created_by) $payment->created_by = Auth::user()->id;
         if ($payment->id) $payment->updated_at = now();
         else $payment->created_at = now();
@@ -109,4 +115,15 @@ class PaymentDataservice
         }
     }
    
+
+    public static function delete(Payment $payment)
+    {
+        
+        try {
+            $payment->delete();
+            session()->flash('message', 'Даннные о проводке удалены');
+        } catch (Error $err) {
+            session()->flash('error', 'Не удалось удалить данные о проводке');
+        }
+    }    
 }

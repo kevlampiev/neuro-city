@@ -144,7 +144,7 @@
     </form>
 @endsection
 
-@section('scripts')
+{{-- @section('scripts')
     <!-- Подключаем Select2 -->
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
     <!-- CSS -->
@@ -164,4 +164,4 @@
             });
         }
     </script>
-@endsection
+@endsection --}}

@@ -55,7 +55,8 @@ return new class extends Migration
         INNER JOIN bank_accounts ba ON p.bank_account_id = ba.id
         INNER JOIN companies b ON ba.bank_id = b.id
         INNER JOIN cfs_items cfs ON p.cfs_item_id=cfs.id
-        LEFT JOIN projects pr ON pr.id = p.project_id;
+        LEFT JOIN projects pr ON pr.id = p.project_id
+        WHERE p.deleted_at is null;
     ");
     }
 
