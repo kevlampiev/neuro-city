@@ -86,7 +86,15 @@
                     </select>
                 </div>
 
-                @include('partials.error', ['field' => 'cfs_item_id'])
+                <div class="form-group">
+                    <label for="beneficiary_id">В пользу кого осуществелне платеж (если плательщик не явлется стороной по договору)</label>
+                    <select name="beneficiary_id" class="form-control" id="beneficiary_id" v-model="form.beneficiary_id">
+                        <option v-for="item in beneficiaries" :value="item.id">@{{ item.name }}</option>
+                    </select>
+                </div>
+
+
+                @include('partials.error', ['field' => 'beneficiary_id'])
 
                 <div class="form-group">
                     <label for="description">Описание</label>
@@ -129,6 +137,7 @@
                             description: '{{ $model->description }}',
                             project_id: '{{ $model->project_id }}',
                             cfs_item_id: '{{ $model->cfs_item_id }}',
+                            beneficiary_id: '{{ $model->beneficiary_id }}',
                         },
                         accounts: {!! json_encode($accounts->map(fn($a) => [
                             'id' => $a->id,
@@ -146,6 +155,7 @@
                         ])) !!},
                         projects: {!! json_encode($projects) !!},
                         cfsItems: {!! json_encode($cfsItems) !!},
+                        beneficiaries: {!! json_encode($beneficiaries) !!}
                     };
                 },
                 mounted() {

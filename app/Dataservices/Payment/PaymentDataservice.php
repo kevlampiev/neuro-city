@@ -9,6 +9,7 @@ use App\Models\Payment;
 use App\Models\Project;
 use App\Models\BankAccount;
 use App\Models\CFSItem;
+use App\Models\Company;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -64,6 +65,7 @@ class PaymentDataservice
             'agreements' => Agreement::orderBy('agr_number')->get(),
             'projects' => Project::query()->orderBy('name')->get(),
             'cfsItems' => CFSItem::orderBy('name')->get(),
+            'beneficiaries' => Company::orderBy('name')->get(),
         ];
     }
 
