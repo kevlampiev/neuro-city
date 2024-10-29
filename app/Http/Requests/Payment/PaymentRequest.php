@@ -38,6 +38,22 @@ class PaymentRequest extends FormRequest
         ];
     }
 
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $amount = $this->input('amount');
+            $vat = $this->input('VAT');
+    
+            if (($amount < 0 && $vat > 0) || ($amount > 0 && $vat < 0)) {
+                $validator->errors()->add('VAT', 'Сумма и НДС должны быль одинаковы по знаку');
+            }
+            if (abs($amount/6) < abs($vat) ) {
+                $validator->errors()->add('VAT', 'НДС не может быть более 20% суммы платежа');
+            }
+        });
+    }
+
     public function attributes(): array
     {
         return [
