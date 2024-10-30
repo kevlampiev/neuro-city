@@ -9,8 +9,8 @@ use Illuminate\Support\Carbon;
 
 class ImportAdeskTransactions extends Command
 {
-    protected $signature = 'adesk:import-transactions 
-    {--startDate=2020-01-01 : Дата начала импорта в формате YYYY-MM-DD} 
+    protected $signature = 'adesk:transactions 
+    {--startDate= : Дата начала импорта в формате YYYY-MM-DD} 
     {--endDate= : Дата окончания импорта в формате YYYY-MM-DD (по умолчанию - текущая дата)}';
 
     protected $description = 'Import transactions from Adesk API and store in import_adesk_operations table';
@@ -18,10 +18,12 @@ class ImportAdeskTransactions extends Command
     public function handle()
     {
 
-        $startDate = Carbon::parse($this->option('startDate'))->format('Y-m-d');
+        $startDate = $this->option('startDate') 
+            ? Carbon::parse($this->option('startDate'))->format('Y-m-d') 
+            : Carbon::now()->addDay(-1)->format('Y-m-d');
         $endDate = $this->option('endDate') 
             ? Carbon::parse($this->option('endDate'))->format('Y-m-d') 
-            : Carbon::now()->format('Y-m-d');
+            : Carbon::now()->addDay(-1)->format('Y-m-d');
 
         // Очистка таблицы перед вставкой новых данных
         DB::table('import_adesk_operations')->truncate();
@@ -29,7 +31,7 @@ class ImportAdeskTransactions extends Command
         // Выполнение HTTP-запроса к API
         $response = Http::get('https://api.adesk.ru/v1/transactions', [
             'status' => 'completed',
-            'api_token' => '67d049bf56eb40acae603e6707021664bd374f3b01094cfb91cae1991a7e2939',
+            'api_token' => env('ADESK_TOKEN'),
             'range' => 'custom',
             'range_start' => $startDate,
             'range_end' => $endDate,
@@ -63,7 +65,7 @@ class ImportAdeskTransactions extends Command
             ]);
         }
 
-        $this->info('Транзакции успешно импортированы в таблицу import_adesk_operations.');
+        $this->info('Транзакции за период с '.$startDate.' по '.$endDate.'успешно импортированы в таблицу import_adesk_operations.');
         return Command::SUCCESS;
     }
 }

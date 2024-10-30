@@ -135,6 +135,13 @@
                     @endif
             </div>
 
+            <div class="form-group">
+                <label for="inputAdeskId">Код в Adesk</label>
+                <input type="text" class="form-control {{$errors->has('adesk_id')?'is-invalid':''}}" id="inputAdeskId"
+                        placeholder="00000000" name="adesk_id"
+                        value="{{$model->adesk_id}}">
+            </div>
+
             <div class="row mt-3">
                 <div class="col-md-12">
                     <button type="submit" class="btn btn-primary">
