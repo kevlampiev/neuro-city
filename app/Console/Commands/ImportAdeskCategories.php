@@ -32,7 +32,7 @@ class ImportAdeskCategories extends Command
 
         // Выполнение запроса к API для получения категорий
         $response = Http::get('https://api.adesk.ru/v1/transactions/categories', [
-            'api_token' => '67d049bf56eb40acae603e6707021664bd374f3b01094cfb91cae1991a7e2939',
+            'api_token' => env('ADESK_TOKEN'),
         ]);
 
         if ($response->failed() || !$response->json('success')) {
