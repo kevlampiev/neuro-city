@@ -67,6 +67,7 @@
                 @endforelse
                 </tbody>
             </table>
+            {!! $items->appends(request()->input())->links() !!}
         </div>
     </div>
 @endsection

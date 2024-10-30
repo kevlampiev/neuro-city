@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\PasswordExpired;
 use App\Http\Controllers\Payment\BankAccountController;
+use App\Http\Controllers\Payment\ImportADeskOperationController;
 use App\Http\Controllers\Payment\PaymentController;
 
 
@@ -31,4 +32,8 @@ Route::middleware(['auth:web',PasswordExpired::class,'permission:e-payments'])->
     Route::get('payments/{payment}/edit', [PaymentController::class, 'edit'])->name('payments.edit');
     Route::put('payments/{payment}', [PaymentController::class, 'update'])->name('payments.update');
     Route::delete('payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy');
+});
+
+Route::middleware(['auth:web',PasswordExpired::class,'permission:e-payments'])->group(function () {
+    Route::get('payments/import/adesk', [ImportADeskOperationController::class, 'index'])->name('import.adesk.payments.index');
 });
