@@ -54,6 +54,8 @@ class ImportAdeskTransactions extends Command
                 'amount' => (float) $transaction['amount'],
                 'date_open' => \Carbon\Carbon::createFromFormat('d.m.Y', $transaction['date'])->format('Y-m-d'),
                 'adesk_bank_account_id' => (int) $transaction['bankAccount']['id'],
+                'adesk_project_id' => isset($transaction['project']['id']) ? (int) $transaction['project']['id'] : null,
+                'adesk_project_name' => $transaction['project']['name'] ?? null,
                 'adesk_bank_name' => $transaction['bankAccount']['bankName'],
                 'adesk_company_id' => (int) $transaction['bankAccount']['legalEntity']['id'],
                 'adesk_company_name' => $transaction['bankAccount']['legalEntity']['name'],
@@ -64,6 +66,8 @@ class ImportAdeskTransactions extends Command
                 'adesk_contractor_name' => $transaction['contractor']['name'] ?? null,
             ]);
         }
+
+        DB::statement('CALL fill_import_adesk_operations_fields()');
 
         $this->info('Транзакции за период с '.$startDate.' по '.$endDate.'успешно импортированы в таблицу import_adesk_operations.');
         return Command::SUCCESS;

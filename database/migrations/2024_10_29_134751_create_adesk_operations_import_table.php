@@ -16,15 +16,17 @@ return new class extends Migration
             $table->integer('adesk_type_operation_code');
             $table->float('amount');
             $table->date('date_open');
-            $table->bigInteger('adesk_bank_account_id')->nullable();
+            $table->string('adesk_bank_account_id')->nullable();
             $table->string('adesk_bank_name')->nullable();
-            $table->bigInteger('adesk_company_id')->nullable();
+            $table->string('adesk_company_id')->nullable();
             $table->string('adesk_company_name')->nullable();
             $table->string('description')->nullable();
-            $table->unsignedBigInteger('adesk_cfs_category_id')->nullable();
+            $table->string('adesk_cfs_category_id')->nullable();
             $table->string('adesk_cfs_category_name')->nullable();
-            $table->unsignedBigInteger('adesk_contractor_id')->nullable();
+            $table->string('adesk_contractor_id')->nullable();
             $table->string('adesk_contractor_name')->nullable();
+            $table->string('adesk_project_id')->nullable();
+            $table->string('adesk_project_name')->nullable();
 
             $table->unsignedBigInteger('bank_account_id')->nullable();
             $table->unsignedBigInteger('agreement_id')->nullable();
