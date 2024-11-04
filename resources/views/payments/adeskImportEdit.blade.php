@@ -103,8 +103,11 @@
                         <span class="text-secondary fst-italic">( данные ADеsk: {{ $model->adesk_cfs_category_name ?? '--' }} )</span> 
                     </label>
                     <select name="cfs_item_id" class="form-control" id="cfs_item_id">
+                        <option value="" {{ $model->cfs_item_id == null ? 'selected' : '' }}>*СТАТЬЯ НЕ ОПРЕДЕЛЕНА*</option>
                         @foreach ($cfsItems as $item)
-                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            <option value="{{ $item->id }}" {{ $model->cfs_item_id == $item->id ? 'selected' : '' }}>
+                                {{ $item->name }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
@@ -112,6 +115,7 @@
                 <div class="form-group">
                     <label for="beneficiary_id">В пользу кого осуществелне платеж (если плательщик не является стороной по договору)</label>
                     <select name="beneficiary_id" class="form-control" id="beneficiary_id">
+
                         @foreach ($beneficiaries as $beneficiary)
                             <option value="{{ $beneficiary->id }}">{{ $beneficiary->name }}</option>
                         @endforeach
@@ -124,6 +128,7 @@
                     <label for="description">Описание</label>
                     <textarea id="description" class="form-control" placeholder="Введите описание" name="description">{{ $model->description }}</textarea>
                 </div>
+
 
                 @include('partials.error', ['field' => 'description'])
 

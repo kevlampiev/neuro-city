@@ -45,6 +45,7 @@ class ImportADeskOperationController extends Controller
 
     public function update(ImportAdeskOperatinRequest $request, $payment): RedirectResponse
     {
+        // dd($request->all());
         $payment = ImportADeskOperation::where('adesk_id', $payment)->first();
         ImportADeskOperationDataservice::update($request, $payment);
         $route = session('previous_url');

@@ -33,7 +33,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <table class="table table-stripped">
+            <table class="table table-striped">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -55,17 +55,37 @@
                         <th scope="row">{{$item->adesk_id}}</th>
                         <td> {{\Carbon\Carbon::parse($item->date_open)->format('d.m.Y')}}</td>
                         <td class="{{(!$item->bank_account_id)?'text-danger':''}}">
-                            {{$item->adesk_bank_name}}
+                            <p>
+                               р/c {{($item->bankAccount->account_number)??''}} в {{($item->bankAccount->bank->name)??''}}
+                            </p> 
+                            <p class="text-secondary fst-italic">
+                             {{$item->adesk_bank_name}}
+                            </p>
                         </td>
-                        <td> {{$item->adesk_company_name}}</td>
-                        <td>{{$item->adesk_contractor_name}}</td>
+                        <td> 
+                            {{($item->bankAccount->owner->name)??''}}
+                            <p class="text-secondary fst-italic">
+                             {{$item->adesk_company_name}}
+                            </p>
+                        </td>
+                        <td>
+                            <p class="text-secondary fst-italic">
+                                 {{$item->adesk_contractor_name}}
+                            </p>
+                            
+                        </td>
+                       
+                       
                         <td class="{{(!$item->project_id)?'text-warning':''}}">
-                            {{$item->adesk_project_name??'не определен'}}
+                            <p> {{$item->project->name??'не определен'}} </p>
+                            <p class="text-secondary fst-italic">
+                                    {{$item->adesk_project_name??"не определен"}}
+                            </p>
                         </td>
                         <td> {{$item->description}} </td>
                         <td class="{{(!$item->cfs_item_id)?'text-danger':''}}">{{$item->adesk_cfs_category_name}}</td>
 
-                        <td class="text-end">{{number_format($item->amount, 2, ',', ' ')}}</td>
+                        <td class="text-end">{{number_format($item->amount, 2, '.', ',')}}</td>
                         
                         <td>
                             @if(Gate::allows('e-payments'))

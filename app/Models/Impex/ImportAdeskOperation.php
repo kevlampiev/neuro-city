@@ -2,8 +2,11 @@
 
 namespace App\Models\Impex;
 
+use App\Models\BankAccount;
+use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ImportAdeskOperation extends Model
 {
@@ -23,4 +26,15 @@ class ImportAdeskOperation extends Model
                !is_null($this->agreement_id) && 
                !is_null($this->cfs_item_id);
     }
+
+    public function bankAccount():BelongsTo
+    {
+        return $this->belongsTo(BankAccount::class);
+    }
+    
+    public function project():BelongsTo
+    {
+        return $this->belongsTo(Project::class);
+    }
+    
 }
