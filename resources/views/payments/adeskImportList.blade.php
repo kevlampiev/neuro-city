@@ -51,8 +51,8 @@
                 </thead>
                 <tbody>
                 @forelse($adeskPayments as $index => $item)
-                    <tr class="{{(!$item->bank_account_id||!$item->agreenent_id||!$item->cfs_item_id)?'table-danger':''}}">
-                        <th scope="row">{{$index+1}}</th>
+                    <tr class="{{(!$item->ready_to_load)?'table-danger':''}}">
+                        <th scope="row">{{$item->adesk_id}}</th>
                         <td> {{\Carbon\Carbon::parse($item->date_open)->format('d.m.Y')}}</td>
                         <td class="{{(!$item->bank_account_id)?'text-danger':''}}">
                             {{$item->adesk_bank_name}}
@@ -69,7 +69,7 @@
                         
                         <td>
                             @if(Gate::allows('e-payments'))
-                                <a href="#"> <i class="bi bi-pencil-square"></i> Изменить </a>
+                                <a href="{{route('import.adesk.payments.edit', ['adesk_id' => $item->adesk_id])}}"> <i class="bi bi-pencil-square"></i> Изменить </a>
                             @endif    
                         </td>
                         

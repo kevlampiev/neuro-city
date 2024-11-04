@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Payment;
 
 use App\Dataservices\Payment\ImportADeskOperationDataservice;
-use App\Dataservices\Payment\PaymentDataservice;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Payment\ImportAdeskOperatinRequest;
 use App\Http\Requests\Payment\PaymentRequest;
+use App\Models\Impex\ImportAdeskOperation;
 use App\Models\Payment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,34 +18,35 @@ class ImportADeskOperationController extends Controller
         return view('payments.adeskImportList', ImportADeskOperationDataservice::index($request));
     }
 
-    public function create(Request $request)
+    // public function create(Request $request)
+    // {
+    //     if (url()->previous() !== url()->current()) session(['previous_url' => url()->previous()]);
+    //     $payment = ImportADeskOperation::create($request);
+    //     return view('payments.adeskImportEdit.blade',
+    //         ImportADeskOperationDataservice::providePaymentEditor($payment));
+    // }
+
+    // public function store(PaymentRequest $request): RedirectResponse
+    // {
+    //     ImportADeskOperationDataservice::store($request);
+    //     $route = session('previous_url', route('payments.index'));
+    //     return redirect()->to($route);
+    // }
+
+
+    public function edit(Request $request,  $payment)
     {
+        $payment = ImportADeskOperation::where('adesk_id', $payment)->first();
         if (url()->previous() !== url()->current()) session(['previous_url' => url()->previous()]);
-        $payment = PaymentDataservice::create($request);
-        return view('payments.edit',
-            PaymentDataservice::providePaymentEditor($payment));
+            ImportADeskOperationDataservice::edit($request, $payment);
+        return view('payments.adeskImportEdit',
+            ImportADeskOperationDataservice::providePaymentEditor($payment));
     }
 
-    public function store(PaymentRequest $request): RedirectResponse
+    public function update(ImportAdeskOperatinRequest $request, $payment): RedirectResponse
     {
-        PaymentDataservice::store($request);
-        $route = session('previous_url', route('payments.index'));
-        return redirect()->to($route);
-    }
-
-
-    public function edit(Request $request, Payment $payment)
-    {
-        
-        if (url()->previous() !== url()->current()) session(['previous_url' => url()->previous()]);
-        PaymentDataservice::edit($request, $payment);
-        return view('payments.edit',
-            PaymentDataservice::providePaymentEditor($payment));
-    }
-
-    public function update(PaymentRequest $request, Payment $payment): RedirectResponse
-    {
-        PaymentDataservice::update($request, $payment);
+        $payment = ImportADeskOperation::where('adesk_id', $payment)->first();
+        ImportADeskOperationDataservice::update($request, $payment);
         $route = session('previous_url');
         return redirect()->to($route);
     }
@@ -52,7 +54,7 @@ class ImportADeskOperationController extends Controller
     public function destroy(Payment $payment): RedirectResponse
     {
         // if (url()->previous() !== url()->current()) $route = url()->previous();
-        PaymentDataservice::delete($payment);
+        ImportADeskOperationDataservice::delete($payment);
         return redirect()->route('payments.index');
     }
 

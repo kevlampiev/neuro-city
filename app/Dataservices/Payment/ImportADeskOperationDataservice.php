@@ -13,6 +13,7 @@ use App\Models\Company;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Models\Impex\ImportAdeskOperation;
 use Illuminate\Http\Request;
+use App\Http\Requests\Payment\ImportAdeskOperatinRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PaymentParty;
 use PhpParser\Error;
@@ -59,7 +60,7 @@ class ImportADeskOperationDataservice
     /**
      *снабжение данными форму редактирования платежа
      */
-    public static function providePaymentEditor(Payment $payment): array
+    public static function providePaymentEditor(ImportAdeskOperation $payment): array
     {
             return [
             'model' => $payment,
@@ -71,36 +72,29 @@ class ImportADeskOperationDataservice
         ];
     }
 
-    public static function create(Request $request): Payment
+    // public static function create(Request $request): Payment
+    // {
+    //     $payment = new Payment();
+    //     if (!empty($request->old())) $payment->fill($request->old());
+    //     return $payment;
+    // }
+
+    public static function edit(Request $request, ImportAdeskOperation $payment)
     {
-        $payment = new Payment();
         if (!empty($request->old())) $payment->fill($request->old());
-        return $payment;
     }
 
-    public static function edit(Request $request, Payment $payment)
+
+    public static function saveChanges(ImportAdeskOperatinRequest $request, ImportAdeskOperation $payment)
     {
-        if (!empty($request->old())) $payment->fill($request->old());
-    }
-
-
-    public static function saveChanges(PaymentRequest $request, Payment $payment)
-    {
-        if ($payment->id) 
-            {$payment->fill($request->all());}
-        else 
-            $payment->fill($request->except('id'));
-
-        // if (!$payment->created_by) $payment->created_by = Auth::user()->id;
-        if ($payment->id) $payment->updated_at = now();
-        else $payment->created_at = now();
+        $payment->fill($request->all());
         $payment->save();
     }
 
-    public static function store(PaymentRequest $request)
+    public static function store(ImportAdeskOperatinRequest $request)
     {
         try {
-            $payment = new Payment();
+            $payment = new ImportAdeskOperation();
             self::saveChanges($request, $payment);
             session()->flash('message', 'Добавлен новый платеж');
         } catch (Error $err) {
@@ -109,7 +103,7 @@ class ImportADeskOperationDataservice
 
     }
 
-    public static function update(PaymentRequest $request, Payment $payment)
+    public static function update(ImportAdeskOperatinRequest $request, ImportAdeskOperation $payment)
     {
         try {
             self::saveChanges($request, $payment);

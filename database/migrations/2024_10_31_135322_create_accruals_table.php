@@ -16,7 +16,7 @@ return new class extends Migration
             $table->date('date_open');
             $table->unsignedBigInteger('agreement_id');
             $table->unsignedBigInteger('pl_item_id');
-            $table->unsignedBigInteger('project_id');
+            $table->unsignedBigInteger('project_id')->nullable();
             $table->float('amount');
             $table->string('description')->nullable();
             $table->unsignedBigInteger('created_by');
