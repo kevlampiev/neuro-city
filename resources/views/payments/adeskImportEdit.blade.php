@@ -113,7 +113,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="beneficiary_id">В пользу кого осуществелне платеж (если плательщик не является стороной по договору)</label>
+                    <label for="beneficiary_id">В пользу кого осуществелен платеж (если плательщик не является стороной по договору)</label>
                     <select name="beneficiary_id" class="form-control" id="beneficiary_id">
 
                         @foreach ($beneficiaries as $beneficiary)

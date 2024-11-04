@@ -21,6 +21,14 @@
             <form class="form-inline my-2 my-lg-0" method="GET">
                 <div class="d-flex align-items-center">
                     <div class="input-group me-2">
+                        <span class="input-group-text" id="cfsItem">Временной период с </span>
+                        <input class="form-control" type="date" aria-label="Search"
+                            name="filterDateStart"
+                            value="{{$filterDateStart??''}}">
+                        <span class="input-group-text" id="cfsItem"> по </span>
+                        <input class="form-control" type="date" aria-label="Search"
+                            name="filterDateEnd"
+                            value="{{$filterDateEnd??''}}">    
                         <span class="input-group-text" id="cfsItem">Текст для поиска</span>
                         <input class="form-control" type="search" placeholder="Поиск в договорах" aria-label="Search"
                             name="searchStr"

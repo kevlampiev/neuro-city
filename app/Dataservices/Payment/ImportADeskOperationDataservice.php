@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Payment\ImportAdeskOperatinRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PaymentParty;
+use Carbon\Carbon;
 use PhpParser\Error;
 
 class ImportADeskOperationDataservice
@@ -23,37 +24,51 @@ class ImportADeskOperationDataservice
     /**
      * получение платежей по куче условий
      */
-    public static function getData(string $search_str, int $perPage = 15): LengthAwarePaginator
+    public static function getData(string $searchStr, string $filterDateStart = null, string $filterDateEnd = null, int $perPage = 15): LengthAwarePaginator
     {
-
         // Приведение строки к нижнему регистру и добавление подстановочного знака для поиска
-        $searchStr = '%' . preg_replace('/\s+/', '%', mb_strtolower($search_str)) . '%';
-
-        // Выполнение запроса с условием поиска по нескольким полям и пагинацией
+        $searchStr = '%' . preg_replace('/\s+/', '%', mb_strtolower($searchStr)) . '%';
+    
+        // Установка значений по умолчанию для диапазона дат
+        $dateStart = $filterDateStart ? Carbon::parse($filterDateStart) : Carbon::parse("2020-01-01");
+        $dateEnd = $filterDateEnd ? Carbon::parse($filterDateEnd) : Carbon::parse("2099-12-31");
+    
+        // Проверка на корректность диапазона
+        if ($dateEnd < $dateStart) {
+            $dateEnd = $dateStart;
+        }
+    
+        // Запрос с фильтрацией по нескольким полям и диапазону дат
         return ImportAdeskOperation::query()
-            ->whereRaw('LOWER(adesk_bank_name) LIKE ?', [$searchStr])
-            ->orWhereRaw('LOWER(adesk_company_name) LIKE ?', [$searchStr])
-            ->orWhereRaw('LOWER(description) LIKE ?', [$searchStr])
-            ->orWhereRaw('LOWER(adesk_cfs_category_name) LIKE ?', [$searchStr])
-            ->orWhereRaw('LOWER(adesk_contractor_name) LIKE ?', [$searchStr])
+            ->where(function($query) use ($searchStr) {
+                $query->whereRaw('LOWER(adesk_bank_name) LIKE ?', [$searchStr])
+                    ->orWhereRaw('LOWER(adesk_company_name) LIKE ?', [$searchStr])
+                    ->orWhereRaw('LOWER(description) LIKE ?', [$searchStr])
+                    ->orWhereRaw('LOWER(adesk_cfs_category_name) LIKE ?', [$searchStr])
+                    ->orWhereRaw('LOWER(adesk_contractor_name) LIKE ?', [$searchStr]);
+            })
+            ->whereBetween('date_open', [$dateStart->format('Y-m-d'), $dateEnd->format('Y-m-d')])
             ->orderByDesc('date_open')
             ->orderBy('amount')
-            ->paginate($perPage); // Возвращаем результат с пагинацией
+            ->paginate($perPage); 
     }
-
+    
     /**
-     * получение платежей в зависимости от условий
+     * Получение платежей в зависимости от условий
      */
     public static function index(Request $request): array
     {
-
-        $filter = ($request->get('searchStr')) ?? '';
-
-        $adeskPayments = self::getData($filter);
-
+        $filter = $request->get('searchStr', '');
+        $filterDateStart = $request->get('filterDateStart', '');
+        $filterDateEnd = $request->get('filterDateEnd', '');
+    
+        $adeskPayments = self::getData($filter, $filterDateStart, $filterDateEnd);
+    
         return [
             'adeskPayments' => $adeskPayments,
             'filter' => $filter,
+            'filterDateStart' => $filterDateStart,
+            'filterDateEnd' => $filterDateEnd,
         ];
     }
 

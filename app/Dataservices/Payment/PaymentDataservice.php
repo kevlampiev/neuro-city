@@ -13,6 +13,7 @@ use App\Models\Company;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 use App\Models\PaymentParty;
 use PhpParser\Error;
 
@@ -21,21 +22,34 @@ class PaymentDataservice
     /**
      * получение платежей по куче условий
      */
-    public static function getData(string $search_str, int $perPage = 15): LengthAwarePaginator
+    public static function getData(string $searchStr, string $filterDateStart = null, string $filterDateEnd = null, int $perPage = 15): LengthAwarePaginator
     {
 
         // Приведение строки к нижнему регистру и добавление подстановочного знака для поиска
-        $searchStr = '%' . preg_replace('/\s+/', '%', mb_strtolower($search_str)) . '%';
+        $searchStr = '%' . preg_replace('/\s+/', '%', mb_strtolower($searchStr)) . '%';
+
+        // Установка значений по умолчанию для диапазона дат
+        $dateStart = $filterDateStart ? Carbon::parse($filterDateStart) : Carbon::parse("2020-01-01");
+        $dateEnd = $filterDateEnd ? Carbon::parse($filterDateEnd) : Carbon::parse("2099-12-31");
+    
+        // Проверка на корректность диапазона
+        if ($dateEnd < $dateStart) {
+            $dateEnd = $dateStart;
+        }
 
         // Выполнение запроса с условием поиска по нескольким полям и пагинацией
         return PaymentParty::query()
-            ->whereRaw('LOWER(company_name) LIKE ?', [$searchStr])
-            ->orWhereRaw('LOWER(bank_name) LIKE ?', [$searchStr])
-            ->orWhereRaw('LOWER(description) LIKE ?', [$searchStr])
-            ->orWhereRaw('LOWER(agreement_name) LIKE ?', [$searchStr])
+            ->where(function($query) use ($searchStr) {
+                // Условие на строку поиска
+                $query->whereRaw('LOWER(company_name) LIKE ?', [$searchStr])
+                    ->orWhereRaw('LOWER(bank_name) LIKE ?', [$searchStr])
+                    ->orWhereRaw('LOWER(description) LIKE ?', [$searchStr])
+                    ->orWhereRaw('LOWER(agreement_name) LIKE ?', [$searchStr]);
+            })
+            ->whereBetween('date_open', [$dateStart->format('Y-m-d'), $dateEnd->format('Y-m-d')])
             ->orderByDesc('date_open')
             ->orderBy('bank_name')
-            ->paginate($perPage); // Возвращаем результат с пагинацией
+            ->paginate($perPage);
     }
 
     /**
@@ -44,13 +58,17 @@ class PaymentDataservice
     public static function index(Request $request): array
     {
 
-        $filter = ($request->get('searchStr')) ?? '';
+        $filter = $request->get('searchStr')??'';
+        $filterDateStart = $request->get('filterDateStart')??'';
+        $filterDateEnd = $request->get('filterDateEnd')??'';
 
-        $payments = self::getData($filter);
+        $payments = self::getData($filter, $filterDateStart, $filterDateEnd);
 
         return [
             'payments' => $payments,
             'filter' => $filter,
+            'filterDateStart' => $filterDateStart,
+            'filterDateEnd' => $filterDateEnd,
         ];
     }
 
