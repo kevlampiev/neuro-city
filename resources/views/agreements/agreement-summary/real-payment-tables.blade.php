@@ -3,8 +3,8 @@
     @if(Gate::allows('e-real_payment'))
     <div class="row">
         <div class="col-md-12">
-            <a class="btn btn-outline-info"
-               href="{{route('admin.addRealPayment', ['agreement'=>$agreement])}}">Новый платеж</a>
+            {{-- <a class="btn btn-outline-info"
+               href="{{route('admin.addRealPayment', ['agreement'=>$agreement])}}">Новый платеж</a> --}}
         </div>
     </div>
     @endif
@@ -14,8 +14,9 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Дата</th>
+            <th scope="col">Банк</th>
             <th scope="col">Сумма</th>
-            <th scope="col">Валюта</th>
+            {{-- <th scope="col">Валюта</th> --}}
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>
@@ -24,9 +25,9 @@
         @forelse($realPayments as $payment)
             <tr>
                 <th scope="row">{{$loop->index+1}}</th>
-                <td>{{\Carbon\Carbon::parse($payment->payment_date)->format('d.m.Y')}}</td>
+                <td>{{\Carbon\Carbon::parse($payment->date_open)->format('d.m.Y')}}</td>
                 <td class="text-right">{{number_format($payment->amount, 2, ',', ' ')}}</td>
-                <td class="text-left">{{$payment->currency}}</td>
+                {{-- <td class="text-left">{{$payment->currency}}</td> --}}
                 <td>
                     @if(Gate::allows('e-real_payment'))
                     <a href="{{route('admin.editRealPayment', ['agreement'=>$agreement, 'payment' => $payment])}}">
