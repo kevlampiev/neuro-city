@@ -3,10 +3,10 @@
     @if(Gate::allows('e-payment'))
     <div class="row">
         <div class="col-md-12">
-            <a class="btn btn-outline-info mr-2"
+            {{-- <a class="btn btn-outline-info mr-2"
                href="{{route('admin.addAgrPayment', ['agreement'=>$agreement])}}">Новый платеж</a>
             <a class="btn btn-outline-info mr-2"
-               href="{{route('admin.massAddPayments', ['agreement'=>$agreement])}}">Добавить серию платежей</a>
+               href="{{route('admin.massAddPayments', ['agreement'=>$agreement])}}">Добавить серию платежей</a> --}}
         </div>
     </div>
     @endif
@@ -25,13 +25,13 @@
         </thead>
         <tbody>
         @php
-            $totalPayed = $agreement->realPayments->sum('amount');
+            $totalPayed = $agreement->payments->sum('amount');
         @endphp
         @forelse($payments as $payment)
             <tr>
                 <th scope="row">{{$loop->index+1}}</th>
                 <td>{{\Carbon\Carbon::parse($payment->payment_date)->format('d.m.Y')}}</td>
-                <td class="text-right">{{number_format($payment->amount, 2, ',', ' ')}}</td>
+                <td class="text-right">{{number_format($payment->amount, 2, '.', ',')}}</td>
                 <td class="text-left">{{$payment->currency}}</td>
                 @php
                     $totalPayed = $totalPayed - $payment->amount ;
@@ -51,24 +51,24 @@
 
                 </td>
                 <td>
-                    @if(Gate::allows('e-payment'))
+                    {{-- @if(Gate::allows('e-payment'))
                     <a href="{{route('admin.editAgrPayment', ['agreement'=>$agreement, 'payment' => $payment])}}">
                         &#9998;Изменить </a>
-                    @endif    
+                    @endif     --}}
                 </td>
                 <td>
-                    @if(Gate::allows('e-real_payment'))
+                    {{-- @if(Gate::allows('e-real_payment'))
                     <a href="{{route('admin.movePaymentToReal', ['agreement'=>$agreement, 'payment' => $payment])}}">
                         &euro; В оплату </a>
-                    @endif    
+                    @endif     --}}
                 </td>
 
                 <td>
-                    @if(Gate::allows('e-payment'))
+                    {{-- @if(Gate::allows('e-payment'))
                     <a href="{{route('admin.deleteAgrPayment', ['agreement'=>$agreement, 'payment' => $payment])}}"
                        onclick="return confirm('Действительно удалить данные о платеже?')">
                         &#10008;Удалить </a>
-                    @endif    
+                    @endif     --}}
                 </td>
             </tr>
         @empty
@@ -86,7 +86,7 @@
         </tbody>
     </table>
 
-    @if(Gate::allows('e-payment')&&($payments->count()>0))
+    {{-- @if(Gate::allows('e-payment')&&($payments->count()>0))
         <form action="{{route('admin.massDeletePayments', ['agreement'=>$agreement])}}" method="POST">
             @csrf
             <button type="submit" class="btn btn-outline-danger"
@@ -94,7 +94,7 @@
             >Удалить все платежи
             </button>
         </form>
-    @endif
+    @endif --}}
 
 </div>
 
