@@ -58,7 +58,7 @@ class Agreement extends Model
 
     public function payments():HasMany
     {
-        return $this->hasMany(VPaymentExtended::class,'id','agreement_id');
+        return $this->hasMany(VPaymentExtended::class,'agreement_id', 'id');
     }
 
 

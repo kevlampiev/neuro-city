@@ -9,4 +9,9 @@ class VPaymentExtended extends Model
 {
     protected $table = 'v_payments_extended';
     public $timestamps = false;
+
+    protected $primaryKey = 'id';
+    public $incrementing = false; 
+    protected $keyType = 'int'; 
 }
+
