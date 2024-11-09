@@ -29,7 +29,7 @@ class PaymentDataservice
         $searchStr = '%' . preg_replace('/\s+/', '%', mb_strtolower($searchStr)) . '%';
 
         // Установка значений по умолчанию для диапазона дат
-        $dateStart = $filterDateStart ? Carbon::parse($filterDateStart) : Carbon::parse("2020-01-01");
+        $dateStart = $filterDateStart ? Carbon::parse($filterDateStart) : Carbon::parse("2000-01-01");
         $dateEnd = $filterDateEnd ? Carbon::parse($filterDateEnd) : Carbon::parse("2099-12-31");
     
         // Проверка на корректность диапазона

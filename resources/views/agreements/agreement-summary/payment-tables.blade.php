@@ -1,5 +1,5 @@
-<div class="col-md-6 p-4">
-    <h4>Платежи в соответствии с договором</h4>
+<div class="col-md-12 p-4">
+    <h4>Фактические платежи по договору</h4>
     @if(Gate::allows('e-payment'))
     <div class="row">
         <div class="col-md-12">
@@ -30,26 +30,12 @@
         @forelse($payments as $payment)
             <tr>
                 <th scope="row">{{$loop->index+1}}</th>
-                <td>{{\Carbon\Carbon::parse($payment->payment_date)->format('d.m.Y')}}</td>
-                <td class="text-right">{{number_format($payment->amount, 2, '.', ',')}}</td>
-                <td class="text-left">{{$payment->currency}}</td>
-                @php
-                    $totalPayed = $totalPayed - $payment->amount ;
-                @endphp
-                <td class="text-left">
-                    @if($payment->payment_date>now())
-                        Срочный
-                    @elseif($totalPayed<0)
-                        @if(abs($totalPayed)>=$payment->amount)
-                            <span class="text-danger">Просрочен</span>
-                        @else
-                            <span class="text-danger">Погашен частично</span>
-                        @endif
-                    @else
-                        <span class="text-secondary">Погашен</span>
-                    @endif
+                <td>{{\Carbon\Carbon::parse($payment->date_open)->format('d.m.Y')}}</td>
+                <td class="text-right">{{number_format($payment->amount, 2, '.', ',')}} (в т.ч. НДС {{number_format($payment->VAT, 2, '.', ',')}})</td>
+                <td class="text-left">{{$payment->account_name}}</td>
+                <td class="text-left">{{$payment->description}}</td>
 
-                </td>
+               
                 <td>
                     {{-- @if(Gate::allows('e-payment'))
                     <a href="{{route('admin.editAgrPayment', ['agreement'=>$agreement, 'payment' => $payment])}}">
