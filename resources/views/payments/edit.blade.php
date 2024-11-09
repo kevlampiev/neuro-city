@@ -31,25 +31,43 @@
 
                 @include('partials.error', ['field' => 'date_open'])
 
+
+                {{-- БАНКОВСКИЙ СЧЕТ --}}
                 <div class="form-group">
                     <label for="bank">Банковский счет</label>
-                    <select name="bank_account_id" class="form-control" id="bank" v-model="form.bank_account_id">
-                        <option v-for="account in accounts" :value="account.id">
-                            Владелец: @{{ account.owner_name }} [Банк: @{{ account.bank_name }}, Р.сч: @{{ account.account_number }}]
-                        </option>
-                    </select>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" placeholder="Поиск банковского счета" v-model="bankSearch">
+                        </div>    
+                        <div class="col-md-10">
+                            <select name="bank_account_id" class="form-control" id="bank" v-model="form.bank_account_id">
+                                <option v-for="account in filteredAccounts" :value="account.id">
+                                    Владелец: @{{ account.owner_name }} [Банк: @{{ account.bank_name }}, Р.сч: @{{ account.account_number }}]
+                                </option>
+                            </select>
+                        </div>    
+                    </div>
                 </div>
 
                 @include('partials.error', ['field' => 'bank_account_id'])
 
+
+                {{-- ДОГОВОР --}}
                 <div class="form-group">
                     <label for="agreement">Номер договора</label>
-                    <select name="agreement_id" class="form-control" id="agreement" v-model="form.agreement_id">
-                        <option v-for="agreement in agreements" :value="agreement.id">
-                            @{{ agreement.name }} № @{{ agreement.agr_number }} от @{{ agreement.date_open }}
-                            между @{{ agreement.buyer_name }} и @{{ agreement.seller_name }}
-                        </option>
-                    </select>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" placeholder="Поиск договора" v-model="agreementSearch">
+                        </div>    
+                        <div class="col-md-10">
+                            <select name="agreement_id" class="form-control" id="agreement" v-model="form.agreement_id">
+                                <option v-for="agreement in filteredAgreements" :value="agreement.id">
+                                    @{{ agreement.name }} № @{{ agreement.agr_number }} от @{{ agreement.date_open }}
+                                    между @{{ agreement.buyer_name }} и @{{ agreement.seller_name }}
+                                </option>
+                            </select>
+                        </div>
+                    <div>        
                 </div>
 
                 @include('partials.error', ['field' => 'agreement_id'])
@@ -69,30 +87,57 @@
                 </div>
                 @include('partials.error', ['field' => 'VAT'])
 
+
+
+                {{-- ПРОЕКТ --}}
                 <div class="form-group">
                     <label for="project_id">Проект</label>
-                    <select name="project_id" class="form-control" id="project_id" v-model="form.project_id">
-                        <option :value="null">*БЕЗ ПРОЕКТА*</option>
-                        <option v-for="project in projects" :value="project.id">@{{ project.name }}</option>
-                    </select>
+                    <div class="row">
+                        <div class = "col-md-2">
+                            <input type="text" class="form-control" placeholder="Поиск проекта" v-model="projectSearch">
+                        </div>
+                        <div class = "col-md-10">    
+                            <select name="project_id" class="form-control" id="project_id" v-model="form.project_id">
+                                <option :value="null">*БЕЗ ПРОЕКТА*</option>
+                                <option v-for="project in filteredProjects" :value="project.id">@{{ project.name }}</option>
+                            </select>
+                        </div>
+                    <div>        
                 </div>
 
                 @include('partials.error', ['field' => 'project_id'])
 
+
+                {{-- СТАТЬЯ ОДДС --}}
                 <div class="form-group">
                     <label for="cfs_item_id">Статья ОДДС</label>
-                    <select name="cfs_item_id" class="form-control" id="cfs_item_id" v-model="form.cfs_item_id">
-                        <option v-for="item in cfsItems" :value="item.id">@{{ item.name }}</option>
-                    </select>
+                    <div class="row">
+                        <div class = "col-md-2">
+                            <input type="text" class="form-control" placeholder="Поиск статьи ОДДС" v-model="cfsItemSearch">
+                        </div>
+                        <div class = "col-md-10">    
+                            <select name="cfs_item_id" class="form-control" id="cfs_item_id" v-model="form.cfs_item_id">
+                                <option v-for="item in filteredCfsItems" :value="item.id">@{{ item.name }}</option>
+                            </select>
+                        </div>
+                    </div>        
                 </div>
+                @include('partials.error', ['field' => 'cfs_item_id'])
 
+                {{-- БЕНЕФИЦИАР --}}
                 <div class="form-group">
-                    <label for="beneficiary_id">В пользу кого осуществелне платеж (если плательщик не явлется стороной по договору)</label>
-                    <select name="beneficiary_id" class="form-control" id="beneficiary_id" v-model="form.beneficiary_id">
-                        <option v-for="item in beneficiaries" :value="item.id">@{{ item.name }}</option>
-                    </select>
+                    <label for="beneficiary_id">В пользу кого осуществелне платеж (если плательщик не является стороной по договору)</label>
+                    <div class="row">
+                        <div class = "col-md-2">
+                            <input type="text" class="form-control" placeholder="Поиск бенефициара" v-model="beneficiarySearch">
+                        </div>
+                        <div class = "col-md-10">    
+                            <select name="beneficiary_id" class="form-control" id="beneficiary_id" v-model="form.beneficiary_id">
+                                <option v-for="item in filteredBeneficiaries" :value="item.id">@{{ item.name }}</option>
+                            </select>
+                        </div>
+                    </div>        
                 </div>
-
 
                 @include('partials.error', ['field' => 'beneficiary_id'])
 
@@ -129,15 +174,15 @@
                 data() {
                     return {
                         form: {
-                            date_open: '{{ $model->date_open }}',
-                            bank_account_id: '{{ $model->bank_account_id }}',
-                            agreement_id: '{{ $model->agreement_id }}',
-                            amount: '{{ $model->amount }}',
-                            VAT: '{{ $model->VAT }}',
-                            description: '{{ $model->description }}',
-                            project_id: '{{ $model->project_id }}',
-                            cfs_item_id: '{{ $model->cfs_item_id }}',
-                            beneficiary_id: '{{ $model->beneficiary_id }}',
+                            date_open: @json($model->date_open),
+                            bank_account_id: @json($model->bank_account_id),
+                            agreement_id: @json($model->agreement_id),
+                            amount: @json($model->amount),
+                            VAT: @json($model->VAT),
+                            description: @json($model->description),
+                            project_id: @json($model->project_id),
+                            cfs_item_id: @json($model->cfs_item_id),
+                            beneficiary_id: @json($model->beneficiary_id),
                         },
                         accounts: {!! json_encode($accounts->map(fn($a) => [
                             'id' => $a->id,
@@ -155,42 +200,71 @@
                         ])) !!},
                         projects: {!! json_encode($projects) !!},
                         cfsItems: {!! json_encode($cfsItems) !!},
-                        beneficiaries: {!! json_encode($beneficiaries) !!}
+                        beneficiaries: {!! json_encode($beneficiaries) !!},
+                        
+                        bankSearch: '',
+                        agreementSearch: '',
+                        projectSearch: '',
+                        cfsItemSearch: '',
+                        beneficiarySearch: ''
                     };
+                },
+                computed: {
+                    filteredAccounts() {
+                        return this.accounts.filter(account =>
+                            (account.owner_name + account.bank_name + account.account_number)
+                                .toLowerCase()
+                                .includes(this.bankSearch.toLowerCase())
+                        );
+                    },
+                    filteredAgreements() {
+                        return this.agreements.filter(agreement =>
+                            (agreement.name + agreement.agr_number + agreement.date_open + 
+                            agreement.buyer_name + agreement.seller_name)
+                                .toLowerCase()
+                                .includes(this.agreementSearch.toLowerCase())
+                        );
+                    },
+                    filteredProjects() {
+                        return this.projects.filter(project =>
+                            project.name.toLowerCase().includes(this.projectSearch.toLowerCase())
+                        );
+                    },
+                    filteredCfsItems() {
+                        return this.cfsItems.filter(item =>
+                            item.name.toLowerCase().includes(this.cfsItemSearch.toLowerCase())
+                        );
+                    },
+                    filteredBeneficiaries() {
+                        return this.beneficiaries.filter(item =>
+                            item.name.toLowerCase().includes(this.beneficiarySearch.toLowerCase())
+                        );
+                    },
                 },
                 mounted() {
                     this.formatNumber('amount');
                     this.formatNumber('VAT');
-                    console.log(this.$refs.paymentForm); // Для проверки, что форма найдена
                 },
                 methods: {
                     formatNumber(field) {
-                        if (this.form[field] !== null && this.form[field] !== '') {
+                        /*if (this.form[field] !== null && this.form[field] !== '') {
                             let rawValue = this.form[field].toString().replace(/\s/g, '').replace(/,/g, '.');
-                            let value = parseFloat(rawValue);
-                            if (!isNaN(value)) {
-                                this.form[field] = value.toLocaleString('ru-RU', {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                    useGrouping: true
-                                }).replace(/\./g, ',');
-                            }
-                        }
+                            let value = parseFloat(rawValue).toLocaleString('ru-RU', {
+                                minimumFractionDigits: 2, maximumFractionDigits: 2
+                            });
+                            this.form[field] = value;
+                        }*/
                     },
                     removeFormatting(field) {
-                        this.form[field] = this.form[field].replace(/\s/g, '').replace(/,/g, '.');
-                    },
-                    beforeSubmit() {
-                        this.removeFormatting('amount');
-                        this.removeFormatting('VAT');
+                        if (this.form[field]) {
+                            this.form[field] = this.form[field].replace(/\s/g, '').replace(',', '.');
+                        }
                     },
                     onSubmit() {
-                        this.beforeSubmit(); // Очищаем форматирование перед отправкой
-                        
+                        this.$refs.paymentForm.submit();
                     }
                 }
-            }).mount('#payment-form');
+            }).mount("#payment-form")
         });
-    </script>
-    
-    @endsection
+</script>
+@endsection
