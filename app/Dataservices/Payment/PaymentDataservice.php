@@ -87,9 +87,10 @@ class PaymentDataservice
         ];
     }
 
-    public static function create(Request $request): Payment
+    public static function create(Request $request, Agreement $agreement): Payment
     {
         $payment = new Payment();
+        if ($agreement) $payment->agreement_id = $agreement->id;
         if (!empty($request->old())) $payment->fill($request->old());
         return $payment;
     }

@@ -27,7 +27,7 @@ Route::middleware(['auth:web',PasswordExpired::class,'permission:s-payments'])->
 });
 
 Route::middleware(['auth:web',PasswordExpired::class,'permission:e-payments'])->group(function () {
-    Route::get('payments/create', [PaymentController::class, 'create'])->name('payments.create');
+    Route::get('payments/create/{agreement?}', [PaymentController::class, 'create'])->name('payments.create');
     Route::post('payments', [PaymentController::class, 'store'])->name('payments.store');
     Route::get('payments/{payment}/edit', [PaymentController::class, 'edit'])->name('payments.edit');
     Route::put('payments/{payment}', [PaymentController::class, 'update'])->name('payments.update');

@@ -1,11 +1,11 @@
 <div class="col-md-12 p-4">
     <h4>Фактические платежи по договору</h4>
-    @if(Gate::allows('e-payment'))
+    @if(Gate::allows('e-payments'))
     <div class="row">
         <div class="col-md-12">
-            {{-- <a class="btn btn-outline-info mr-2"
-               href="{{route('admin.addAgrPayment', ['agreement'=>$agreement])}}">Новый платеж</a>
             <a class="btn btn-outline-info mr-2"
+               href="{{route('payments.create', ['agreement'=>$agreement])}}">Новый платеж</a>
+            {{-- <a class="btn btn-outline-info mr-2"
                href="{{route('admin.massAddPayments', ['agreement'=>$agreement])}}">Добавить серию платежей</a> --}}
         </div>
     </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Payment;
 use App\Dataservices\Payment\PaymentDataservice;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Payment\PaymentRequest;
+use App\Models\Agreement;
 use App\Models\Payment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,10 +17,10 @@ class PaymentController extends Controller
         return view('payments.index', PaymentDataservice::index($request));
     }
 
-    public function create(Request $request)
+    public function create(Request $request, Agreement $agreement)
     {
         if (url()->previous() !== url()->current()) session(['previous_url' => url()->previous()]);
-        $payment = PaymentDataservice::create($request);
+        $payment = PaymentDataservice::create($request, $agreement);
         return view('payments.edit',
             PaymentDataservice::providePaymentEditor($payment));
     }
