@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use App\Models\PaymentParty;
+use App\Models\VPaymentExtended;
 use PhpParser\Error;
 
 class PaymentDataservice
@@ -38,17 +39,18 @@ class PaymentDataservice
         }
 
         // Выполнение запроса с условием поиска по нескольким полям и пагинацией
-        return PaymentParty::query()
+        return VPaymentExtended::query()
             ->where(function($query) use ($searchStr) {
                 // Условие на строку поиска
-                $query->whereRaw('LOWER(company_name) LIKE ?', [$searchStr])
-                    ->orWhereRaw('LOWER(bank_name) LIKE ?', [$searchStr])
+                $query->whereRaw('LOWER(account_name) LIKE ?', [$searchStr])
                     ->orWhereRaw('LOWER(description) LIKE ?', [$searchStr])
-                    ->orWhereRaw('LOWER(agreement_name) LIKE ?', [$searchStr]);
+                    ->orWhereRaw('LOWER(agreement_name) LIKE ?', [$searchStr])
+                    ->orWhereRaw('LOWER(seller_name) LIKE ?', [$searchStr])
+                    ->orWhereRaw('LOWER(buyer_name) LIKE ?', [$searchStr]);
             })
             ->whereBetween('date_open', [$dateStart->format('Y-m-d'), $dateEnd->format('Y-m-d')])
             ->orderByDesc('date_open')
-            ->orderBy('bank_name')
+            ->orderBy('account_name')
             ->paginate($perPage);
     }
 

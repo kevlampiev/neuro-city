@@ -17,8 +17,8 @@
             <th scope="col">#</th>
             <th scope="col">Дата</th>
             <th scope="col">Сумма</th>
-            <th scope="col">Валюта</th>
-            <th scope="col">Состояние</th>
+            <th scope="col">Банковсий счет</th>
+            <th scope="col">Основание</th>
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>

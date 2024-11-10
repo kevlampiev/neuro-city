@@ -37,7 +37,10 @@
                     <label for="bank">Банковский счет</label>
                     <div class="row">
                         <div class="col-md-2">
-                            <input type="text" class="form-control" placeholder="Поиск банковского счета" v-model="bankSearch">
+                            <input type="text" class="form-control" 
+                            placeholder="Поиск банковского счета" 
+                            @keydown.enter.prevent="$nextTick(() => $refs.bank.focus())"
+                            v-model="bankSearch">
                         </div>    
                         <div class="col-md-10">
                             <select name="bank_account_id" class="form-control" id="bank" v-model="form.bank_account_id">
@@ -57,7 +60,10 @@
                     <label for="agreement">Номер договора</label>
                     <div class="row">
                         <div class="col-md-2">
-                            <input type="text" class="form-control" placeholder="Поиск договора" v-model="agreementSearch">
+                            <input type="text" class="form-control" 
+                            placeholder="Поиск договора" 
+                            @keydown.enter.prevent="$nextTick(() => $refs.agreement.focus())"
+                            v-model="agreementSearch">
                         </div>    
                         <div class="col-md-10">
                             <select name="agreement_id" class="form-control" id="agreement" v-model="form.agreement_id">
@@ -93,8 +99,29 @@
                 <div class="form-group">
                     <label for="project_id">Проект</label>
                     <div class="row">
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" 
+                            placeholder="Поиск проекта" 
+                            @keydown.enter.prevent="$nextTick(() => $refs.project_id.focus())"
+                            v-model="projectSearch">
+                        </div>
+                        <div class="col-md-10">    
+                            <select name="project_id" class="form-control" id="project_id" 
+                                    v-model="form.project_id">
+                                <option v-for="project in filteredProjects" :value="project.id">@{{ project.name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+{{-- 
+                <div class="form-group">
+                    <label for="project_id">Проект</label>
+                    <div class="row">
                         <div class = "col-md-2">
-                            <input type="text" class="form-control" placeholder="Поиск проекта" v-model="projectSearch">
+                            <input type="text" class="form-control" 
+                            placeholder="Поиск проекта" 
+                            @keydown.enter.prevent="$nextTick(() => $refs.project_id.focus())"
+                            v-model="projectSearch">
                         </div>
                         <div class = "col-md-10">    
                             <select name="project_id" class="form-control" id="project_id" v-model="form.project_id">
@@ -103,7 +130,7 @@
                             </select>
                         </div>
                     <div>        
-                </div>
+                </div> --}}
 
                 @include('partials.error', ['field' => 'project_id'])
 
@@ -113,7 +140,10 @@
                     <label for="cfs_item_id">Статья ОДДС</label>
                     <div class="row">
                         <div class = "col-md-2">
-                            <input type="text" class="form-control" placeholder="Поиск статьи ОДДС" v-model="cfsItemSearch">
+                            <input type="text" class="form-control" 
+                            placeholder="Поиск статьи ОДДС" 
+                            @keydown.enter.prevent="$nextTick(() => $refs.cfs_item_id.focus())"
+                            v-model="cfsItemSearch">
                         </div>
                         <div class = "col-md-10">    
                             <select name="cfs_item_id" class="form-control" id="cfs_item_id" v-model="form.cfs_item_id">
@@ -123,23 +153,6 @@
                     </div>        
                 </div>
                 @include('partials.error', ['field' => 'cfs_item_id'])
-
-                {{-- БЕНЕФИЦИАР --}}
-                <div class="form-group">
-                    <label for="beneficiary_id">В пользу кого осуществелне платеж (если плательщик не является стороной по договору)</label>
-                    <div class="row">
-                        <div class = "col-md-2">
-                            <input type="text" class="form-control" placeholder="Поиск бенефициара" v-model="beneficiarySearch">
-                        </div>
-                        <div class = "col-md-10">    
-                            <select name="beneficiary_id" class="form-control" id="beneficiary_id" v-model="form.beneficiary_id">
-                                <option v-for="item in filteredBeneficiaries" :value="item.id">@{{ item.name }}</option>
-                            </select>
-                        </div>
-                    </div>        
-                </div>
-
-                @include('partials.error', ['field' => 'beneficiary_id'])
 
                 <div class="form-group">
                     <label for="description">Описание</label>
@@ -226,9 +239,11 @@
                         );
                     },
                     filteredProjects() {
-                        return this.projects.filter(project =>
+                        return [
+                            { id: null, name: "*БЕЗ ПРОЕКТА*" },
+                            this.projects.filter(project =>
                             project.name.toLowerCase().includes(this.projectSearch.toLowerCase())
-                        );
+                        )];
                     },
                     filteredCfsItems() {
                         return this.cfsItems.filter(item =>
@@ -247,20 +262,27 @@
                 },
                 methods: {
                     formatNumber(field) {
-                        /*if (this.form[field] !== null && this.form[field] !== '') {
+                        if (this.form[field] !== null && this.form[field] !== '') {
                             let rawValue = this.form[field].toString().replace(/\s/g, '').replace(/,/g, '.');
                             let value = parseFloat(rawValue).toLocaleString('ru-RU', {
                                 minimumFractionDigits: 2, maximumFractionDigits: 2
                             });
                             this.form[field] = value;
-                        }*/
+                        }
                     },
                     removeFormatting(field) {
                         if (this.form[field]) {
                             this.form[field] = this.form[field].replace(/\s/g, '').replace(',', '.');
                         }
                     },
+                    handleProjectSelection() {
+                        if (!this.form.project_id || (this.form.project_id == "*БЕЗ ПРОЕКТА*")) {
+                            this.form.project_id = null;
+                        }
+                    },
                     onSubmit() {
+                        this.removeFormatting('amount');
+                        this.removeFormatting('VAT');  
                         this.$refs.paymentForm.submit();
                     }
                 }

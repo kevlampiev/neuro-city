@@ -50,11 +50,12 @@
                     <th scope="col">#</th>
                     <th scope="col">Дата</th>
                     <th scope="col">Банковский счет</th>
-                    <th scope="col">Владелец</th>
+                    <th scope="col">Договор</th>
                     <th scope="col">Проект</th>
                     <th scope="col">Статья</th>
                     <th scope="col">Сумма, руб</th>
                     <th scope="col">НДС, руб</th>
+                    <th scope="col">Комментарий</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                 </tr>
@@ -65,13 +66,13 @@
                         <th scope="row">{{$index+1}}</th>
                         <td> {{\Carbon\Carbon::parse($item->date_open)->format('d.m.Y')}}</td>
                         <td>
-                            Р/cч {{$item->account_number}} в {{$item->bank_name}}
+                            Р/cч {{$item->account_name}}
                         </td>
-                        <td>{{$item->company_name}}</td>
+                        <td>{{$item->agreement_name}}</td>
                         <td>
                                 {{$item->project_name}}
                         </td>
-                        <td>{{$item->cfs_name}}</td>
+                        <td>{{$item->cfs_item_name}}</td>
                         <td class="text-end">{{number_format($item->amount, 2, ',', ' ')}}</td>
                         <td class="text-end">{{number_format($item->VAT, 2, ',', ' ')}}</td>
                         <td>{{$item->description}}</td>
