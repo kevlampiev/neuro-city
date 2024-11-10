@@ -239,12 +239,18 @@
                         );
                     },
                     filteredProjects() {
-                        return [
-                            { id: null, name: "*БЕЗ ПРОЕКТА*" },
-                            this.projects.filter(project =>
-                            project.name.toLowerCase().includes(this.projectSearch.toLowerCase())
-                        )];
-                    },
+                            const allProjects = [
+                                { id: null, name: "*БЕЗ ПРОЕКТА*" },
+                                ...this.projects
+                            ];
+
+                            // Фильтруем только если есть поисковый запрос
+                            return this.projectSearch
+                                ? allProjects.filter(project =>
+                                    project.name.toLowerCase().includes(this.projectSearch.toLowerCase())
+                                )
+                                : allProjects;
+                        },
                     filteredCfsItems() {
                         return this.cfsItems.filter(item =>
                             item.name.toLowerCase().includes(this.cfsItemSearch.toLowerCase())
