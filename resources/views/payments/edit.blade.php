@@ -78,21 +78,35 @@
 
                 @include('partials.error', ['field' => 'agreement_id'])
 
-                <div class="form-group">
-                    <label for="inputAmount">Сумма</label>
-                    <input type="text" class="form-control" id="inputAmount" name="amount"
-                        v-model="form.amount" @blur="formatNumber('amount')" @focus="removeFormatting('amount')">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <label for="inputAmount">Сумма</label>
+                            <input type="text" class="form-control" id="inputAmount" name="amount"
+                                v-model="form.amount" @blur="formatNumber('amount')" @focus="removeFormatting('amount')">
+                        </div>
+
+                        @include('partials.error', ['field' => 'amount'])
+                    </div>    
+                    <div class="col-md-1 d-flex align-items-end">
+                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Ставки НДС
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#" @click="setVAT(20)">20%</a></li>
+                            <li><a class="dropdown-item" href="#" @click="setVAT(10)">10%</a></li>
+                            <li><a class="dropdown-item" href="#" @click="setVAT(0)">Без НДС</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="inputVAT">В т.ч. НДС</label>
+                            <input type="text" class="form-control" id="inputVAT" name="VAT"
+                                v-model="form.VAT" @blur="formatNumber('VAT')" @focus="removeFormatting('VAT')">
+                        </div>
+                        @include('partials.error', ['field' => 'VAT'])
+                    </div>    
                 </div>
-
-                @include('partials.error', ['field' => 'amount'])
-
-                <div class="form-group">
-                    <label for="inputVAT">В т.ч. НДС</label>
-                    <input type="text" class="form-control" id="inputVAT" name="VAT"
-                        v-model="form.VAT" @blur="formatNumber('VAT')" @focus="removeFormatting('VAT')">
-                </div>
-                @include('partials.error', ['field' => 'VAT'])
-
 
 
                 {{-- ПРОЕКТ --}}
@@ -113,24 +127,6 @@
                         </div>
                     </div>
                 </div>
-{{-- 
-                <div class="form-group">
-                    <label for="project_id">Проект</label>
-                    <div class="row">
-                        <div class = "col-md-2">
-                            <input type="text" class="form-control" 
-                            placeholder="Поиск проекта" 
-                            @keydown.enter.prevent="$nextTick(() => $refs.project_id.focus())"
-                            v-model="projectSearch">
-                        </div>
-                        <div class = "col-md-10">    
-                            <select name="project_id" class="form-control" id="project_id" v-model="form.project_id">
-                                <option :value="null">*БЕЗ ПРОЕКТА*</option>
-                                <option v-for="project in filteredProjects" :value="project.id">@{{ project.name }}</option>
-                            </select>
-                        </div>
-                    <div>        
-                </div> --}}
 
                 @include('partials.error', ['field' => 'project_id'])
 
@@ -164,14 +160,14 @@
 
                 <div class="row mt-3">
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary" @click="onSubmit()">
+                        <button type="submit mr-2" class="btn btn-primary" @click="onSubmit()">
                             @if ($model->id)
                                 Изменить
                             @else
                                 Добавить
                             @endif
                         </button>
-                        <a class="btn btn-secondary" href="{{ route('payments.index') }}">Отмена</a>
+                        <a class="btn btn-secondary ms-2" href="{{ route('payments.index') }}">Отмена</a>
                     </div>
                 </div>
             </div>
@@ -279,6 +275,13 @@
                     removeFormatting(field) {
                         if (this.form[field]) {
                             this.form[field] = this.form[field].replace(/\s/g, '').replace(',', '.');
+                        }
+                    },
+                    setVAT(rate) {
+                        const amount = parseFloat(this.form.amount.replace(/\s/g, '').replace(',', '.'));
+                        if (!isNaN(amount)) {
+                            this.form.VAT = rate === 0 ? 0 : rate === 20 ? amount / 6 : amount / 11;
+                            this.formatNumber('VAT');
                         }
                     },
                     handleProjectSelection() {

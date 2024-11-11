@@ -68,13 +68,17 @@
                         <td>
                             Р/cч {{$item->account_name}}
                         </td>
-                        <td>{{$item->agreement_name}}</td>
+                        <td>
+                            <p class="m-0">{{$item->agreement_name}} </p>
+                            <p class="fst-italic text-secondary m-0">{{$item->seller_name}} </p>
+                            <p class="fst-italic text-secondary m-0">{{$item->buyer_name}} </p>
+                        </td>
                         <td>
                                 {{$item->project_name}}
                         </td>
                         <td>{{$item->cfs_item_name}}</td>
-                        <td class="text-end">{{number_format($item->amount, 2, ',', ' ')}}</td>
-                        <td class="text-end">{{number_format($item->VAT, 2, ',', ' ')}}</td>
+                        <td class="text-end">{{number_format($item->amount, 2, '.', ',')}}</td>
+                        <td class="text-end">{{number_format($item->VAT, 2, '.', ',')}}</td>
                         <td>{{$item->description}}</td>
                         <td>
                             @if(Gate::allows('e-payments'))

@@ -62,7 +62,7 @@ class PaymentRequest extends FormRequest
             if (($amount < 0 && $vat > 0) || ($amount > 0 && $vat < 0)) {
                 $validator->errors()->add('VAT', 'Сумма и НДС должны быть одинаковы по знаку');
             }
-            if (abs($amount / 6) < abs($vat)) {
+            if (abs($amount / 6) <= abs($vat*0.99)) {
                 $validator->errors()->add('VAT', 'НДС не может быть более 20% суммы платежа');
             }
 
