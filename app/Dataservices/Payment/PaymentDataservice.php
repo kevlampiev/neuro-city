@@ -105,6 +105,7 @@ class PaymentDataservice
 
     public static function saveChanges(PaymentRequest $request, Payment $payment)
     {
+        $payment->project_id = ($payment->project_id != "*БЕЗ ПРОЕКТА*")?$payment->project_id:null;
         if ($payment->id) 
             {$payment->fill($request->all());}
         else 

@@ -289,6 +289,7 @@
                     onSubmit() {
                         this.removeFormatting('amount');
                         this.removeFormatting('VAT');  
+                        handleProjectSelection();
                         this.$refs.paymentForm.submit();
                     }
                 }

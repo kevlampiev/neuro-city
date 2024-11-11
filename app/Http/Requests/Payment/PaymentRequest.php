@@ -18,7 +18,16 @@ class PaymentRequest extends FormRequest
     {
         return true;
     }
+    
+    protected function prepareForValidation()
+    {
 
+        if ($this->input('project_id') == "*БЕЗ ПРОЕКТА*") {
+            $this->merge([
+                'project_id' => null,
+            ]);
+        }
+    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -27,13 +36,13 @@ class PaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date_open' => 'date|nullable',
+            'date_open' => 'date|required',
             'bank_account_id' => 'required|exists:bank_accounts,id',
             'agreement_id' => 'required|exists:agreements,id',
             'amount' => 'required|numeric',
             'VAT' => 'required|numeric',
             'description' => 'required|string|min:5',
-            'project_id' => 'nullable|exists:projects,id',
+            // 'project_id' => 'nullable|exists:projects,id',
             'cfs_item_id' => 'required|exists:cfs_items,id',
         ];
     }
