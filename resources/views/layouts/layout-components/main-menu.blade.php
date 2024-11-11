@@ -58,9 +58,7 @@
                             <li><a class="dropdown-item" href="{{route('agreements')}}">Договоры</a></li>
                         @endif    
 
-                        {{-- @if(Gate::allows('s-bank_accounts')) --}}
-                            <li><a class="dropdown-item" href="{{route('accounts.index')}}">Банковские счета</a></li>
-                        {{-- @endif --}}
+                       
                      
                     </ul>
                 </li>
@@ -72,7 +70,14 @@
                         Платежи
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                       
+                        {{-- @if(Gate::allows('s-bank_accounts')) --}}
+                            <li><a class="dropdown-item" href="{{route('accounts.index')}}">Банковские счета</a></li>
+                        {{-- @endif --}}
+                        {{-- import.adesk.payments.index --}}
+                        @if(Gate::allows('s-payments')) 
+                            <li><a class="dropdown-item" href="{{route('payments.index')}}">Платежи</a></li>
+                            <li><a class="dropdown-item" href="{{route('import.adesk.payments.index')}}">Импорт из ADesk</a></li>
+                        @endif                       
                    
                     </ul>
                 </li>

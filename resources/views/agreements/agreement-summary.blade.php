@@ -72,7 +72,7 @@
             </button>
             @endif
 
-            @if(Gate::allows('s-real_payment'))
+            @if(Gate::allows('s-payments'))
             <button class="nav-link"
                     id="payments-tab"
                     data-bs-toggle="tab"
@@ -109,7 +109,7 @@
             </button>
 
             {{-- Это только для тех, кто может редактировать платежи => может управлять ключевыфми словами --}}
-            @if(Gate::allows('e-real_payment'))
+            @if(Gate::allows('e-payments'))
             <button class="nav-link"
                     id="keywords-tab"
                     data-bs-toggle="tab"
@@ -181,11 +181,11 @@
         @endif
 
 
-        @if((Gate::allows('s-real_payment'))&&(Gate::allows('s-payment')))
+        @if(Gate::allows('s-payments'))
         <div class="tab-pane fade" id="payments" role="tabpanel" aria-labelledby="payments-tab">
             <div class="row">
-                {{-- @include('Admin.agreements.agreement-summary.payment-tables', ['payments' =>$agreement->payments->sortBy('payment_date')])
-                @include('Admin.agreements.agreement-summary.real-payment-tables', ['realPayments' =>$agreement->realPayments->sortBy('payment_date')]) --}}
+                @include('agreements.agreement-summary.payment-tables', ['payments' =>$agreement->payments->sortBy('payment_date')])
+                {{-- @include('Admin.agreements.agreement-summary.real-payment-tables', ['realPayments' =>$agreement->realPayments->sortBy('payment_date')]) --}}
             </div>
         </div>
         @endif

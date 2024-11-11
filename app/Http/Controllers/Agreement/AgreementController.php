@@ -9,6 +9,7 @@ use App\Http\Requests\Agreement\AgreementRequest;
 use App\Models\Agreement;
 use App\Models\Document;
 use App\Models\Vehicle;
+use App\Models\VPaymentExtended;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -63,7 +64,11 @@ class AgreementController extends Controller
     public function summary(Agreement $agreement)
     {
         // $agreement->payments()->orderBy('payment_date');
-        return view('agreements.agreement-summary', ['agreement' => $agreement]);
+        return view('agreements.agreement-summary', 
+                    [
+                        'agreement' => $agreement, 
+                        // 'payments' => VPaymentExtended::where('agreement_id', $agreement->id)->orderByDesc('date_open')->get(),
+                    ]);
     }
 
     // public function addVehicle(Request $request, Agreement $agreement, Vehicle $vehicle)

@@ -78,6 +78,7 @@ class BankAccountDataservice
 
     public static function saveChanges(BankAccountRequest $request, BankAccount $BankAccount)
     {
+        
         $BankAccount->fill($request->except('id'));
         if (!$BankAccount->created_by) $BankAccount->created_by = Auth::user()->id;
         if ($BankAccount->id) $BankAccount->updated_at = now();
