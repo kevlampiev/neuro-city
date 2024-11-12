@@ -75,8 +75,18 @@
                         {{-- @endif --}}
                         {{-- import.adesk.payments.index --}}
                         @if(Gate::allows('s-payments')) 
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li><a class="dropdown-item" href="{{route('payments.index')}}">Платежи</a></li>
                             <li><a class="dropdown-item" href="{{route('import.adesk.payments.index')}}">Импорт из ADesk</a></li>
+                        @endif                       
+
+                        @if(Gate::allows('s-accruals')) 
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="{{route('accruals.index')}}">Начисления</a></li>
                         @endif                       
                    
                     </ul>

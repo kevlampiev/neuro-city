@@ -1,65 +1,67 @@
-<div class="row m-1">
-    <div class="col-md-12">
-        <a href="{{route('admin.addAgrAccrual', ['agreement' => $agreement])}}" class="btn btn-outline-info">Добавить
-            начисление</a>
-        <div class="notes-container">
-
-            <nav>
-                <div class="nav nav-tabs nav-stacked" id="accrual-nav-tab" role="tablist">
-                    <button class="nav-link active"
-                            id="forecast-accruals-tab"
-                            data-bs-toggle="tab"
-                            data-bs-target="#forecast-accruals"
-                            type="button"
-                            role="tab"
-                            aria-controls="forecast-accruals"
-                            aria-selected="true">
-                        <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
-                        Прогнозные начисления
-                    </button>
-                    <button class="nav-link"
-                            id="operational-accruals-tab"
-                            data-bs-toggle="tab"
-                            data-bs-target="#operational-accruals"
-                            type="button"
-                            role="tab"
-                            aria-controls="operational-accruals"
-                            aria-selected="true">
-                        <i class="bi bi-lightning-charge" aria-hidden="true"></i>
-                        Операционные данные
-                    </button>
-                    <button class="nav-link"
-                            id="confirmed-accruals-tab"
-                            data-bs-toggle="tab"
-                            data-bs-target="#confirmed-accruals"
-                            type="button"
-                            role="tab"
-                            aria-controls="confirmed-accruals"
-                            aria-selected="true">
-                        <i class="bi bi-box-seam" aria-hidden="true"></i>
-                        Подтвержденные начисления
-                    </button>
-                </div>
-            </nav>
-
-
+<div class="col-md-12 p-4">
+    <h4>Начисления по договору</h4>
+    @if(Gate::allows('e-accruals'))
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-outline-info mr-2"
+               href="{{route('accruals.create', ['agreement'=>$agreement])}}">новое начисление</a>
+            {{-- <a class="btn btn-outline-info mr-2"
+               href="{{route('admin.massAddaccruals', ['agreement'=>$agreement])}}">Добавить серию платежей</a> --}}
         </div>
-
-        <div class="tab-content p-2" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="forecast-accruals" role="tabpanel" aria-labelledby="forecast-accruals-tab">
-                <h4>Прогнозные начисления</h4>
-                @include('Admin.agreements.agreement-summary.agreement-accrual-tables.forecast-accruals')
-            </div>
-            <div class="tab-pane fade " id="operational-accruals" role="tabpanel" aria-labelledby="operational-accruals-tab">
-                <h4>Оперативные начисления</h4>
-                @include('Admin.agreements.agreement-summary.agreement-accrual-tables.operational-accruals')
-            </div>
-            <div class="tab-pane fade " id="confirmed-accruals" role="tabpanel" aria-labelledby="confirmed-accruals-tab">
-                <h4>Подтвержденные начисления</h4>
-                @include('Admin.agreements.agreement-summary.agreement-accrual-tables.confirmed-accruals')
-            </div>
-
-        </div>
-
     </div>
+    @endif
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Дата</th>
+            <th scope="col">Сумма</th>
+            <th scope="col">Статья</th>
+            <th scope="col">Основание</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        
+        @forelse($accruals as $accrual)
+            <tr>
+                <th scope="row">{{$loop->index+1}}</th>
+                <td>{{\Carbon\Carbon::parse($accrual->date_open)->format('d.m.Y')}}</td>
+                <td class="text-right">{{number_format($accrual->amount, 2, '.', ',')}}</td>
+                <td class="text-left">{{$accrual->plItem->name}}</td>
+                <td class="text-left">{{$accrual->description}}</td>
+
+               
+                <td>
+                    @if(Gate::allows('e-accruals'))
+                    <a href="{{route('accruals.edit', ['accrual' => $accrual])}}">
+                        &#9998;Изменить </a>
+                    @endif    
+                </td>
+                <td>
+                    @if(Gate::allows('e-accruals'))
+                    <a href="{{route('accruals.destroy', ['accrual' => $accrual])}}"
+                       onclick="return confirm('Действительно удалить данные о начислении?')">
+                        &#10008;Удалить </a>
+                    @endif    
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <th colspan="6">Нет записей</th>
+            </tr>
+        @endforelse
+        <tr>
+            <th colspan="2">Итого</th>
+            <th class="text-right">{{number_format($accruals->sum('amount'), 2)}}</th>
+            <th class="text-left"></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </tbody>
+    </table>
+   
+
 </div>
