@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\PasswordExpired;
 
 Route::group([
-    'prefix' => 'counterparties', 'middleware' => ['auth:web',PasswordExpired::class,'permission:e-counterparty']
+    'prefix' => 'counterparties', 'middleware' => ['auth:web',PasswordExpired::class,'permission:s-counterparty']
 ],
     function () {
         Route::get('/', [CounterpartyController::class, 'index'])

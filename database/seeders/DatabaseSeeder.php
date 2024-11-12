@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             CFSItemGroupSeeder::class,
             PlItemGroupSeeder::class,
             BankAccountSeeder::class,
-            PaymentSeeder::class,
+            // PaymentSeeder::class,
         ]);
     }
 }
