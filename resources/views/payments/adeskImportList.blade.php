@@ -76,13 +76,12 @@
                         </td>
                        
                        
-                        <td class="{{(!$item->project_id)?'text-warning':''}}">
+                        <td>
                             <p> {{$item->project->name??'не определен'}} </p>
-                            <p class="text-secondary fst-italic">
-                                    {{$item->adesk_project_name??"не определен"}}
-                            </p>
                         </td>
+
                         <td> {{$item->description}} </td>
+                        
                         <td class="{{(!$item->cfs_item_id)?'text-danger':''}}">{{$item->adesk_cfs_category_name}}</td>
 
                         <td class="text-end">{{number_format($item->amount, 2, '.', ',')}}</td>
