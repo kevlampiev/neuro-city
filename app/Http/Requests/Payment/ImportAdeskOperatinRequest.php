@@ -19,6 +19,19 @@ class ImportAdeskOperatinRequest extends FormRequest
         return true;
     }
 
+    /*
+    *  Кбирем возможную грязь
+    */
+    protected function prepareForValidation()
+    {
+
+        if ($this->input('project_id') == "*БЕЗ ПРОЕКТА*") {
+            $this->merge([
+                'project_id' => null,
+            ]);
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -44,16 +57,36 @@ class ImportAdeskOperatinRequest extends FormRequest
         $validator->after(function ($validator) {
             $amount = $this->input('amount');
             $vat = $this->input('VAT');
-    
+            $bankAccountId = $this->input('bank_account_id');
+            $agreementId = $this->input('agreement_id');
+            $beneficiaryId = $this->input('beneficiary_id');
+            // dd($bankAccountId);
+
+            // Проверка согласованности amount и VAT
             if (($amount < 0 && $vat > 0) || ($amount > 0 && $vat < 0)) {
-                $validator->errors()->add('VAT', 'Сумма и НДС должны быль одинаковы по знаку');
+                $validator->errors()->add('VAT', 'Сумма и НДС должны быть одинаковы по знаку');
             }
-            if (abs($amount/6) < abs($vat) ) {
+            if (abs($amount / 6) <= abs($vat*0.99)) {
                 $validator->errors()->add('VAT', 'НДС не может быть более 20% суммы платежа');
+            }
+
+            // Проверка согласованности owner_id из bank_accounts и связанных полей
+            $bankAccount = \App\Models\BankAccount::find($bankAccountId);
+            $agreement = \App\Models\Agreement::find($agreementId);
+
+            if ($bankAccount && $agreement) {
+                $ownerId = $bankAccount->owner_id;
+                $sellerId = $agreement->seller_id;
+                $buyerId = $agreement->buyer_id;
+
+                if ($ownerId != $sellerId && $ownerId != $buyerId && $ownerId != $beneficiaryId) {
+                    $validator->errors()->add('bank_account_id', 'Банковский счет должен принадлежать одной из сторон по договору или бенефициару');
+                }
             }
         });
     }
 
+    
     public function attributes(): array
     {
         return [
@@ -67,5 +100,6 @@ class ImportAdeskOperatinRequest extends FormRequest
             'cfs_item_id' => 'Статья ОДДС',
         ];
     }
+    
 
 }

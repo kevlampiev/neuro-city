@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Payment\ImportAdeskOperatinRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PaymentParty;
+use App\Models\PlItem;
 use Carbon\Carbon;
 use PhpParser\Error;
 
@@ -81,9 +82,24 @@ class ImportADeskOperationDataservice
             'model' => $payment,
             'accounts' => BankAccount::orderBy('account_number')->get(),
             'agreements' => Agreement::orderBy('agr_number')->get(),
-            'projects' => Project::query()->orderBy('name')->get(),
+            'projects' => Project::query()->orderBy('name')
+                ->get()
+                ->prepend([
+                    'id' => null,
+                    'name' => '*БЕЗ ПРОЕКТА*',
+                    'description' => null,
+                    'adesk_id' => null,
+                    'date_open' => null,
+                    'date_close' => null,
+                    'created_by' => null,
+                    'created_at' => null,
+                    'updated_at' => null,
+                    'deleted_at' => null,
+                    'search_vector' => null,
+                ]),
             'cfsItems' => CFSItem::orderBy('name')->get(),
             'beneficiaries' => Company::orderBy('name')->get(),
+            'plItems' => PlItem::orderBy('name')->get(),
         ];
     }
 
@@ -103,6 +119,7 @@ class ImportADeskOperationDataservice
     public static function saveChanges(ImportAdeskOperatinRequest $request, ImportAdeskOperation $payment)
     {
         $payment->fill($request->all());
+        $payment->project_id = ($payment->project_id != "*БЕЗ ПРОЕКТА*")?$payment->project_id:null;
         $payment->save();
     }
 
