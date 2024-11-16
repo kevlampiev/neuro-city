@@ -30,6 +30,10 @@ class ImportAdeskOperatinRequest extends FormRequest
                 'project_id' => null,
             ]);
         }
+        
+        $this->merge([
+            'has_accrual' => ($this->input('has_accrual') == "on"),
+        ]);
     }
 
     /**
@@ -48,6 +52,10 @@ class ImportAdeskOperatinRequest extends FormRequest
             'description' => 'required|string|min:5',
             'project_id' => 'nullable|exists:projects,id',
             'cfs_item_id' => 'required|exists:cfs_items,id',
+            'has_accrual' => 'required|boolean',
+            'accrual_date_open' => 'nullable|date',
+            'pl_item_id' => 'nullable|exists:pl_items,id',
+            'accrual_description' => 'nullable|string',
         ];
     }
 
@@ -60,33 +68,46 @@ class ImportAdeskOperatinRequest extends FormRequest
             $bankAccountId = $this->input('bank_account_id');
             $agreementId = $this->input('agreement_id');
             $beneficiaryId = $this->input('beneficiary_id');
-            // dd($bankAccountId);
-
+            $hasAccrual = ($this->input('has_accrual')=="on");
+            $accrualDateOpen = $this->input('accrual_date_open');
+            $plItemId = $this->input('pl_item_id');
+            
             // Проверка согласованности amount и VAT
             if (($amount < 0 && $vat > 0) || ($amount > 0 && $vat < 0)) {
                 $validator->errors()->add('VAT', 'Сумма и НДС должны быть одинаковы по знаку');
             }
-            if (abs($amount / 6) <= abs($vat*0.99)) {
+            if (abs($amount / 6) <= abs($vat * 0.99)) {
                 $validator->errors()->add('VAT', 'НДС не может быть более 20% суммы платежа');
             }
-
+    
             // Проверка согласованности owner_id из bank_accounts и связанных полей
             $bankAccount = \App\Models\BankAccount::find($bankAccountId);
             $agreement = \App\Models\Agreement::find($agreementId);
-
+    
             if ($bankAccount && $agreement) {
                 $ownerId = $bankAccount->owner_id;
                 $sellerId = $agreement->seller_id;
                 $buyerId = $agreement->buyer_id;
-
+    
                 if ($ownerId != $sellerId && $ownerId != $buyerId && $ownerId != $beneficiaryId) {
                     $validator->errors()->add('bank_account_id', 'Банковский счет должен принадлежать одной из сторон по договору или бенефициару');
                 }
             }
+    
+            // Проверка полей accrual_date_open и pl_item_id при has_accrual == true
+            if ($hasAccrual) {
+                if (empty($accrualDateOpen)) {
+                    $validator->errors()->add('accrual_date_open', 'Поле "Дата открытия начисления" обязательно, если начисление включено.');
+                }
+                if (empty($plItemId)) {
+                    $validator->errors()->add('pl_item_id', 'Поле "Статья доходов/расходов" обязательно, если начисление включено.');
+                }
+            }
         });
+    
     }
 
-    
+
     public function attributes(): array
     {
         return [
