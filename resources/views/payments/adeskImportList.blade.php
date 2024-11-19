@@ -47,6 +47,7 @@
                     <th scope="col">Сумма, руб</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -89,6 +90,12 @@
                         <td>
                             @if(Gate::allows('e-payments'))
                                 <a href="{{route('import.adesk.payments.edit', ['adesk_id' => $item->adesk_id])}}"> <i class="bi bi-pencil-square"></i> Изменить </a>
+                            @endif    
+                        </td>
+
+                        <td>
+                            @if(Gate::allows('e-payments'))
+                                <a href="{{route('import.adesk.rules.create', ['adesk_id' => $item->adesk_id])}}"> <i class="bi bi-box-arrow-in-up-right"></i> Создать правило </a>
                             @endif    
                         </td>
                         

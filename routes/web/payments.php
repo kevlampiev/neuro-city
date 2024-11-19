@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Payment\AdeskRuleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\PasswordExpired;
 use App\Http\Controllers\Payment\BankAccountController;
@@ -38,4 +39,14 @@ Route::middleware(['auth:web',PasswordExpired::class,'permission:e-payments'])->
     Route::get('payments/import/adesk', [ImportADeskOperationController::class, 'index'])->name('import.adesk.payments.index');
     Route::get('payments/import/adesk/edit/{adesk_id}', [ImportADeskOperationController::class, 'edit'])->name('import.adesk.payments.edit');
     Route::put('payments/import/adesk/edit/{adesk_id}', [ImportADeskOperationController::class, 'update'])->name('import.adesk.payments.update');;
+});
+
+
+Route::middleware(['auth:web',PasswordExpired::class,'permission:e-payments'])->group(function () {
+    Route::get('payments/import/adesk/rules', [AdeskRuleController::class, 'index'])->name('import.adesk.rules.index');
+    Route::get('payments/import/adesk/rules/create/{adesk_id?}', [AdeskRuleController::class, 'create'])->name('import.adesk.rules.create');
+    Route::post('payments/import/adesk/rules/create/{adesk_id?}', [AdeskRuleController::class, 'store']);
+    Route::get('payments/import/adesk/rules/edit/{adeskRule}', [AdeskRuleController::class, 'edit'])->name('import.adesk.rules.edit');
+    Route::post('payments/import/adesk/rules/edit/{adeskRule}', [AdeskRuleController::class, 'update']);
+    Route::delete('payments/import/adesk/delete/{adeskRule}', [AdeskRuleController::class, 'destroy'])->name('import.adesk.rules.destroy');
 });
