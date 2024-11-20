@@ -13,8 +13,10 @@
     </div>
 
     <div class="row">
-
-        <div class="col-md-12">
+        <div class="col-md-6">
+            <a class="btn btn-outline-info" href="{{route('import.adesk.rules.create')}}">Добавить правило</a>
+        </div>
+        <div class="col-md-6">
             <form class="form-inline my-2 my-lg-0" method="GET">
                 <div class="d-flex align-items-center">
                     <div class="input-group me-2">
@@ -38,15 +40,19 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Наименование</th>
+                    <th scope="col">Генерируется платеж</th>
+                    <th scope="col">Генерируется начисление</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
                 @forelse($adeskRules as $index => $item)
-                    <tr class="{{(!$item->ready_to_load)?'table-danger':''}}">
+                    <tr>
                         <th scope="row">{{$index + 1 }}</th>
                         <td> {{$item->name}}</td>
+                        <td> <i class="bi bi-check-lg"></i> </td>
+                        <td> @if($item->has_accrual) <i class="bi bi-check-lg"></i> @endif </td>
 
                         <td>
                             <a href="{{route('import.adesk.rules.edit', ['adeskRule' => $item])}}"> 
