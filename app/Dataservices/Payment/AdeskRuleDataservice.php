@@ -27,6 +27,12 @@ class AdeskRuleDataservice
         // Выполнение запроса с условием поиска по нескольким полям и пагинацией
         return AdeskRule::query()
             ->whereRaw('LOWER(name) LIKE ?', [$searchStr])
+            ->orWhereRaw('LOWER(adesk_description) LIKE ?', [$searchStr])
+            ->orWhereRaw('LOWER(adesk_cfs_category_name) LIKE ?', [$searchStr])
+            ->orWhereRaw('LOWER(adesk_company_name) LIKE ?', [$searchStr])
+            ->orWhereRaw('LOWER(adesk_bank_name) LIKE ?', [$searchStr])
+            ->orWhereRaw('LOWER(adesk_contractor_name) LIKE ?', [$searchStr])
+            ->orWhereRaw('LOWER(adesk_project_name) LIKE ?', [$searchStr])
             ->orderBy('name')
             ->paginate($perPage);
     }
@@ -76,7 +82,7 @@ class AdeskRuleDataservice
                     'adesk_project_name' => $operation->adesk_project_name,
                     'bank_account_id' => $operation->bank_account_id,
                     'agreement_id' => $operation->agreement_id,
-                    'VAT' => $operation->VAT,
+                    'VAT' => ($operation->amount!=0)?($operation->VAT/$operation->amount):0,
                     'project_id' => $operation->project_id,
                     'cfs_item_id' => $operation->cfs_item_id,
                     'has_accrual' => $operation->has_accrual,

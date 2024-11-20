@@ -40,6 +40,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Наименование</th>
+                    <th scope="col">Задействованные поля</th>
                     <th scope="col">Генерируется платеж</th>
                     <th scope="col">Генерируется начисление</th>
                     <th scope="col"></th>
@@ -51,6 +52,27 @@
                     <tr>
                         <th scope="row">{{$index + 1 }}</th>
                         <td> {{$item->name}}</td>
+                        <td class="text-secondary ">
+                            @if($item->adesk_cfs_category_name)
+                                {{$item->adesk_cfs_category_name}} /
+                            @endif
+                            @if($item->adesk_company_name)
+                                {{$item->adesk_company_name}} /
+                            @endif
+                            @if($item->adesk_bank_name)
+                                 {{$item->adesk_bank_name}} /
+                            @endif 
+                            @if($item->adesk_contractor_name)
+                                {{$item->adesk_contractor_name}} / 
+                            @endif
+                            @if($item->adesk_project_name)
+                                {{$item->adesk_project_name}} /
+                            @endif
+                            @if($item->adesk_description)
+                                {{$item->adesk_description}} 
+                            @endif
+                              
+                        </td>
                         <td> <i class="bi bi-check-lg"></i> </td>
                         <td> @if($item->has_accrual) <i class="bi bi-check-lg"></i> @endif </td>
 
