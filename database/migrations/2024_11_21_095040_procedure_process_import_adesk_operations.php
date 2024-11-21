@@ -52,7 +52,10 @@ BEGIN
             operation.date_open,
             operation.bank_account_id,
             operation.agreement_id,
-            operation.amount,
+            CASE 
+                WHEN operation.adesk_type_operation_code = 2 THEN -1 * operation.amount
+                ELSE operation.amount
+            END,
             operation."VAT",
             operation.description,
             operation.project_id,
@@ -77,7 +80,10 @@ BEGIN
                 operation.agreement_id,
                 operation.pl_item_id,
                 operation.project_id,
-                operation.amount - operation."VAT",
+                CASE 
+                    WHEN operation.adesk_type_operation_code = 2 THEN -1 * (operation.amount - operation."VAT")
+                    ELSE operation.amount - operation."VAT"
+                END,
                 COALESCE(operation.accrual_description, operation.description),
                 user_id,
                 NOW()
