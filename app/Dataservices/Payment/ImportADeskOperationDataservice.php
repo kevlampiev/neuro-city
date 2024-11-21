@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Payment\ImportAdeskOperatinRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PaymentParty;
+use Illuminate\Support\Facades\DB;
 use App\Models\PlItem;
 use Carbon\Carbon;
 use PhpParser\Error;
@@ -27,6 +28,7 @@ class ImportADeskOperationDataservice
      */
     public static function getData(string $searchStr, string $filterDateStart = null, string $filterDateEnd = null, int $perPage = 15): LengthAwarePaginator
     {
+        $searchStr = $searchStr??" ";
         // Приведение строки к нижнему регистру и добавление подстановочного знака для поиска
         $searchStr = '%' . preg_replace('/\s+/', '%', mb_strtolower($searchStr)) . '%';
     
@@ -59,7 +61,7 @@ class ImportADeskOperationDataservice
      */
     public static function index(Request $request): array
     {
-        $filter = $request->get('searchStr', '');
+        $filter = $request->get('searchStr', '')??"";
         $filterDateStart = $request->get('filterDateStart', '');
         $filterDateEnd = $request->get('filterDateEnd', '');
     
@@ -155,5 +157,15 @@ class ImportADeskOperationDataservice
         } catch (Error $err) {
             session()->flash('error', 'Не удалось удалить данные о проводке');
         }
+    }    
+
+    public static function applyRules()
+    {
+        DB::statement("SELECT update_import_adesk_operations();");
+    }
+
+    public static function processAdeskOperations()
+    {
+        DB::statement('SELECT process_import_adesk_operations(?)', [Auth::user()->id]);
     }    
 }

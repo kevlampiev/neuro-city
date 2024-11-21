@@ -38,7 +38,9 @@ Route::middleware(['auth:web',PasswordExpired::class,'permission:e-payments'])->
 Route::middleware(['auth:web',PasswordExpired::class,'permission:e-payments'])->group(function () {
     Route::get('payments/import/adesk', [ImportADeskOperationController::class, 'index'])->name('import.adesk.payments.index');
     Route::get('payments/import/adesk/edit/{adesk_id}', [ImportADeskOperationController::class, 'edit'])->name('import.adesk.payments.edit');
-    Route::put('payments/import/adesk/edit/{adesk_id}', [ImportADeskOperationController::class, 'update'])->name('import.adesk.payments.update');;
+    Route::put('payments/import/adesk/edit/{adesk_id}', [ImportADeskOperationController::class, 'update'])->name('import.adesk.payments.update');
+    Route::get('payments/import/adesk/apply_rules', [ImportADeskOperationController::class, 'applyRules'])->name('import.adesk.payments.applyRules');
+    Route::get('payments/import/adesk/proceed_adesk', [ImportADeskOperationController::class, 'processAdeskOperations'])->name('import.adesk.payments.proceedAdeskOps');
 });
 
 

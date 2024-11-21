@@ -14,7 +14,7 @@
 
     <div class="row">
 
-        <div class="col-md-12">
+        <div class="col-md-6">
             <form class="form-inline my-2 my-lg-0" method="GET">
                 <div class="d-flex align-items-center">
                     <div class="input-group me-2">
@@ -26,6 +26,18 @@
                     <button class="btn btn-outline-primary" type="submit">Поиск</button>
                 </div>
             </form>
+        </div>
+
+        <div class="col-md-6">
+            <a href="{{route('import.adesk.payments.applyRules')}}"  class="btn btn-outline-primary" role="button">
+                <i class="bi bi-building-gear"></i>
+                Примерить правила расшифровки
+            </a>
+
+            <a href="{{route('import.adesk.payments.proceedAdeskOps')}}"  class="btn btn-outline-primary" role="button">
+                <i class="bi bi-building-gear"></i>
+                Перенести операции в учет 
+            </a>
         </div>
     </div>
 
