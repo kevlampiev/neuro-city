@@ -22,6 +22,7 @@
                         <label for="name">Наименование правила</label>
                         <input class="form-control" type="text" value="{{$model->name}}" name="name">
                     </div>
+                     @include('partials.error', ['field' => 'name'])
 
                 </div>
                 
