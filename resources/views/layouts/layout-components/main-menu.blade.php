@@ -80,6 +80,7 @@
                             </li>
                             <li><a class="dropdown-item" href="{{route('payments.index')}}">Платежи</a></li>
                             <li><a class="dropdown-item" href="{{route('import.adesk.payments.index')}}">Импорт из ADesk</a></li>
+                            <li><a class="dropdown-item" href="{{route('import.adesk.rules.index')}}">Правила преобразовния Adesk</a></li>
                         @endif                       
 
                         @if(Gate::allows('s-accruals')) 

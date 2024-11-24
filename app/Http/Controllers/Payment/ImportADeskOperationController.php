@@ -60,4 +60,18 @@ class ImportADeskOperationController extends Controller
         return redirect()->route('payments.index');
     }
 
+    public function applyRules(): RedirectResponse
+    {
+        ImportADeskOperationDataservice::applyRules();
+        session()->flash('message', 'Операции Adesk разобраны в соответствие с имеющимися правилами');
+        return redirect()->back();
+    }
+
+    public static function processAdeskOperations(): RedirectResponse
+    {
+        ImportADeskOperationDataservice::processAdeskOperations();
+        session()->flash('message', 'Релевантные операции Adesk перенесены в платежи и начисления');
+        return redirect()->back();
+    }
+
 }

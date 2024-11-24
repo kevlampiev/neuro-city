@@ -25,8 +25,8 @@ class ImportAdeskTransactions extends Command
             ? Carbon::parse($this->option('endDate'))->format('Y-m-d') 
             : Carbon::now()->addDay(-1)->format('Y-m-d');
 
-        // Очистка таблицы перед вставкой новых данных
-        DB::table('import_adesk_operations')->truncate();
+        // Очистка таблицы перед вставкой новых данных. Это временно удалено, пусть копятся 
+        // DB::table('import_adesk_operations')->truncate();
 
         // Выполнение HTTP-запроса к API
         $response = Http::get('https://api.adesk.ru/v1/transactions', [
