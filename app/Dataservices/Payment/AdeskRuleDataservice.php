@@ -73,6 +73,7 @@ class AdeskRuleDataservice
         $rule = new AdeskRule();
         if ($operation) {
             $rule->fill([
+                    'name' =>'Оплата '.$operation->adesk_contractor_name.'/'. $operation->adesk_company_name.'/'.$operation->adesk_bank_name,
                     'adesk_type_operation_code' => $operation->adesk_type_operation_code,
                     'adesk_bank_name' => $operation->adesk_bank_name,
                     'adesk_company_name' => $operation->adesk_company_name,
