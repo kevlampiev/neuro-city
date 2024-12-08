@@ -214,10 +214,12 @@ class TaskDataservice
     public static function markAsDone(Task $task)
     {
         try {
-            DB::statement('CALL po_mark_task_as_done(?)', [$task->id]);
+            // Используем SELECT для вызова функции в PostgreSQL
+            DB::select('SELECT po_mark_task_as_done(?)', [$task->id]);
+    
             session()->flash('message', 'Задача помечена как выполненная');
-        } catch (Error $err) {
-            session()->flash('error', 'Не удалось завершить задачу');
+        } catch (\Throwable $err) {
+            session()->flash('error', 'Не удалось завершить задачу: ' . $err->getMessage());
         }
     }
 

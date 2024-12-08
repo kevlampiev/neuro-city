@@ -23,19 +23,7 @@
         }
 
     </script>
-
-    // let details = document.querySelector('details')
-    //     // добавить к каждому клику события клика
-    // details.forEach((el) => {
-    //     el.addEventListener("click", _ => {
-    //         let openedDetails = []
-    //         details.forEach(detail => {
-    //             if detail.hasAtrribute('open')
-    //                 openedDetails.push(details.id)
-    //         })
-    //         console.log(openedDetails)
-    //     })
-    // })
+  
 
 
 @endsection

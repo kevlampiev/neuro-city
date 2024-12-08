@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.big-form')
 
 @section('title')
     Администратор|Изменение ключевого слова для договора
@@ -12,9 +12,9 @@
         @endif</h3>
     <form
         @if($agreementKeyword->id)
-            action="{{route('admin.editAgreementKeyword', ['agreementKeyword' => $agreementKeyword->id])}}"
+            action="{{route('editAgreementKeyword', ['agreementKeyword' => $agreementKeyword->id])}}"
         @else
-            action="{{route('admin.addAgreementKeyword', ['agreement' => $agreementKeyword->agreement->id])}}"
+            action="{{route('addAgreementKeyword', ['agreement' => $agreementKeyword->agreement->id])}}"
         @endif
         method="POST">
         @csrf

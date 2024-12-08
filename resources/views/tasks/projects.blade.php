@@ -12,12 +12,12 @@
 
     <div class="row">
         <div class="col-mb-2">
-            <a class="btn btn-outline-info" href="{{route('admin.addProject')}}">Начать новый проект</a>
+            <a class="btn btn-outline-info" href="{{route('addProject')}}">Начать новый проект</a>
         </div>
     </div>
 
     <div class="row">
-        @include('Admin.tasks.components.tasks-tree', ['tasks'=>$tasks])
+        @include('tasks.components.tasks-tree', ['tasks'=>$tasks])
         {{--            @foreach($tasks as $task)--}}
         {{--            <div class="col-md-3 m-3 shadow">--}}
         {{--                <div class="card m-3" onclick="document.location.href = '{{route('admin.taskCard', ['task' => $task])}}';">--}}

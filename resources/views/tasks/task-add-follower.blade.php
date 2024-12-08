@@ -1,7 +1,7 @@
-@extends('layouts.admin')
+@extends('layouts.big-form')
 
 @section('title')
-    Администратор|Добавить подписчика к задаче
+    Добавить подписчика к задаче
 @endsection
 
 @section('content')
@@ -25,7 +25,7 @@
         <button type="submit" class="btn btn-primary">
             Добавить
         </button>
-        <a class="btn btn-secondary" href="{{route('admin.taskCard',['task'=>$task])}}">Отмена</a>
+        <a class="btn btn-secondary" href="{{route('taskCard',['task'=>$task])}}">Отмена</a>
     </form>
 
 @endsection

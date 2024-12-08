@@ -4,12 +4,12 @@
             <summary class="has-child">
                 @include('tasks.task-record')
             </summary>
-            <div class="ml-5 mb-1">
+            <div class="ms-4 mb-1">
                 @include('tasks.subtasks', ['subtasks' => $task->subTasks])
             </div>
         </details>
     @else
-        <div class="no-childs mb-3">
+        <div class="no-childs ms-4">
             @include('tasks.task-record')
         </div>
     @endif

@@ -15,13 +15,13 @@
 
             <td>
                 @if(Gate::allows('e-real_payment'))
-                <a href="{{route('admin.editAgreementKeyword', ['agreementKeyword'=>$keyword])}}">
+                <a href="{{route('editAgreementKeyword', ['agreementKeyword'=>$keyword])}}">
                     &#9998;Изменить </a>
                 @endif    
             </td>
             <td>
                 @if(Gate::allows('e-real_payment'))
-                <a href="{{route('admin.deleteAgreementKeyword', ['agreementKeyword'=>$keyword])}}"
+                <a href="{{route('deleteAgreementKeyword', ['agreementKeyword'=>$keyword])}}"
                    onclick="return confirm('Действительно удалить ключевое слово?')">
                     &#10008;Удалить </a>
                 @endif     

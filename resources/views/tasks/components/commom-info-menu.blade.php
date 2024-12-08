@@ -1,6 +1,6 @@
 @if($task->user==Auth::user())
     <div class="btn-group" role="group" aria-label="Basic outlined example">
-        <a class="btn btn-outline-info" href="{{route('admin.editTask', ['task' => $task])}}">Редактировать</a>
+        <a class="btn btn-outline-info" href="{{route('editTask', ['task' => $task])}}">Редактировать</a>
 
         @if(!$task->terminate_date)
             <div class="btn-group" role="group">
@@ -10,12 +10,12 @@
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                     <li><a class="dropdown-item text-decoration-line-through"
-                           href="{{route('admin.markTaskAsCanceled', ['task'=> $task])}}"
+                           href="{{route('markTaskAsCanceled', ['task'=> $task])}}"
                            onclick="return confirm('Это действие отменит данную задачу и все дочерние задачи. Продолжать?')">
                             Отменить
                         </a></li>
                     <li><a class="dropdown-item text-success"
-                           href="{{route('admin.markTaskAsDone', ['task'=> $task])}}"
+                           href="{{route('markTaskAsDone', ['task'=> $task])}}"
                            onclick="return confirm('Это действие пометит данную задачу и все дочерние задачи как выполненные. Продолжать?')">
                             Выполнить
                         </a></li>
@@ -23,7 +23,7 @@
             </div>
         @else
             <a class="btn btn-outline-info"
-               href="{{route('admin.markTaskAsRunning', ['task' => $task])}}">
+               href="{{route('markTaskAsRunning', ['task' => $task])}}">
                 Возобновить задачу
             </a>
         @endif
@@ -36,19 +36,19 @@
             <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 <li>
                     <a class="dropdown-item text-secondary"
-                       href="{{route('admin.setTaskImportance', ['task' => $task, 'importance' => 'low'])}}">
+                       href="{{route('setTaskImportance', ['task' => $task, 'importance' => 'low'])}}">
                         Низкий
                     </a>
                 </li>
                 <li>
                     <a class="dropdown-item"
-                       href="{{route('admin.setTaskImportance', ['task' => $task, 'importance' => 'medium'])}}">
+                       href="{{route('setTaskImportance', ['task' => $task, 'importance' => 'medium'])}}">
                         Обычный
                     </a>
                 </li>
                 <li>
                     <a class="dropdown-item text-danger"
-                       href="{{route('admin.setTaskImportance', ['task' => $task, 'importance' => 'high'])}}">
+                       href="{{route('setTaskImportance', ['task' => $task, 'importance' => 'high'])}}">
                         Высокий
                     </a>
                 </li>

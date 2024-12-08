@@ -66,7 +66,7 @@
                     <tr>
                         <td class="text-right">Родительская задача</td>
                         <td class="text-monospace"><i><a
-                                    href="{{route('admin.taskCard', ['task' => \App\Models\Task::find($task->parent_task_id)])}}">
+                                    href="{{route('taskCard', ['task' => \App\Models\Task::find($task->parent_task_id)])}}">
                                     {{\App\Models\Task::find($task->parent_task_id)->subject}}
                                 </a> </i></td>
                     </tr>
@@ -75,7 +75,7 @@
                     <tr>
                         <td class="text-right">Связаная единица техники</td>
                         <td class="text-monospace">
-                            <i><a href="{{route('admin.vehicleSummary', ['vehicle' => $task->vehicle])}}">
+                            <i><a href="{{route('vehicleSummary', ['vehicle' => $task->vehicle])}}">
                                     {{$task->vehicle->vehicleType->name}}
                                     {{$task->vehicle->name}},
                                     VIN:{{$task->vehicle->vin}},
@@ -88,7 +88,7 @@
                     <tr>
                         <td class="text-right">Связаный договор</td>
                         <td class="text-monospace">
-                            <i><a href="{{route('admin.agreementSummary', ['agreement' => $task->agreement])}}">
+                            <i><a href="{{route('agreementSummary', ['agreement' => $task->agreement])}}">
                                     {{$task->agreement->name}}
                                     № {{$task->agreement->agr_number}},
                                     от{{$task->agreement->date_open}}, <br>
@@ -101,7 +101,7 @@
                     <tr>
                         <td class="text-right">Связанный контрагент</td>
                         <td class="text-monospace"><i>
-                                <a href="{{route('admin.counterpartySummary', ['counterparty' => $task->counterparty])}}">
+                                <a href="{{route('counterpartySummary', ['counterparty' => $task->counterparty])}}">
                                     {{$task->counterparty->name}}
                                 </a>
                             </i></td>
@@ -137,12 +137,12 @@
                 </tr>
                 <tr>
                     <td>Последние сообщения <br>
-                        @forelse($task->messages->slice(0,2) as $message)
+                        {{-- @forelse($task->messages->slice(0,2) as $message)
                             <div class="text-secondary font-italic m-2 p-2 bg-white">
                                 {{html_entity_decode(strip_tags($message->description))}}
                             </div>
                         @empty
-                        @endforelse
+                        @endforelse --}}
                     </td>
                 </tr>
 

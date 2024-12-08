@@ -1,17 +1,7 @@
-{{--<div class="mt-3">--}}
 <a href="{{route('taskCard', ['task' => $task])}}"
-   class="
-        @if(count($task->subTasks)==0)
-        pl-3
-        @endif
-        @if(!$task->parent_task_id)
-            font-weight-bold text-uppercase
-        @endif
-       "
->
+   class="pl-3">
     @php
-        $taskType=($task->parent_task_id)?"Задача":"проект";
-        $taskStr = $taskType.' # '.$task->id.' '.$task->subject;
+        $taskStr = 'задача #'.$task->id.' -- '.$task->subject;
     @endphp
 
     @if(($task->due_date<\Carbon\Carbon::now())&&(!$task->terminate_date))
