@@ -215,7 +215,11 @@ class TaskDataservice
     {
         try {
             // Используем SELECT для вызова функции в PostgreSQL
-            DB::select('SELECT po_mark_task_as_done(?)', [$task->id]);
+            DB::select('SELECT terminate_task(:taskId, :terminateDate, :terminateStatus)', [
+                'taskId' => $task->id,
+                'terminateDate' => Carbon::now(),
+                'terminateStatus' => 'complete',
+            ]);
     
             session()->flash('message', 'Задача помечена как выполненная');
         } catch (\Throwable $err) {
@@ -227,7 +231,11 @@ class TaskDataservice
     public static function markAsCanceled(Task $task)
     {
         try {
-            DB::statement('CALL po_mark_task_as_canceled(?)', [$task->id]);
+            DB::select('SELECT terminate_task(:taskId, :terminateDate, :terminateStatus)', [
+                'taskId' => $task->id,
+                'terminateDate' => Carbon::now(),
+                'terminateStatus' => 'cancel',
+            ]);
             session()->flash('message', 'Задача отменена');
         } catch (Error $err) {
             session()->flash('error', 'Не удалось отменить задачу');
