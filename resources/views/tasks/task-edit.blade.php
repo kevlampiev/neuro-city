@@ -16,14 +16,15 @@
 
 
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-8">
 
 
                 <input type="hidden" name="user_id" value="{{$task->user_id}}">
                 <!-- Поле ввода имени задачи -->
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="subject">Формулировка задачи</span>
+                <div class="mb-3">
+                    <label for="nameImput" class="form-label">Наименование задачи</label>
                     <input type="text"
+                            id="nameInput"
                            class="form-control {{$errors->has('subject')?'is-invalid':''}}"
                            aria-describedby="subject"
                            placeholder="Введите название задачи" name="subject"
@@ -40,8 +41,9 @@
                 @endif
 
                 <!-- Поле ввода родительской задачи -->
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">Родительская задача</span>
+                <div class="mb-3">
+                    
+                    <label for="parent-tasks-select" class="form-label">Родительская задача</label>
                     <select name="parent_task_id"
                             id="parent-tasks-select"
                             class="form-control {{$errors->has('parent_task_id')?'is-invalid':''}}"
@@ -72,18 +74,22 @@
 
 
                 <!-- Поля ввода срока исполнения задачи -->
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="start_date">Срок исполнения</span>
-                    <input type="date"
-                           class="form-control {{$errors->has('start_date')?'is-invalid':''}}"
-                           aria-describedby="start_date"
-                           placeholder="Дата начала" name="start_date"
-                           value="{{\Carbon\Carbon::parse($task->start_date)->toDateString()}}">
-                    <input type="date"
-                           class="form-control {{$errors->has('due_date')?'is-invalid':''}}"
-                           aria-describedby="due_date"
-                           placeholder="Дата завершения" name="due_date"
-                           value="{{\Carbon\Carbon::parse($task->due_date)->toDateString()}}">
+                <div class="mb-3">
+                    
+                    <label for="startDateInput" class="form-label">Срок исполнения</label>
+                    <div class="d-flex gap-2">
+                        <input type="date"
+                            id="startDateInput"
+                            class="form-control {{$errors->has('start_date')?'is-invalid':''}}"
+                            aria-describedby="start_date"
+                            placeholder="Дата начала" name="start_date"
+                            value="{{\Carbon\Carbon::parse($task->start_date)->toDateString()}}">
+                        <input type="date"
+                            class="form-control {{$errors->has('due_date')?'is-invalid':''}}"
+                            aria-describedby="due_date"
+                            placeholder="Дата завершения" name="due_date"
+                            value="{{\Carbon\Carbon::parse($task->due_date)->toDateString()}}">
+                    </div>        
                 </div>
                 @if ($errors->has('start_date'))
                     <div class="alert alert-danger">
@@ -106,9 +112,10 @@
 
                 <!-- Поле ввода уровня важности -->
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">Важность</span>
+                <div class="mb-3">
+                    <label for="importanceInput" class="form-label">Важность</label>
                     <select name="importance"
+                            id="importanceInput"
                             class="form-control {{$errors->has('importance')?'is-invalid':''}}"
                             aria-describedby="basic-addon1">
                         @foreach ($importances as $key=>$importance)
@@ -150,8 +157,8 @@
 
 
                 <!-- Поле ввода исполнителя -->
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">Исполнитель задачи</span>
+                <div class="mb-3">
+                    <label for="user-select">Исполнитель задачи</label>
                     <select name="task_performer_id"
                             id="user-select"
                             class="form-control {{$errors->has('user_id')?'is-invalid':''}}"
@@ -238,6 +245,12 @@
         h3 {
             color: black; /* Установить черный цвет текста для заголовка */
         }
+        
+        label {
+            color: black; /* Установить черный цвет текста для заголовка */
+            font-weight: 100;
+        }
+
 
         select.form-control,
         input.form-control,
@@ -252,5 +265,14 @@
         .select2-container--default .select2-results__option {
             color: black; /* Черный цвет текста для выпадающего списка select2 */
         }
+
+        #search-input {
+            width: 150px;
+        }
+
+        .d-flex {
+            display: flex !important;
+        }
     </style>
 @endsection
+

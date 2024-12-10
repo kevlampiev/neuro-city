@@ -116,8 +116,8 @@ class TaskDataservice
     {
         return ['task' => $task,
             'route' => ($task->id) ? 'editTask' : 'addTask',
-            'users' => User::all(),
-            'tasks' => Task::query()->select(['id', 'subject'])->get(),
+            'users' => User::query()->orderBy('name')->get(),
+            'tasks' => Task::query()->select(['id', 'subject'])->orderBy('subject')->get(),
             'importances' => ['low' => 'Низкая', 'medium' => 'Обычная', 'high' => 'Высокая'],
         ];
     }

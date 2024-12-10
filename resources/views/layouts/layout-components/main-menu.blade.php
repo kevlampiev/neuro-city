@@ -148,10 +148,10 @@
                 </li>
 
             </ul>
-            <form class="d-flex" method="GET" action="{{route('bigSearch')}}">
+            <form class="d-flex" method="GET" action="{{route('bigSearch')}}" id="search-form">
                 {{-- @csrf --}}
                 <input class="form-control me-2" type="search" placeholder="глобальный поиск ..." aria-label="Search"
-                       name="searchStr" value="{{$searchStr??''}}">
+                       name="searchStr" value="{{$searchStr??''}}" id="search-input">
                 <button class="btn btn-outline-info" type="submit">Искать</button>
             </form>
             <ul class="navbar-nav ml-auto">
