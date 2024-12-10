@@ -30,15 +30,7 @@
                            placeholder="Введите название задачи" name="subject"
                            value="{{$task->subject}}">
                 </div>
-                @if ($errors->has('subject'))
-                    <div class="alert alert-danger">
-                        <ul class="p-0 m-0">
-                            @foreach($errors->get('subject') as $error)
-                                <li class="m-0 p-0"> {{$error}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                @include('partials.error', ['field' => 'subject'])
 
                 <!-- Поле ввода родительской задачи -->
                 <div class="mb-3">
@@ -61,15 +53,7 @@
                         @endforeach
                     </select>
                 </div>
-                @if ($errors->has('parent_task_id'))
-                    <div class="alert alert-danger">
-                        <ul class="p-0 m-0">
-                            @foreach($errors->get('parent_task_id') as $error)
-                                <li class="m-0 p-0"> {{$error}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                @include('partials.error', ['field' => 'parent_task_id'])
 
 
 
@@ -91,25 +75,9 @@
                             value="{{\Carbon\Carbon::parse($task->due_date)->toDateString()}}">
                     </div>        
                 </div>
-                @if ($errors->has('start_date'))
-                    <div class="alert alert-danger">
-                        <ul class="p-0 m-0">
-                            @foreach($errors->get('start_date') as $error)
-                                <li class="m-0 p-0"> {{$error}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-                @if ($errors->has('due_date'))
-                    <div class="alert alert-danger">
-                        <ul class="p-0 m-0">
-                            @foreach($errors->get('due_date') as $error)
-                                <li class="m-0 p-0"> {{$error}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
+                @include('partials.error', ['field' => 'start_date'])
+                @include('partials.error', ['field' => 'due_date'])
+                
                 <!-- Поле ввода уровня важности -->
 
                 <div class="mb-3">
@@ -126,17 +94,7 @@
                         @endforeach
                     </select>
                 </div>
-                @if ($errors->has('importance'))
-                    <div class="alert alert-danger">
-                        <ul class="p-0 m-0">
-                            @foreach($errors->get('importance') as $error)
-                                <li class="m-0 p-0"> {{$error}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-
+                @include('partials.error', ['field' => 'importance'])
 
                 <!-- Поле ввода дополнительной информации -->
                 <div class="form-group">
@@ -172,15 +130,7 @@
                         @endforeach
                     </select>
                 </div>
-                @if ($errors->has('task_performer_id'))
-                    <div class="alert alert-danger">
-                        <ul class="p-0 m-0">
-                            @foreach($errors->get('task_performer_id') as $error)
-                                <li class="m-0 p-0"> {{$error}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                @include('partials.error', ['field' => 'task_performer_id'])             
 
 
                 <details>
@@ -218,61 +168,25 @@
 @endsection
 
 @section('scripts')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            $('#user-select').select2();
-            $('#parent-tasks-select').select2();
-        })
-    </script>
-@endsection
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
-@section('styles')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
-
-    <!-- Добавление пользовательских стилей -->
-    <style>
-        h3 {
-            color: black; /* Установить черный цвет текста для заголовка */
-        }
-        
-        label {
-            color: black; /* Установить черный цвет текста для заголовка */
-            font-weight: 100;
-        }
-
-
-        select.form-control,
-        input.form-control,
-        textarea.form-control {
-            color: black; /* Установить черный цвет текста для полей ввода */
-        }
-
-        .select2-container--default .select2-selection--single {
-            color: black; /* Установить черный цвет текста для select2 */
-        }
-
-        .select2-container--default .select2-results__option {
-            color: black; /* Черный цвет текста для выпадающего списка select2 */
-        }
-
-        #search-input {
-            width: 150px;
-        }
-
-        .d-flex {
-            display: flex !important;
-        }
-    </style>
+<script>
+    
+    document.addEventListener('DOMContentLoaded', () => {
+    new Choices('#parent-tasks-select', {
+        searchEnabled: true,
+        placeholderValue: 'Выберите задачу',
+        shouldSort: false,
+    });
+    
+    new Choices('#user-select', {
+        searchEnabled: true,
+        placeholderValue: 'Выберите исполнителя',
+        shouldSort: false,
+    });
+});
+</script>
 @endsection
 
