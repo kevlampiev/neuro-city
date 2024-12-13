@@ -31,13 +31,18 @@
 @endsection
 
 @section('scripts')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('#users').select2();
-        })
+        
+        document.addEventListener('DOMContentLoaded', () => {
+        new Choices('#users', {
+            searchEnabled: true,
+            placeholderValue: 'Выберите подписчика по имени',
+            shouldSort: false,
+        });
+        
+    });
     </script>
 @endsection
 

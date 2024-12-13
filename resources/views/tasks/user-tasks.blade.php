@@ -84,6 +84,21 @@
 @endsection
 
 
-@section('script')
+@section('styles')
+    <!-- Подключение CSS -->
+    <link rel="stylesheet" href="{{ asset('css/DraggableNestableList.min.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+@endsection
+
+@section('scripts')
+<!-- Подключение JavaScript -->
+<script src="{{ asset('js/DraggableNestableList.js') }}"></script>
+<script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+    <script defer>
+        let dnl =new DraggableNestableList("#dd-list");
+    </script>
 
 @endsection
+
