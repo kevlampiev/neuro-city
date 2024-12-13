@@ -3,26 +3,12 @@
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Task\TaskController;
 use Illuminate\Support\Facades\Route;
-
-
-// Route::group([
-//     'prefix' => 'projects',
-// ],
-//     function () {
-//         Route::get('/', [TaskController::class, 'index'])
-//             ->name('projects');
-//         Route::get('/add', [ProjectController::class, 'create'])
-//             ->name('addProject');
-//         Route::post('/add', [ProjectController::class, 'store'])
-//             ->name('addProject');
-//         Route::get('{task}/edit', [ProjectController::class, 'edit'])
-//             ->name('editProject');
-//         Route::post('{task}/edit', [ProjectController::class, 'update']);
-//     });
+use App\Http\Middleware\PasswordExpired;
 
 
 Route::group([
-    'prefix' => 'tasks'
+    'prefix' => 'tasks',
+    'middleware'=>['auth', PasswordExpired::class],
 ],
     function () {
 
