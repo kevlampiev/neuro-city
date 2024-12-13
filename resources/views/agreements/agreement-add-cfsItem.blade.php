@@ -32,7 +32,7 @@
         <button type="submit" class="btn btn-primary">
             Добавить
         </button>
-        <a class="btn btn-secondary" href="{{route('admin.agreementSummary',['agreement'=>$agreement])}}">Отмена</a>
+        <a class="btn btn-secondary" href="{{route('agreementSummary',['agreement'=>$agreement])}}">Отмена</a>
 
 
     </form>

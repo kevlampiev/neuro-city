@@ -21,7 +21,7 @@
                         <td>#{{$task->id}}</td>
                         <td>{{$task->subject}}</td>
                         <td>{{$task->due_date}}</td>
-                        <td><a href="{{route('admin.taskCard', ['task' => $task])}}"> Карточка задачи </a></td>
+                        <td><a href="{{route('taskCard', ['task' => $task])}}"> Карточка задачи </a></td>
                     </tr>
                 @empty
                     <tr>
