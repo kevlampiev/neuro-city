@@ -103,8 +103,8 @@
                 </div>
                 <div class="tab-pane fade" id="subtasks" role="tabpanel" aria-labelledby="subtasks-tab">
                     <h4>Дочерние задачи</h4>
-                    @include('tasks.components.subtasks-menu')
-                    @include('tasks.components.subtasks-data')
+                    @include('tasks.tasks-tree', ['tasks'=>$task->subTasks, 'listId'=>'subtasks'])
+                    {{-- @include('tasks.components.subtasks-data') --}}
                 </div>
                 <div class="tab-pane fade" id="documents" role="tabpanel" aria-labelledby="documents-tab">
                     <h4>Документы по задаче</h4>
@@ -127,7 +127,22 @@
 
 
 @section('styles')
+
+    <!-- Подключение CSS -->
+    <link rel="stylesheet" href="{{ asset('css/DraggableNestableList.min.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <style>
+        .task-item {
+            list-style-type: none;
+            outline: 1px solid lightgrey;
+        }
+        .task-description {
+            text-decoration: none;
+        }
+        .task-description:hover {
+            background:lightgrey;
+        }
+    
         summary::-webkit-details-marker {
             display: none
         }
@@ -148,8 +163,15 @@
     </style>
 
 @endsection
+
 @section('scripts')
-    <script>
+
+<!-- Подключение JavaScript -->
+    <script src="{{ asset('js/DraggableNestableList.js') }}"></script>
+    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
+    <script defer>
+        let dnl =new DraggableNestableList("#subtasks");
+
         function autoSelectPage() {
             let urlArr = document.location.pathname.split('/')
             if (urlArr.length === 6) {
@@ -162,3 +184,11 @@
     </script>
 
 @endsection
+
+
+
+
+@section('scripts')
+
+@endsection
+

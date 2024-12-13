@@ -10,12 +10,11 @@
         @csrf
         <div class="input-group mb-3">
             <label for="users"></label>
-            <select name="user_id"
-                    class="form-control selectpicker" id="users" data-live-search="true">
+            <select name="user_id" id="users">
                 @foreach ($users as $user)
                     <option
                         value="{{$user->id}}">
-                        {{$user->name}} /{{$user->email}}
+                        {{$user->name}} / {{$user->email}}
                     </option>
                 @endforeach
             </select>
