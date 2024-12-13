@@ -1,6 +1,6 @@
-<a href="{{ route('taskCard', ['task' => $task]) }}" class="pl-3 outlined" >
+<a href="{{ route('taskCard', ['task' => $task]) }}" class="task-description">
     @php
-        $taskStr = '#' . $task->id . ' -- ' . $task->subject;
+        $taskStr = '#' . $task->id . ' ' . $task->subject;
         $isOverdue = $task->due_date < now() && !$task->terminate_date;
         $isUrgent = !$isOverdue && now()->diffInDays($task->due_date) < 3 && !$task->terminate_date;
     @endphp

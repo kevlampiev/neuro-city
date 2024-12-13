@@ -6,7 +6,7 @@
 
 @section('content')
 
-    <div class="row">
+    <div class="row mb-2">
         <h2>Мои задачи</h2>
         <div class="col-md-7">
             
@@ -38,7 +38,7 @@
                     <div id="panelsStayOpen-collapseAssignedToUser" class="accordion-collapse collapse show"
                          aria-labelledby="panelsStayOpen-HeadingAssignedToUser">
                         <div class="accordion-body">
-                            @include('tasks.components.tasks-tree', ['tasks'=>$userAssignments])
+                            @include('tasks.tasks-tree', ['tasks'=>$userAssignments, 'listId'=>'userAssignments'])
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                     <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse"
                          aria-labelledby="panelsStayOpen-headingTwo">
                         <div class="accordion-body">
-                            @include('tasks.components.tasks-tree', ['tasks'=>$assignedByUser])
+                            @include('tasks.tasks-tree', ['tasks'=>$assignedByUser, 'listId' => 'assignedByUser'])
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                          aria-labelledby="panelsStayOpen-headingThree">
                         <div class="accordion-body">
                             <div class="accordion-body">
-                                @include('tasks.components.tasks-tree', ['tasks'=>$followerTasks])
+                                @include('tasks.tasks-tree', ['tasks'=>$followerTasks, 'listId' => 'followerTasks'])
                             </div>
                         </div>
                     </div>
@@ -88,16 +88,29 @@
     <!-- Подключение CSS -->
     <link rel="stylesheet" href="{{ asset('css/DraggableNestableList.min.css') }}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <style>
+        .task-item {
+            list-style-type: none;
+            outline: 1px solid lightgrey;
+        }
+        .task-description {
+            text-decoration: none;
+        }
+        .task-description:hover {
+            background:lightgrey;
+        }
+    </style>
+    
 @endsection
 
 @section('scripts')
 <!-- Подключение JavaScript -->
 <script src="{{ asset('js/DraggableNestableList.js') }}"></script>
 <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-
     <script defer>
-        let dnl =new DraggableNestableList("#dd-list");
+        let dnl1 =new DraggableNestableList("#userAssignments");
+        let dnl2 =new DraggableNestableList("#assignedByUser");
+        let dnl3 =new DraggableNestableList("#followerTasks")
     </script>
 
 @endsection
