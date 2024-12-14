@@ -15,7 +15,7 @@
                     <div class="col-md-9">
                         <select name="bank_account_id" class="form-control" id="bank" v-model="form.bank_account_id">
                             <option v-for="account in filteredAccounts" :value="account.id">
-                                Владелец: @{{ account.owner_name }} [Банк: @{{ account.bank_name }}, Р.сч: @{{ account.account_number }}]
+                                Владелец: @{{ account.owner.name }} [Банк: @{{ account.bank.name }}, Р.сч: @{{ account.account_number }}]
                             </option>
                         </select>
                     </div>    
@@ -37,7 +37,7 @@
                         <select name="agreement_id" class="form-control" id="agreement" v-model="form.agreement_id">
                             <option v-for="agreement in filteredAgreements" :value="agreement.id">
                                 @{{ agreement.name }} № @{{ agreement.agr_number }} от @{{ agreement.date_open }}
-                                между @{{ agreement.buyer_name }} и @{{ agreement.seller_name }}
+                                между @{{ agreement.buyer.name }} и @{{ agreement.seller.name }}
                             </option>
                         </select>
                     </div>

@@ -49,7 +49,7 @@
                         <div class="col-md-10">
                             <select name="bank_account_id" class="form-control" id="bank" v-model="form.bank_account_id">
                                 <option v-for="account in filteredAccounts" :value="account.id">
-                                    Владелец: @{{ account.owner_name }} [Банк: @{{ account.bank_name }}, Р.сч: @{{ account.account_number }}]
+                                    Владелец: @{{ account.owner.name }} [Банк: @{{ account.bank.name }}, Р.сч: @{{ account.account_number }}]
                                 </option>
                             </select>
                         </div>    
@@ -75,7 +75,7 @@
                             <select name="agreement_id" class="form-control" id="agreement" v-model="form.agreement_id">
                                 <option v-for="agreement in filteredAgreements" :value="agreement.id">
                                     @{{ agreement.name }} № @{{ agreement.agr_number }} от @{{ agreement.date_open }}
-                                    между @{{ agreement.buyer_name }} и @{{ agreement.seller_name }}
+                                    между @{{ agreement.buyer.name }} и @{{ agreement.seller.name }}
                                 </option>
                             </select>
                         </div>
@@ -238,6 +238,13 @@
             Vue.createApp({
                 data() {
                     return {
+                        loading: true,
+                        accounts: [],
+                        agreements: [],
+                        projects: [],
+                        cfsItems: [],
+                        beneficiaries: [],
+                        plItems: [],
                         form: {
                             date_open: @json($model->date_open),
                             bank_account_id: @json($model->bank_account_id),
@@ -253,24 +260,6 @@
                             pl_item_id: @json($model->pl_item_id),
                             accrual_description: @json($model->accrual_description)
                         },
-                        accounts: {!! json_encode($accounts->map(fn($a) => [
-                            'id' => $a->id,
-                            'owner_name' => $a->owner->name,
-                            'bank_name' => $a->bank->name,
-                            'account_number' => $a->account_number,
-                        ])) !!},
-                        agreements: {!! json_encode($agreements->map(fn($a) => [
-                            'id' => $a->id,
-                            'name' => $a->name,
-                            'agr_number' => $a->agr_number,
-                            'date_open' => $a->date_open,
-                            'buyer_name' => $a->buyer->name,
-                            'seller_name' => $a->seller->name,
-                        ])) !!},
-                        projects: {!! json_encode($projects) !!},
-                        cfsItems: {!! json_encode($cfsItems) !!},
-                        beneficiaries: {!! json_encode($beneficiaries) !!},
-                        plItems: {!! json_encode($plItems) !!},
                         bankSearch: '',
                         agreementSearch: '',
                         projectSearch: '',
@@ -282,7 +271,7 @@
                 computed: {
                     filteredAccounts() {
                         return this.accounts.filter(account =>
-                            (account.owner_name + account.bank_name + account.account_number)
+                            (account.owner.name + account.bank.name + account.account_number)
                                 .toLowerCase()
                                 .includes(this.bankSearch.toLowerCase())
                         );
@@ -290,7 +279,7 @@
                     filteredAgreements() {
                         return this.agreements.filter(agreement =>
                             (agreement.name + agreement.agr_number + agreement.date_open + 
-                            agreement.buyer_name + agreement.seller_name)
+                            agreement.buyer.name + agreement.seller.name)
                                 .toLowerCase()
                                 .includes(this.agreementSearch.toLowerCase())
                         );
@@ -317,10 +306,46 @@
                     },
                 },
                 mounted() {
+                    this.loadReferences()
                     this.formatNumber('amount');
                     this.formatNumber('VAT');
                 },
                 methods: {
+                    async loadReferences() {
+                        try {
+                            this.loading = true;
+
+                            const responses = await Promise.all([
+                                axios.get('/references/accounts'),
+                                axios.get('/references/agreements'),
+                                axios.get('/references/projects'),
+                                axios.get('/references/cfs-items'),
+                                axios.get('/references/beneficiaries'),
+                                axios.get('/references/pl-items'),
+                            ]);
+
+                            this.accounts = responses[0].data;
+                            this.agreements = responses[1].data;
+                            this.projects = responses[2].data;
+                            this.cfsItems = responses[3].data;
+                            this.beneficiaries = responses[4].data;
+                            this.plItems = responses[5].data;
+                        } catch (error) {
+                            console.error('Ошибка при загрузке справочных данных:', error);
+                            alert('Не удалось загрузить справочные данные.');
+                        } finally {
+                            this.loading = false;
+                        }
+                    },
+                    async submitForm() {
+                        try {
+                            const response = await axios.post('/api/payments', this.form);
+                            alert('Платёж успешно сохранён!');
+                        } catch (error) {
+                            console.error('Ошибка при сохранении платежа:', error);
+                            alert('Не удалось сохранить платёж.');
+                        }
+                    },
                     formatNumber(field) {
                         if (this.form[field] !== null && this.form[field] !== '') {
                             let rawValue = this.form[field].toString().replace(/\s/g, '').replace(/,/g, '.');
