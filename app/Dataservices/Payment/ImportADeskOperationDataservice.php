@@ -82,26 +82,6 @@ class ImportADeskOperationDataservice
     {
             return [
             'model' => $payment,
-            'accounts' => BankAccount::orderBy('account_number')->get(),
-            'agreements' => Agreement::orderBy('agr_number')->get(),
-            'projects' => Project::query()->orderBy('name')
-                ->get()
-                ->prepend([
-                    'id' => null,
-                    'name' => '*БЕЗ ПРОЕКТА*',
-                    'description' => null,
-                    'adesk_id' => null,
-                    'date_open' => null,
-                    'date_close' => null,
-                    'created_by' => null,
-                    'created_at' => null,
-                    'updated_at' => null,
-                    'deleted_at' => null,
-                    'search_vector' => null,
-                ]),
-            'cfsItems' => CFSItem::orderBy('name')->get(),
-            'beneficiaries' => Company::orderBy('name')->get(),
-            'plItems' => PlItem::orderBy('name')->get(),
         ];
     }
 
