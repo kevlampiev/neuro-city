@@ -146,10 +146,9 @@ class TaskDataservice
     public static function createSubTask(Request $request, Task $parentTask): Task
     {
         $task = self::createNewTask(['parent_task_id' => $parentTask->id,
-            'agreement_id' => $parentTask->agreement_id,
-            'vehicle_id' => $parentTask->vehicle_id,
-            'company_id' => $parentTask->company_id,
-            'counterparty_id' => $parentTask->counterparty_id,
+            'user_id' => Auth::user()->id,
+            'date_start' => now(),
+            'due_date' => $parentTask->due_date,
         ]);
         if (!empty($request->old())) $task->fill($request->old());
         return $task;

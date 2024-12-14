@@ -4,6 +4,7 @@ use App\Http\Controllers\Task\MessageController;
 use App\Http\Controllers\Task\TaskController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\PasswordExpired;
+use App\Http\Controllers\NotificationController;
 
 
 Route::group([
@@ -11,7 +12,6 @@ Route::group([
     'middleware'=>['auth', PasswordExpired::class],
 ],
     function () {
-
         Route::get('{task}/card/{page?}', [TaskController::class, 'viewTaskCard'])
             ->name('taskCard');
         Route::get('{user}/user-tasks', [TaskController::class, 'viewUserTasks'])
@@ -65,3 +65,6 @@ Route::group([
             ->name('messageDelete');
     }
 );
+
+
+Route::get('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');

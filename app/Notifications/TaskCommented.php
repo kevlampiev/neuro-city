@@ -6,6 +6,7 @@ use App\Models\Task;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Str;
 
 class TaskCommented extends Notification
 {
@@ -59,7 +60,8 @@ class TaskCommented extends Notification
     {
         return [
             'sender' => auth()->user()->name,
-            'subject' => "Получен комментарий по задаче '" . $this->task->subject . "'",
+            'subject' => "Получен комментарий по задаче: '" . 
+                     Str::limit(strip_tags($this->task->description), 75) . "'",
             'link' => route('taskCard', ['task' => $this->task, 'page' => 'messages'])
         ];
     }
@@ -74,11 +76,9 @@ class TaskCommented extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            // 'task_id' => $this->task->id,
-            // 'task_name' => $this->task->name,
-            // 'completed_at' => now(),
             'sender' => auth()->user()->name,
-            'subject' => "Получен комментарий по задаче '" . $this->task->subject . "'",
+            'subject' => "Получен комментарий по задаче: '" . 
+                     Str::limit(strip_tags($this->task->description), 75) . "'",
             'link' => route('taskCard', ['task' => $this->task, 'page' => 'messages'])
         ];
     }

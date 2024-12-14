@@ -109,19 +109,19 @@ class TaskController extends Controller
         return view('tasks.task-summary', ['task' => $task]);
     }
 
-    private function getTaskUserList(Task $task): Collection
-    {
-        $userArray = [];
-        $userArray[] = $task->user_id;
-        $userArray[] = $task->task_performer_id;
-        $followers = Arr::pluck(
-            DB::select('select user_id from task_user where task_id=:taskId', ['taskId' => $task->id]),
-            'user_id');
-        foreach ($followers as $follower) {
-            $userArray[] = $follower;
-        }
-        return collect($userArray)->unique();
-    }
+    // private function getTaskUserList(Task $task): Collection
+    // {
+    //     $userArray = [];
+    //     $userArray[] = $task->user_id;
+    //     $userArray[] = $task->task_performer_id;
+    //     $followers = Arr::pluck(
+    //         DB::select('select user_id from task_user where task_id=:taskId', ['taskId' => $task->id]),
+    //         'user_id');
+    //     foreach ($followers as $follower) {
+    //         $userArray[] = $follower;
+    //     }
+    //     return collect($userArray)->unique();
+    // }
 
     public function addFollower(Request $request, Task $task)
     {
@@ -152,7 +152,7 @@ class TaskController extends Controller
     public function storeMessage(MessageRequest $request, Task $task, Message $message)
     {
         TaskDataservice::storeTaskMessage($request);
-        foreach ($this->getTaskUserList($task) as $el) {
+        foreach ($task->getAllInterestedUsers() as $el) {
             if ($el != Auth::user()->id) User::find($el)->notify(new TaskCommented($task));
         }
 

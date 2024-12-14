@@ -37,18 +37,20 @@
             </div>
            @endif
 
-            @if(count(auth()->user()->unreadNotifications)>0)
+            {{-- @if(count(auth()->user()->unreadNotifications)>0)
                 <div class="alert alert-info">
                     <a href="{{route('admin.main')}}">&#9993; Для Вас есть новые уведомления </a>
                     <span class="badge bg-info">{{count(auth()->user()->unreadNotifications)}}</span>
                 </div>
-            @endif
+            @endif --}}
 
             @if(session()->has('error'))
                 <div class="alert alert-danger m-0 p-0">
                     <i class="bi bi-exclamation-diamond"></i> {{ session()->get('error') }}
                 </div>
             @endif
+
+           @include("layouts.layout-components.info-panel")
 
             <div class="m-5 p-5 bg-body-tertiary rounded bg-white shadow">
                 @yield('content')
@@ -59,6 +61,7 @@
     
     
         @yield("scripts")
+        
     
 </body>
 

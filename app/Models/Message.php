@@ -32,4 +32,18 @@ class Message extends Model
     {
         return $this->hasMany(Message::class, 'reply_to_message_id', 'id');
     }
+
+    // Аксессор для вычисляемого поля
+    public function getRootTaskAttribute()
+    {
+        $message = $this;
+
+        // Поднимаемся по цепочке сообщений до тех пор, пока не найдем task_id
+        while ($message && !$message->task_id) {
+            $message = $message->parentMessage;
+        }
+
+        // Если нашли сообщение с task_id, возвращаем связанную модель Task
+        return $message ? $message->task : null;
+    }
 }

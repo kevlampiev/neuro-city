@@ -98,7 +98,7 @@
                 </div>
                 <div class="tab-pane fade" id="subtasks" role="tabpanel" aria-labelledby="subtasks-tab">
                     <h4>Дочерние задачи</h4>
-
+                    @include('tasks.components.subtasks-menu')
                     @include('tasks.tasks-tree', ['tasks'=>$task->subTasks, 'listId'=>'subtasks'])
                 </div>
                 <div class="tab-pane fade" id="documents" role="tabpanel" aria-labelledby="documents-tab">
@@ -169,8 +169,8 @@
 
         function autoSelectPage() {
             let urlArr = document.location.pathname.split('/')
-            if (urlArr.length === 6) {
-                let tabName = '[data-bs-target="#' + urlArr[5] + '"]'
+            if (urlArr.length === 5) {
+                let tabName = '[data-bs-target="#' + urlArr[4] + '"]'
                 $(tabName).tab('show')
             }
         }

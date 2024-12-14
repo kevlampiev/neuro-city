@@ -33,23 +33,26 @@ class MessageDataservice
         return $m;
     }
 
-    public static function saveChanges(MessageRequest $request, Message $message)
+    public static function saveChanges(MessageRequest $request, Message $message): Message
     {
         $message->fill($request->all());
         $message->user_id = Auth::user()->id;
         if ($message->id) $message->updated_at = now();
         else $message->created_at = now();
         $message->save();
+        return $message;
     }
 
-    public static function store(MessageRequest $request)
+    public static function store(MessageRequest $request): Message
     {
         try {
             $message = new Message();
-            self::saveChanges($request, $message);
+            $message = self::saveChanges($request, $message);
             session()->flash('message', 'Добавлено новое сообщение');
+            return $message;
         } catch (Error $err) {
             session()->flash('error', 'Не удалось добавить новое сообщение');
+            return null;
         }
 
     }

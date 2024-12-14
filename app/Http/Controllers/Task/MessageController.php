@@ -6,9 +6,11 @@ use App\Dataservices\Task\MessageDataservice;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\MessageRequest;
 use App\Models\Message;
-use App\NotificationServices\NewMessageNotificationSocketsService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Notifications\TaskCommented;
 
 class MessageController extends Controller
 {
@@ -27,8 +29,12 @@ class MessageController extends Controller
 
     public function store(MessageRequest $request, Message $message): RedirectResponse
     {
-        MessageDataservice::store($request);
-        // NewMessageNotificationSocketsService::notify($message);
+        $message = MessageDataservice::store($request);
+        $task = $message->root_task;
+        foreach ($task->getAllInterestedUsers() as $el) {
+            if ($el != Auth::user()->id) User::find($el)->notify(new TaskCommented($task));
+        }
+        
         $route = session('previous_url');
         return redirect()->to($route);
     }
