@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Task;
 
 use App\Dataservices\Task\TaskDataservice;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Task\MessageRequest;
 use App\Http\Requests\Task\TaskRequest;
 use App\Models\Agreement;
+use App\Models\Message;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -136,6 +138,26 @@ class TaskController extends Controller
         TaskDataservice::detachTaskFollower($task, $user);
         return redirect()->route('taskCard', ['task' => $task]);
     }
+
+
+    public function addMessage(Request $request, Task $task)
+    {
+        $message = TaskDataservice::createTaskMessage($request, $task);
+        return view('tasks.messages.message-edit',
+            ['message' => $message, 'task' => $task]);
+    }
+
+    
+    public function storeMessage(MessageRequest $request, Task $task, Message $message)
+    {
+        TaskDataservice::storeTaskMessage($request);
+        // foreach ($this->getTaskUserList($task) as $el) {
+        //     if ($el != Auth::user()->id) User::find($el)->notify(new TaskCommented($task));
+        // }
+
+        return redirect()->route('taskCard', ['task' => $task, 'page' =>'messages']);
+    }
+
 
 
 }

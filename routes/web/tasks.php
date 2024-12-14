@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Task\MessageController;
 use App\Http\Controllers\Task\TaskController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\PasswordExpired;
@@ -46,5 +46,22 @@ Route::group([
         Route::get('{task}/detachFollower/{user}', [TaskController::class, 'detachFollower'])
             ->name('detachTaskFollower');
 
+    }
+);
+
+
+
+Route::group([
+    'prefix' => 'messages'
+],
+    function () {
+        Route::get('{message}/reply', [MessageController::class, 'createReply'])
+            ->name('messageReply');
+        Route::post('{message}/reply', [MessageController::class, 'store']);
+        Route::get('{message}/edit', [MessageController::class, 'edit'])
+            ->name('messageEdit');
+        Route::post('{message}/edit', [MessageController::class, 'update']);
+        Route::get('{message}/delete', [MessageController::class, 'delete'])
+            ->name('messageDelete');
     }
 );

@@ -115,7 +115,7 @@
                     <h4>Сообщения</h4>
                     @include('tasks.components.messages-menu')
                     <div class="card bg-light">
-                        {{-- @include('messages.messages', ['messages' => $task->messages]) --}}
+                        @include('tasks.messages.messages', ['messages' => $task->messages])
                     </div>
                 </div>
 

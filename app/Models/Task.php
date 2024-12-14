@@ -46,10 +46,10 @@ class Task extends Model
         return $this->hasMany(Document::class);
     }
 
-    // public function messages(): HasMany
-    // {
-    //     return $this->hasMany(Message::class);
-    // }
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
+    }
 
     public function followers(): BelongsToMany
     {
