@@ -37,12 +37,12 @@
             </div>
            @endif
 
-            {{-- @if(count(auth()->user()->unreadNotifications)>0)
+            @if(count(auth()->user()->unreadNotifications)>0)
                 <div class="alert alert-info">
                     <a href="{{route('admin.main')}}">&#9993; Для Вас есть новые уведомления </a>
                     <span class="badge bg-info">{{count(auth()->user()->unreadNotifications)}}</span>
                 </div>
-            @endif --}}
+            @endif
 
             @if(session()->has('error'))
                 <div class="alert alert-danger m-0 p-0">

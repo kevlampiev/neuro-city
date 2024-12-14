@@ -16,6 +16,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\TaskCommented;
 
 class TaskController extends Controller
 {
@@ -151,9 +152,9 @@ class TaskController extends Controller
     public function storeMessage(MessageRequest $request, Task $task, Message $message)
     {
         TaskDataservice::storeTaskMessage($request);
-        // foreach ($this->getTaskUserList($task) as $el) {
-        //     if ($el != Auth::user()->id) User::find($el)->notify(new TaskCommented($task));
-        // }
+        foreach ($this->getTaskUserList($task) as $el) {
+            if ($el != Auth::user()->id) User::find($el)->notify(new TaskCommented($task));
+        }
 
         return redirect()->route('taskCard', ['task' => $task, 'page' =>'messages']);
     }
