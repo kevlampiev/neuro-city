@@ -59,11 +59,11 @@ class AdeskRuleDataservice
     {
             return [
             'model' => $rule,
-            'accounts' => BankAccount::orderBy('account_number')->get(),
-            'agreements' => Agreement::orderBy('agr_number')->get(),
-            'projects' => Project::query()->orderBy('name')->get(),
-            'cfsItems' => CFSItem::orderBy('name')->get(),
-            'plItems' => PlItem::orderBy('name')->get(),
+            // 'accounts' => BankAccount::orderBy('account_number')->get(),
+            // 'agreements' => Agreement::orderBy('agr_number')->get(),
+            // 'projects' => Project::query()->orderBy('name')->get(),
+            // 'cfsItems' => CFSItem::orderBy('name')->get(),
+            // 'plItems' => PlItem::orderBy('name')->get(),
             
         ];
     }
