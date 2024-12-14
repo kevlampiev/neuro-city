@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 class Task extends Model
 {
@@ -46,14 +47,32 @@ class Task extends Model
         return $this->hasMany(Document::class);
     }
 
-    // public function messages(): HasMany
-    // {
-    //     return $this->hasMany(Message::class);
-    // }
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
+    }
 
     public function followers(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
+    }
+
+    public function getAllInterestedUsers(): Collection
+    {
+        $userIds = collect();
+
+        // Добавляем автора задачи
+        $userIds->push($this->user_id);
+
+        // Добавляем исполнителя задачи
+        $userIds->push($this->task_performer_id);
+
+        // Добавляем всех подписчиков
+        $followerIds = $this->followers()->pluck('user_id');
+        $userIds = $userIds->merge($followerIds);
+
+        // Убираем дубли
+        return $userIds->unique();
     }
 
 }

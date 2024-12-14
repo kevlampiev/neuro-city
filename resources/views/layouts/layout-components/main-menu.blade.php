@@ -1,6 +1,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #e3f2fd;">
     <div class="container-fluid">
+        
         {{-- <a class="navbar-brand" href="{{ route('admin.main') }}"> --}}
         <a class="navbar-brand" href="/">
 

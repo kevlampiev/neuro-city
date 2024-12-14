@@ -3,8 +3,10 @@
 
 namespace App\DataServices\Task;
 
+use App\Http\Requests\Task\MessageRequest;
 use App\Http\Requests\Task\TaskRequest;
 use App\Models\Agreement;
+use App\Models\Message;
 use App\Models\Task;
 use App\Models\User;
 use Carbon\Carbon;
@@ -144,10 +146,9 @@ class TaskDataservice
     public static function createSubTask(Request $request, Task $parentTask): Task
     {
         $task = self::createNewTask(['parent_task_id' => $parentTask->id,
-            'agreement_id' => $parentTask->agreement_id,
-            'vehicle_id' => $parentTask->vehicle_id,
-            'company_id' => $parentTask->company_id,
-            'counterparty_id' => $parentTask->counterparty_id,
+            'user_id' => Auth::user()->id,
+            'date_start' => now(),
+            'due_date' => $parentTask->due_date,
         ]);
         if (!empty($request->old())) $task->fill($request->old());
         return $task;
@@ -308,4 +309,31 @@ class TaskDataservice
             session()->flash('error', 'Не удалось отключить подписчика');
         }
     }
+
+    public static function createTaskMessage(Request $request, Task $task): Message
+    {
+        $message = new Message();
+        $message->fill(['user_id' => Auth::user()->id,
+            'task_id' => $task->id]);
+        if (!empty($request->old())) $message->fill($request->old());
+        return $message;
+    }
+
+    public static function storeTaskMessage(MessageRequest $request)
+    {
+        try {
+            $message = new Message();
+            $message->fill($request->all());
+            if (!$message->user_id) $message->user_id = Auth::user()->id;
+            $message->created_at = now();
+            $message->save();
+            session()->flash('message', 'Добавлено новое сообщение');
+        } catch (Error $err) {
+            session()->flash('error', 'Не удалось добавить сообщение');
+        }
+    }
+
+
+
+
 }

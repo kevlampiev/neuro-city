@@ -88,13 +88,8 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="main" role="tabpanel" aria-labelledby="main-tab">
                     <h4>Основная информация</h4>
-                    @if($task->parent_task_id)
-                        @include('tasks.components.commom-info-menu')
-                        @include('tasks.components.common-info-task-data')
-                    @else
-                        @include('tasks.components.commom-info-project-menu')
-                        @include('tasks.components.common-info-project-data')
-                    @endif
+                    @include('tasks.components.commom-info-menu')
+                    @include('tasks.components.common-info-task-data')
                 </div>
                 <div class="tab-pane fade" id="followers" role="tabpanel" aria-labelledby="followers-tab">
                     <h4>Подписчики</h4>
@@ -103,19 +98,19 @@
                 </div>
                 <div class="tab-pane fade" id="subtasks" role="tabpanel" aria-labelledby="subtasks-tab">
                     <h4>Дочерние задачи</h4>
+                    @include('tasks.components.subtasks-menu')
                     @include('tasks.tasks-tree', ['tasks'=>$task->subTasks, 'listId'=>'subtasks'])
-                    {{-- @include('tasks.components.subtasks-data') --}}
                 </div>
                 <div class="tab-pane fade" id="documents" role="tabpanel" aria-labelledby="documents-tab">
                     <h4>Документы по задаче</h4>
-                    @include('tasks.components.documents-menu')
-                    @include('tasks.components.documents-data')
+                    {{-- @include('tasks.components.documents-menu')
+                    @include('tasks.components.documents-data') --}}
                 </div>
                 <div class="tab-pane fade" id="messages" role="tabpanel" aria-labelledby="messages-tab">
                     <h4>Сообщения</h4>
                     @include('tasks.components.messages-menu')
                     <div class="card bg-light">
-                        {{-- @include('messages.messages', ['messages' => $task->messages]) --}}
+                        @include('tasks.messages.messages', ['messages' => $task->messages])
                     </div>
                 </div>
 
@@ -174,8 +169,8 @@
 
         function autoSelectPage() {
             let urlArr = document.location.pathname.split('/')
-            if (urlArr.length === 6) {
-                let tabName = '[data-bs-target="#' + urlArr[5] + '"]'
+            if (urlArr.length === 5) {
+                let tabName = '[data-bs-target="#' + urlArr[4] + '"]'
                 $(tabName).tab('show')
             }
         }

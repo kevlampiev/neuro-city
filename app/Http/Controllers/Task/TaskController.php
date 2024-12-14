@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Task;
 
 use App\Dataservices\Task\TaskDataservice;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Task\MessageRequest;
 use App\Http\Requests\Task\TaskRequest;
 use App\Models\Agreement;
+use App\Models\Message;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -14,6 +16,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\TaskCommented;
 
 class TaskController extends Controller
 {
@@ -106,19 +109,19 @@ class TaskController extends Controller
         return view('tasks.task-summary', ['task' => $task]);
     }
 
-    private function getTaskUserList(Task $task): Collection
-    {
-        $userArray = [];
-        $userArray[] = $task->user_id;
-        $userArray[] = $task->task_performer_id;
-        $followers = Arr::pluck(
-            DB::select('select user_id from task_user where task_id=:taskId', ['taskId' => $task->id]),
-            'user_id');
-        foreach ($followers as $follower) {
-            $userArray[] = $follower;
-        }
-        return collect($userArray)->unique();
-    }
+    // private function getTaskUserList(Task $task): Collection
+    // {
+    //     $userArray = [];
+    //     $userArray[] = $task->user_id;
+    //     $userArray[] = $task->task_performer_id;
+    //     $followers = Arr::pluck(
+    //         DB::select('select user_id from task_user where task_id=:taskId', ['taskId' => $task->id]),
+    //         'user_id');
+    //     foreach ($followers as $follower) {
+    //         $userArray[] = $follower;
+    //     }
+    //     return collect($userArray)->unique();
+    // }
 
     public function addFollower(Request $request, Task $task)
     {
@@ -136,6 +139,26 @@ class TaskController extends Controller
         TaskDataservice::detachTaskFollower($task, $user);
         return redirect()->route('taskCard', ['task' => $task]);
     }
+
+
+    public function addMessage(Request $request, Task $task)
+    {
+        $message = TaskDataservice::createTaskMessage($request, $task);
+        return view('tasks.messages.message-edit',
+            ['message' => $message, 'task' => $task]);
+    }
+
+    
+    public function storeMessage(MessageRequest $request, Task $task, Message $message)
+    {
+        TaskDataservice::storeTaskMessage($request);
+        foreach ($task->getAllInterestedUsers() as $el) {
+            if ($el != Auth::user()->id) User::find($el)->notify(new TaskCommented($task));
+        }
+
+        return redirect()->route('taskCard', ['task' => $task, 'page' =>'messages']);
+    }
+
 
 
 }

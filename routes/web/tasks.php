@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Task\MessageController;
 use App\Http\Controllers\Task\TaskController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\PasswordExpired;
+use App\Http\Controllers\NotificationController;
 
 
 Route::group([
@@ -11,7 +12,6 @@ Route::group([
     'middleware'=>['auth', PasswordExpired::class],
 ],
     function () {
-
         Route::get('{task}/card/{page?}', [TaskController::class, 'viewTaskCard'])
             ->name('taskCard');
         Route::get('{user}/user-tasks', [TaskController::class, 'viewUserTasks'])
@@ -48,3 +48,23 @@ Route::group([
 
     }
 );
+
+
+
+Route::group([
+    'prefix' => 'messages'
+],
+    function () {
+        Route::get('{message}/reply', [MessageController::class, 'createReply'])
+            ->name('messageReply');
+        Route::post('{message}/reply', [MessageController::class, 'store']);
+        Route::get('{message}/edit', [MessageController::class, 'edit'])
+            ->name('messageEdit');
+        Route::post('{message}/edit', [MessageController::class, 'update']);
+        Route::get('{message}/delete', [MessageController::class, 'delete'])
+            ->name('messageDelete');
+    }
+);
+
+
+Route::get('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');

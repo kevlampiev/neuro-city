@@ -50,6 +50,8 @@
                 </div>
             @endif
 
+           @include("layouts.layout-components.info-panel")
+
             <div class="m-5 p-5 bg-body-tertiary rounded bg-white shadow">
                 @yield('content')
             <div>    
@@ -59,6 +61,7 @@
     
     
         @yield("scripts")
+        
     
 </body>
 
