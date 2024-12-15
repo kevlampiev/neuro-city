@@ -47,6 +47,7 @@
                     <th scope="col">Тип</th>
                     <th scope="col">ИНН</th>
                     <th scope="col">Телефон</th>
+                    <th scope="col">ЭДО</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                 </tr>
@@ -86,6 +87,7 @@
                         </td>
                         <td>{{$counterparty->inn}}</td>
                         <td>{{$counterparty->phone}}</td>
+                        <td> @if($counterparty->uses_edo)<i class="bi bi-lightning-charge-fill"></i>@endif </td>
                         <td>
                             <a href="{{route('counterpartySummary',['counterparty'=>$counterparty])}}">
                                 &#9776;Карточка </a>
