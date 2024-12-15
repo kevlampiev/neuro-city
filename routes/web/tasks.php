@@ -59,6 +59,19 @@ Route::group([
                     ->name('detachAgreementFromTask');
             }
         );
+
+        Route::group([
+            'middleware'=>['permission:s-counterparty'],
+        ],
+            function () {
+                Route::get('{task}/addCompany', [TaskLinksController::class, 'chooseCompanyToAttach'])
+                    ->name('attachCompanyToTask');
+                Route::post('{task}/addCompany', [TaskLinksController::class, 'attachCompany']);
+                Route::get('{task}/detachCompany/{company}', [TaskLinksController::class, 'detachCompany'])
+                    ->name('detachCompanyFromTask');
+            }
+        );
+
     }
 );
 

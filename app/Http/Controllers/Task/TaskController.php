@@ -125,7 +125,7 @@ class TaskController extends Controller
 
     public function addFollower(Request $request, Task $task)
     {
-        return view('tasks.task-add-follower', TaskDataservice::createTaskFollower($task));
+        return view('tasks.links.task-add-follower', TaskDataservice::createTaskFollower($task));
     }
 
     public function storeFollower(Request $request, Task $task)

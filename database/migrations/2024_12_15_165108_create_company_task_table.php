@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('company_task', function (Blueprint $table) {
             $table->id();
             $table->foreignId('task_id')->constrained()->onDelete('cascade');
-            $table->foreignId('agreement_id')->constrained()->onDelete('cascade');
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

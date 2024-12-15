@@ -3,20 +3,11 @@
 
 namespace App\Dataservices\Task;
 
-use App\Http\Requests\Task\MessageRequest;
-use App\Http\Requests\Task\TaskRequest;
 use App\Models\Agreement;
-use App\Models\Message;
 use App\Models\Task;
-use App\Models\User;
-use Carbon\Carbon;
 use Error;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Mockery\Exception;
+use App\Models\Company;
 
 class TaskLinksDataservice
 {
@@ -26,7 +17,6 @@ class TaskLinksDataservice
         return ['task' => $task,
                 'agreements' => Agreement::all()];
     }
-
 
     public static function attachAgreement($task_id, $agreement_id):void
     {
@@ -57,6 +47,45 @@ class TaskLinksDataservice
             }
         } else {
             session()->flash('error', 'Только постановщик задачи может разоврать связь задачи и договора');
+        }    
+    }
+
+    public static function provideCompanyChooseDialog(Task $task):array
+    {
+        return ['task' => $task,
+                'companies' => Company::all()];
+    }
+
+
+    public static function attachCompany($task_id, $company_id):void
+    {
+        $task = Task::findOrFail($task_id);
+        $company = Company::findOrFail($company_id);
+        if (Auth::user()->id == $task->user->id)
+        {
+            try {
+                $task->companies()->attach($company);
+                session()->flash('message', 'Компания связана с задачей');
+            } catch (Error $e) {
+                session()->flash('error', 'Не удалось связать компанию и задачу');
+            }
+        } else {
+            session()->flash('error', 'Только постановщик задачи может прикреплять компанию');
+        }    
+    }
+
+    public static function detachCompany(Task $task, Company $company)
+    {
+        if (Auth::user()->id == $task->user->id)
+        {
+            try {
+                $task->companies()->detach($company);
+                session()->flash('message', 'Связь компании и задачи разоврана');
+            } catch (Error $e) {
+                session()->flash('error', 'Не удалось отвязать компанию от задачи');
+            }
+        } else {
+            session()->flash('error', 'Только постановщик задачи может разоврать связь задачи и компании');
         }    
     }
 

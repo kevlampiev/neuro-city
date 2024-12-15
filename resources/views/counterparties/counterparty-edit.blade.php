@@ -158,6 +158,13 @@
                 </div>
             @endif
 
+
+
+            <div class="form-group">
+                <label for="inputEDO">Организация использует ЭДО</label>
+                <input type="checkbox" id="scales" name="uses_edo" {{$counterparty->uses_edo?'checked':''}} />
+            </div>
+
             <div class="form-group">
                 <label for="inputHeader">Руководитель</label>
                 <input type="text"
