@@ -86,13 +86,10 @@
                         <h5>Изображение для аватара</h5>
                         <div onclick="document.getElementById('loadImgBtn').click()">
                             @if(!$user->photo)
-                                <img src="https://aristokratrest.com/files/rublevbar/image/no_product.jpg" alt="No photo"
+                                <img src=   "https://aristokratrest.com/files/rublevbar/image/no_product.jpg" alt="No photo"
                                     class="rounded-circle float-start border-info" style="width: 200px; height:200px; object-fit: cover;" id="img-viewer">
                             @else
-                                {{-- <img src="{{ Storage::url('img/avatars/'.$user->photo) }}" alt="User photo"
-                                    class="rounded-circle float-start border-info"
-                                    style="width: 200px; height:200px; object-fit: cover;" id="img-viewer"> --}}
-                                 <img src={{ url('storage/img/' . $user->photo) }} alt="User photo"
+                                 <img src="/storage/img/{{ $user->photo }}" alt="User photo"
                                     class="rounded-circle float-start border-info"
                                     style="width: 200px; height:200px; object-fit: cover;" id="img-viewer">   
 

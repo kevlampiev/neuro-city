@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Company extends Model
@@ -42,5 +42,10 @@ class Company extends Model
     public function bankAccounts():HasMany
     {
         return $this->hasMany(BankAccount::class, 'owner_id', 'id');
+    }
+
+    public function tasks(): BelongsToMany
+    {
+        return $this->belongsToMany(Task::class, 'company_task');
     }
 }

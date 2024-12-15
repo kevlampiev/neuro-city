@@ -1,11 +1,12 @@
 <?php
 
+use App\DataServices\Task\TaskLinksDataservice;
 use App\Http\Controllers\Task\MessageController;
 use App\Http\Controllers\Task\TaskController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\PasswordExpired;
 use App\Http\Controllers\NotificationController;
-
+use App\Http\Controllers\Task\TaskLinksController;
 
 Route::group([
     'prefix' => 'tasks',
@@ -40,12 +41,24 @@ Route::group([
         Route::get('{task}/addDocument', [TaskController::class, 'addDocument'])
             ->name('addTaskDocument');
         Route::post('{task}/addDocument', [TaskController::class, 'storeDocument']);
+        
         Route::get('{task}/addFollower', [TaskController::class, 'addFollower'])
             ->name('addTaskFollower');
         Route::post('{task}/addFollower', [TaskController::class, 'storeFollower']);
         Route::get('{task}/detachFollower/{user}', [TaskController::class, 'detachFollower'])
             ->name('detachTaskFollower');
 
+        Route::group([
+            'middleware'=>['permission:s-agreements'],
+        ],
+            function () {
+                Route::get('{task}/addAgreement', [TaskLinksController::class, 'chooseAgreementToAttach'])
+                    ->name('attachAgreementToTask');
+                Route::post('{task}/addAgreement', [TaskLinksController::class, 'attachAgreement']);
+                Route::get('{task}/detachAgreement/{agreement}', [TaskLinksController::class, 'detachAgreement'])
+                    ->name('detachAgreementFromTask');
+            }
+        );
     }
 );
 

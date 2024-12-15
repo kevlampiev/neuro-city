@@ -1,20 +1,22 @@
 @extends('layouts.big-form')
 
 @section('title')
-    Добавить подписчика к задаче
+    Добавить договор
 @endsection
 
 @section('content')
-    <h3> Добавить подписчика к задаче {{$task->subject}}</h3>
+    <h3> Добавить связанный договор с задачей {{$task->subject}}</h3>
     <form method="POST">
         @csrf
+        <input type="hidden" name="task_id" value={{$task->id}}>
         <div class="input-group mb-3">
             <label for="users"></label>
-            <select name="user_id" id="users">
-                @foreach ($users as $user)
+            <select name="agreement_id" id="agreements">
+                @foreach ($agreements as $agreement)
                     <option
-                        value="{{$user->id}}">
-                        {{$user->name}} / {{$user->email}}
+                        value="{{$agreement->id}}">
+                        {{$agreement->name}} № {{$agreement->agr_number}} от {{\Carbon\Carbon::parse($agreement->date_open)->format('dd.mm.YYYY')}}
+                        между {{$agreement->buyer->name }} и {{$agreement->seller->name }}
                     </option>
                 @endforeach
             </select>
@@ -24,7 +26,7 @@
         <button type="submit" class="btn btn-primary">
             Добавить
         </button>
-        <a class="btn btn-secondary" href="{{route('taskCard',['task'=>$task])}}">Отмена</a>
+        <a class="btn btn-secondary" href="{{route('taskCard',['task'=>$task, 'page'=>'agreements'])}}">Отмена</a>
     </form>
 
 @endsection
@@ -35,9 +37,9 @@
     <script>
         
         document.addEventListener('DOMContentLoaded', () => {
-        new Choices('#users', {
+        new Choices('#agreements', {
             searchEnabled: true,
-            placeholderValue: 'Выберите подписчика по имени',
+            placeholderValue: 'Выберите договор по имени или участнику',
             shouldSort: false,
         });
         

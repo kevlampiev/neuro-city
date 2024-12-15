@@ -75,4 +75,14 @@ class Task extends Model
         return $userIds->unique();
     }
 
+    public function agreements(): BelongsToMany
+    {
+        return $this->belongsToMany(Agreement::class, 'agreement_task');
+    }
+
+    public function companies(): BelongsToMany
+    {
+        return $this->belongsToMany(Company::class, 'company_task');
+    }
+
 }

@@ -169,8 +169,6 @@ class TaskDataservice
 
     public static function saveChanges(TaskRequest $request, Task $task)
     {
-
-
         $task->fill($request->all());
         $task->hidden_task = $request->has('hidden_task') ? 1 : 0;
 
@@ -192,9 +190,7 @@ class TaskDataservice
             session()->flash('error', 'Не удалось добавить новую задачу');
             return null;
         }
-
     }
-
 
     public static function edit(Request $request, Task $task)
     {
@@ -332,8 +328,5 @@ class TaskDataservice
             session()->flash('error', 'Не удалось добавить сообщение');
         }
     }
-
-
-
 
 }

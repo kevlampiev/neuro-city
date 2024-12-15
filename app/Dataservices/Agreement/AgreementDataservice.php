@@ -77,8 +77,6 @@ class AgreementDataservice
             'filter' => $filter,
             'agreementStatus' => $agreementStatus,
             'agreementType' => AgreementType::orderBy('name')->get(),
-            // 'cfs_item_id' =>$cfs_item_id,
-            // 'cfsItems' => CFSItem::query()->orderBy('name')->get(),
         ];
     }
 
@@ -86,11 +84,7 @@ class AgreementDataservice
      *снабжение данными форму редактирования договора
      */
     public static function provideAgreementEditor(Agreement $agreement, $routeName): array
-    {
-        // $projects = Project::query()->orderBy('name')->get();
-        // $projects->push(new Task(['id'=>null, 'subject' => "Без проекта"]));
-        // $cfsGroups = CFSGroup::orderBy('cfs_section')->orderBy('name')->get();
-        // $unitOfMeasurements = UnitOfMeasurement::orderBy('name')->get();
+    {      
         if (!$agreement->agr_number) {
             $agreement->agr_number = now()->format('Y-m/').(Agreement::count() + 1);
             $agreement->date_open = now()->format('Y-m-d');
@@ -103,8 +97,6 @@ class AgreementDataservice
             'sellers' => Company::query()->orderBy('name')->get(),
             'buyers' => Company::query()->orderBy('name')->get(),
             'projects' => Project::query()->orderBy('name')->get(),
-            // 'cfsGroups' => $cfsGroups,
-            // 'unitOfMeasurements' => $unitOfMeasurements
         ];
     }
 
@@ -161,5 +153,5 @@ class AgreementDataservice
         }
     }
 
-    
+        
 }
