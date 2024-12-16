@@ -1,4 +1,3 @@
-<a href="{{ route('taskCard', ['task' => $task]) }}" class="task-description">
     @php
         $taskStr = '#' . $task->id . ' ' . $task->subject;
         $isOverdue = $task->due_date < now() && !$task->terminate_date;
@@ -28,4 +27,5 @@
         {{ !$task->parent_task_id ? 'Руководитель' : 'Исп' }}: {{ $task->performer->name }}
         &nbsp; Срок: {{ \Carbon\Carbon::parse($task->due_date)->format('d.m.Y') }}
     </span>
-</a>
+    <a href="{{ route('taskCard', ['task' => $task]) }}" class="task-description"> &nbsp;&nbsp; &#9776; Карточка </a>
+
