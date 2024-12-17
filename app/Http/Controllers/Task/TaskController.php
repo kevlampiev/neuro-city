@@ -17,6 +17,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\TaskCommented;
+use App\Notifications\TaskCreated;
 
 class TaskController extends Controller
 {
@@ -52,7 +53,8 @@ class TaskController extends Controller
 
     public function store(TaskRequest $request): RedirectResponse
     {
-        $task = TaskDataservice::store($request);
+        $task = TaskDataservice::store($request);     
+        if ($task->performer_id != $task->user_id) $task->performer->notify(new TaskCreated($task));
         
         $route = session('previous_url', route('userTasks', ['user' => Auth::user()]));
         return redirect()->to($route);

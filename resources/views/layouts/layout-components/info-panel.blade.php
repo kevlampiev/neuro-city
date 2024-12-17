@@ -16,29 +16,31 @@
     </button>
   </div>
   <div class="offcanvas-body">
-    <ul class="list-group">
-      @forelse(auth()->user()->notifications->sortByDesc('created_at')->take(30) as $notification)
-        <li class="list-group-item p-3 
-            {{ is_null($notification->read_at) ? 'bg-light fw-bold' : '' }}">
-            <a 
-                href="{{ route('notifications.markAsRead', $notification->id) }}" 
-                class="text-decoration-none d-flex justify-content-between align-items-start w-100">
-                <div>
-                    <span class="{{ is_null($notification->read_at) ? 'text-primary' : 'text-secondary' }}">
-                        {{ $notification->data['sender'] }}
-                    </span>
-                    <span class="text-muted">
-                        {{ $notification->data['subject'] }}
-                    </span>
-                </div>
-            </a>
-        </li>
-      @empty
-        <li class="list-group-item text-center text-muted">
-            Нет сообщений
-        </li>
-      @endforelse
-    </ul>
+    <div id="notifications-container">
+        <ul class="list-group">
+        @forelse(auth()->user()->notifications->sortByDesc('created_at')->take(30) as $notification)
+            <li class="list-group-item p-3 
+                {{ is_null($notification->read_at) ? 'bg-light fw-bold' : '' }}">
+                <a 
+                    href="{{ route('notifications.markAsRead', $notification->id) }}" 
+                    class="text-decoration-none d-flex justify-content-between align-items-start w-100">
+                    <div>
+                        <span class="{{ is_null($notification->read_at) ? 'text-primary' : 'text-secondary' }}">
+                            {{ $notification->data['sender'] }}
+                        </span>
+                        <span class="text-muted">
+                            {{ $notification->data['subject'] }}
+                        </span>
+                    </div>
+                </a>
+            </li>
+        @empty
+            <li class="list-group-item text-center text-muted">
+                Нет сообщений
+            </li>
+        @endforelse
+        </ul>
+    </div>    
   </div>
 </div>
 
@@ -116,3 +118,19 @@
     }
 
 </style>
+
+<script defer>
+    function refreshNotifications() {
+        fetch('{{ route('notifications.refresh') }}')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('notifications-container').innerHTML = data.htmlList;
+                document.getElementById('notification-button').innerHTML = data.htmlButton;
+               console.log('updated')
+            })
+            .catch(error => console.error('Ошибка обновления уведомлений:', error));
+    }
+
+    // Обновление каждые 5 минут
+    setInterval(refreshNotifications, 3*60* 1000);
+</script>

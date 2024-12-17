@@ -1,5 +1,6 @@
 <div class="d-none d-lg-block pt-2 pl-lg-4 bg-secondary">
     <button 
+        id="notification-button"
         class="btn news-button position-relative" 
         type="button" 
         data-bs-toggle="offcanvas" 
