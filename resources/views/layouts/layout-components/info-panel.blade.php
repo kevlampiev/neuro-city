@@ -17,7 +17,7 @@
   </div>
   <div class="offcanvas-body">
     <ul class="list-group">
-      @forelse(auth()->user()->notifications as $notification)
+      @forelse(auth()->user()->notifications->sortByDesc('created_at')->take(30) as $notification)
         <li class="list-group-item p-3 
             {{ is_null($notification->read_at) ? 'bg-light fw-bold' : '' }}">
             <a 
