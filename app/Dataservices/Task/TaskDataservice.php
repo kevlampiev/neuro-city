@@ -181,7 +181,7 @@ class TaskDataservice
             }
             $companyId = $request->route('company_id');
             if ($companyId) {
-                $task->agreements()->attach($companyId); 
+                $task->companies()->attach($companyId); 
             }
 
             session()->flash('message', 'Добавлена новая задача');
