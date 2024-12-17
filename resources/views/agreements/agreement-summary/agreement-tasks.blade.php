@@ -1,6 +1,6 @@
 <div class="row m-1">
     <div class="col-md-12">
-        <a href="{{route('admin.addTaskForAgreement', ['agreement' => $agreement])}}" class="btn btn-outline-info">Добавить
+        <a href="{{route('addTaskForAgreement', ['agreement_id' => $agreement->id])}}" class="btn btn-outline-info">Добавить
             задачу к договору</a>
         <div class="notes-container">
 

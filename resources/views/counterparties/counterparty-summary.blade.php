@@ -45,7 +45,7 @@
                 <i class="fa fa-users" aria-hidden="true"></i>
                 Сотрудники контрагента
             </button>
-            {{-- <button class="nav-link"
+            <button class="nav-link"
                     id="tasks-tab"
                     data-bs-toggle="tab"
                     data-bs-target="#tasks"
@@ -55,7 +55,7 @@
                     aria-selected="true">
                 <i class="fa fa-tasks" aria-hidden="true"></i>
                 Задачи
-            </button> --}}
+            </button>
             <button class="nav-link"
                     id="notes-tab"
                     data-bs-toggle="tab"
@@ -88,10 +88,10 @@
             @include('counterparties.components.employee-table')
         </div>
 
-        {{-- <div class="tab-pane fade" id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
+        <div class="tab-pane fade" id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
             <h4>Задачи, связанные с контрагентом</h4>
             @include('counterparties.components.tasks-table')
-        </div> --}}
+        </div>
 
         <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
             <h4>Заметки по контрагенту</h4>

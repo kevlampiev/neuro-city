@@ -155,18 +155,6 @@ class TaskDataservice
     }
 
 
-    public static function createTaskForAgreement(Request $request, Agreement $agreement): Task
-    {
-        $defaultProject = Task::query()->orderBy('subject')->first();
-        $task = self::createNewTask(
-            ['parent_task_id' => isset($defaultProject) ? $defaultProject->id : null,
-                'agreement_id' => $agreement->id,
-            ]);
-        if (!empty($request->old())) $task->fill($request->old());
-        return $task;
-    }
-
-
     public static function saveChanges(TaskRequest $request, Task $task)
     {
         $task->fill($request->all());
@@ -177,6 +165,7 @@ class TaskDataservice
         else $task->created_at = now();
 
         $task->save();
+      
     }
 
     public static function store(TaskRequest $request): ?Task
@@ -184,6 +173,17 @@ class TaskDataservice
         try {
             $task = new Task();
             self::saveChanges($request, $task);
+
+            // Получение параметров agreement_id, company_id из маршрута
+            $agreementId = $request->route('agreement_id');
+            if ($agreementId) {
+                $task->agreements()->attach($agreementId);
+            }
+            $companyId = $request->route('company_id');
+            if ($companyId) {
+                $task->agreements()->attach($companyId); 
+            }
+
             session()->flash('message', 'Добавлена новая задача');
             return $task;
         } catch (Error $err) {

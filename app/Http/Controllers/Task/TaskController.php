@@ -49,21 +49,15 @@ class TaskController extends Controller
             TaskDataservice::provideEditor($task));
     }
 
-    public function createTaskForAgreement(Request $request, Agreement $agreement)
-    {
-        if (url()->previous() !== url()->current()) session(['previous_url' => url()->previous()]);
-        $task = TaskDataservice::createTaskForAgreement($request, $agreement);
-        return view('tasks.task-edit',
-            TaskDataservice::provideEditor($task));
-    }
-
 
     public function store(TaskRequest $request): RedirectResponse
     {
         $task = TaskDataservice::store($request);
+        
         $route = session('previous_url', route('userTasks', ['user' => Auth::user()]));
         return redirect()->to($route);
     }
+    
 
     public function edit(Request $request, Task $task)
     {
@@ -108,20 +102,6 @@ class TaskController extends Controller
     {
         return view('tasks.task-summary', ['task' => $task]);
     }
-
-    // private function getTaskUserList(Task $task): Collection
-    // {
-    //     $userArray = [];
-    //     $userArray[] = $task->user_id;
-    //     $userArray[] = $task->task_performer_id;
-    //     $followers = Arr::pluck(
-    //         DB::select('select user_id from task_user where task_id=:taskId', ['taskId' => $task->id]),
-    //         'user_id');
-    //     foreach ($followers as $follower) {
-    //         $userArray[] = $follower;
-    //     }
-    //     return collect($userArray)->unique();
-    // }
 
     public function addFollower(Request $request, Task $task)
     {

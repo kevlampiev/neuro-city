@@ -20,10 +20,7 @@ Route::group([
         Route::get('addTask/{parentTask?}', [TaskController::class, 'createSubTask'])
             ->name('addTask');
         Route::post('addTask/{parentTask?}', [TaskController::class, 'store']);
-        Route::get('/add-task-for-agreement/{agreement}', [TaskController::class, 'createTaskForAgreement'])
-            ->name('addTaskForAgreement');
-        Route::get('/add-task-for-vehicle/{vehicle}', [TaskController::class, 'createTaskForVehicle'])
-            ->name('addTaskForVehicle');
+        
         Route::get('{task}/edit', [TaskController::class, 'edit'])
             ->name('editTask');
         Route::post('{task}/edit', [TaskController::class, 'update']);
@@ -48,6 +45,7 @@ Route::group([
         Route::get('{task}/detachFollower/{user}', [TaskController::class, 'detachFollower'])
             ->name('detachTaskFollower');
 
+
         Route::group([
             'middleware'=>['permission:s-agreements'],
         ],
@@ -57,6 +55,10 @@ Route::group([
                 Route::post('{task}/addAgreement', [TaskLinksController::class, 'attachAgreement']);
                 Route::get('{task}/detachAgreement/{agreement}', [TaskLinksController::class, 'detachAgreement'])
                     ->name('detachAgreementFromTask');
+                Route::get('/add-task-for-agreement/{agreement_id}', [TaskController::class, 'createSubTask'])
+                    ->name('addTaskForAgreement');
+                Route::post('/add-task-for-agreement/{agreement_id}', [TaskController::class, 'store']);
+            
             }
         );
 
@@ -69,6 +71,10 @@ Route::group([
                 Route::post('{task}/addCompany', [TaskLinksController::class, 'attachCompany']);
                 Route::get('{task}/detachCompany/{company}', [TaskLinksController::class, 'detachCompany'])
                     ->name('detachCompanyFromTask');
+                Route::get('/add-task-for-company/{company_id}', [TaskController::class, 'createSubTask'])
+                    ->name('addTaskForCompany');
+                Route::post('/add-task-for-company/{company_id}', [TaskController::class, 'store']);
+    
             }
         );
 
