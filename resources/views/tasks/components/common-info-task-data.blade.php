@@ -62,7 +62,7 @@
                     <td class="text-right">Дополнительная информация</td>
                     <td class="text-monospace"><i>{{$task->description}} </i></td>
                 </tr>
-                @if($task->parent_task_id)
+                @if($task->parent_task_id&&(Auth::user()->id==$task->user_id))
                     <tr>
                         <td class="text-right">Родительская задача</td>
                         <td class="text-monospace"><i><a
@@ -71,48 +71,7 @@
                                 </a> </i></td>
                     </tr>
                 @endif
-                @if($task->vehicle_id)
-                    <tr>
-                        <td class="text-right">Связаная единица техники</td>
-                        <td class="text-monospace">
-                            <i><a href="{{route('vehicleSummary', ['vehicle' => $task->vehicle])}}">
-                                    {{$task->vehicle->vehicleType->name}}
-                                    {{$task->vehicle->name}},
-                                    VIN:{{$task->vehicle->vin}},
-                                    Бортовой номер: {{$task->vehicle->bort_number}}
-                            </i>
-                        </td>
-                    </tr>
-                @endif
-                @if($task->agreement_id)
-                    <tr>
-                        <td class="text-right">Связаный договор</td>
-                        <td class="text-monospace">
-                            <i><a href="{{route('agreementSummary', ['agreement' => $task->agreement])}}">
-                                    {{$task->agreement->name}}
-                                    № {{$task->agreement->agr_number}},
-                                    от{{$task->agreement->date_open}}, <br>
-                                    Стороны по договору: {{$task->agreement->company->name}}
-                                    , {{$task->agreement->counterparty->name}} </i>
-                        </td>
-                    </tr>
-                @endif
-                @if($task->counterparty_id)
-                    <tr>
-                        <td class="text-right">Связанный контрагент</td>
-                        <td class="text-monospace"><i>
-                                <a href="{{route('counterpartySummary', ['counterparty' => $task->counterparty])}}">
-                                    {{$task->counterparty->name}}
-                                </a>
-                            </i></td>
-                    </tr>
-                @endif
-                @if($task->company_id)
-                    <tr>
-                        <td class="text-right">Связанная компания группы</td>
-                        <td class="text-monospace"><i> {{$task->company->name}} </i></td>
-                    </tr>
-                @endif
+                
                 </tbody>
             </table>
         </div>
@@ -137,12 +96,15 @@
                 </tr>
                 <tr>
                     <td>Последние сообщения <br>
-                        {{-- @forelse($task->messages->slice(0,2) as $message)
+                       @forelse($task->messages->sortByDesc('date_created')->take(5) as $message)
                             <div class="text-secondary font-italic m-2 p-2 bg-white">
-                                {{html_entity_decode(strip_tags($message->description))}}
+                                {{ implode(' ', array_slice(explode(' ', html_entity_decode(strip_tags($message->description))), 0, 10)) }}...
                             </div>
                         @empty
-                        @endforelse --}}
+                            <div class="text-muted text-center">
+                                Нет сообщений
+                            </div>
+                        @endforelse
                     </td>
                 </tr>
 
