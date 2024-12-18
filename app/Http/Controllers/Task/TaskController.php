@@ -10,6 +10,7 @@ use App\Models\Agreement;
 use App\Models\Message;
 use App\Models\Task;
 use App\Models\User;
+use App\Notifications\TaskCanceled;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -17,6 +18,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\TaskCommented;
+use App\Notifications\TaskCompleted;
 use App\Notifications\TaskCreated;
 
 class TaskController extends Controller
@@ -79,12 +81,18 @@ class TaskController extends Controller
     public function markAsDone(Task $task)
     {
         TaskDataservice::markAsDone($task);
+        foreach ($task->getAllInterestedUsers() as $el) {
+            if ($el != Auth::user()->id) User::find($el)->notify(new TaskCompleted($task));
+        }
         return redirect()->back();
     }
 
     public function markAsCanceled(Task $task)
     {
         TaskDataservice::markAsCanceled($task);
+        foreach ($task->getAllInterestedUsers() as $el) {
+            if ($el != Auth::user()->id) User::find($el)->notify(new TaskCanceled($task));
+        }
         return redirect()->back();
     }
 

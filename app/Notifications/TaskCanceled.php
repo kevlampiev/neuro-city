@@ -6,23 +6,18 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use App\Models\Task;
-use Dotenv\Util\Str;
 
-class TaskCreated extends Notification
+class TaskCanceled extends Notification
 {
     use Queueable;
-
-    protected $task;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(Task $task)
+    public function __construct()
     {
-        $this->task = $task;
+        //
     }
-    
 
     /**
      * Get the notification's delivery channels.
@@ -31,7 +26,7 @@ class TaskCreated extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['mail'];
     }
 
     /**
@@ -53,26 +48,7 @@ class TaskCreated extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'sender' => auth()->user()->name,
-            'subject' => 'Задача "' . 
-                     $this->task->subject.'" отменена постановщиком',
-            'link' => route('taskCard', ['task' => $this->task])
-        ];
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param mixed $notifiable
-     * @return array
-     */
-    public function toDatabase($notifiable)
-    {
-        return [
-            'sender' => auth()->user()->name,
-            'subject' => 'Задача "' . 
-                     $this->task->subject.'" отменена постановщиком',
-            'link' => route('taskCard', ['task' => $this->task])
+            //
         ];
     }
 }

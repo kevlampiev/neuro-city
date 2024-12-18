@@ -1,4 +1,5 @@
-@if($task->user==Auth::user())
+@if($task->user_id==Auth::user()->id)
+   
     <div class="btn-group" role="group" aria-label="Basic outlined example">
         <a class="btn btn-outline-info" href="{{route('editTask', ['task' => $task])}}">Редактировать</a>
 

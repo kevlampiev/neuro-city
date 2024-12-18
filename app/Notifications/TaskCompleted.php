@@ -7,9 +7,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Models\Task;
-use Dotenv\Util\Str;
 
-class TaskCreated extends Notification
+class TaskCompleted extends Notification
 {
     use Queueable;
 
@@ -54,8 +53,8 @@ class TaskCreated extends Notification
     {
         return [
             'sender' => auth()->user()->name,
-            'subject' => 'Задача "' . 
-                     $this->task->subject.'" отменена постановщиком',
+            'subject' => 'Завершена задача "' . 
+                     $this->task->subject.'"',
             'link' => route('taskCard', ['task' => $this->task])
         ];
     }
@@ -70,8 +69,8 @@ class TaskCreated extends Notification
     {
         return [
             'sender' => auth()->user()->name,
-            'subject' => 'Задача "' . 
-                     $this->task->subject.'" отменена постановщиком',
+            'subject' => 'Завершена задача "' . 
+                     $this->task->subject.'"',
             'link' => route('taskCard', ['task' => $this->task])
         ];
     }
