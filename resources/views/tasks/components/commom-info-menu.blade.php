@@ -1,6 +1,6 @@
 @if($task->user_id==Auth::user()->id)
    
-    <div class="btn-group" role="group" aria-label="Basic outlined example">
+    <div class="btn-group mb-3" role="group" aria-label="Basic outlined example">
         <a class="btn btn-outline-info" href="{{route('editTask', ['task' => $task])}}">Редактировать</a>
 
         @if(!$task->terminate_date)
