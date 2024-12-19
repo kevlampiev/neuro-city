@@ -10,6 +10,7 @@ use App\Notifications\TaskReopened;
 use App\Models\Message;
 use App\Models\Task;
 use App\Models\User;
+use App\Notifications\TaskAddFollower;
 use App\Notifications\TaskCanceled;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 use App\Notifications\TaskCommented;
 use App\Notifications\TaskCompleted;
 use App\Notifications\TaskCreated;
+use App\Notifications\TaskDetachFollower;
 
 class TaskController extends Controller
 {
@@ -124,12 +126,15 @@ class TaskController extends Controller
     public function storeFollower(Request $request, Task $task)
     {
         TaskDataservice::storeTaskFollower($request, $task);
+        $user = User::findOrFail($request->user_id);
+        $user->notify(new TaskAddFollower($task));
         return redirect()->route('taskCard', ['task' => $task]);
     }
 
     public function detachFollower(Request $request, Task $task, User $user)
     {
         TaskDataservice::detachTaskFollower($task, $user);
+        $user->notify(new TaskDetachFollower($task));
         return redirect()->route('taskCard', ['task' => $task]);
     }
 
