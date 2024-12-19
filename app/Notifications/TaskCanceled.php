@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Models\Task;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -11,12 +11,14 @@ class TaskCanceled extends Notification
 {
     use Queueable;
 
+    protected $task;
+
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(Task $task)
     {
-        //
+        $this->task = $task;
     }
 
     /**
@@ -26,7 +28,7 @@ class TaskCanceled extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -40,7 +42,7 @@ class TaskCanceled extends Notification
                     ->line('Thank you for using our application!');
     }
 
-    /**
+     /**
      * Get the array representation of the notification.
      *
      * @return array<string, mixed>
@@ -48,7 +50,26 @@ class TaskCanceled extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'sender' => auth()->user()->name,
+            'subject' => 'Задача "' . 
+                     $this->task->subject.'" отменена инициатором',
+            'link' => route('taskCard', ['task' => $this->task])
+        ];
+    }
+
+    /**
+     * Get the array representation of the notification.
+     *
+     * @param mixed $notifiable
+     * @return array
+     */
+    public function toDatabase($notifiable)
+    {
+        return [
+            'sender' => auth()->user()->name,
+            'subject' => 'Задача "' . 
+                     $this->task->subject.'" отменена инициатором',
+            'link' => route('taskCard', ['task' => $this->task])
         ];
     }
 }

@@ -3,13 +3,11 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Models\Task;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use App\Models\Task;
-use Dotenv\Util\Str;
 
-class TaskCreated extends Notification
+class TaskReopened extends Notification
 {
     use Queueable;
 
@@ -22,7 +20,6 @@ class TaskCreated extends Notification
     {
         $this->task = $task;
     }
-    
 
     /**
      * Get the notification's delivery channels.
@@ -54,8 +51,8 @@ class TaskCreated extends Notification
     {
         return [
             'sender' => auth()->user()->name,
-            'subject' => $this->task->user->name.' поставил Вам задачу "' . 
-                     $this->task->subject.'"',
+            'subject' => 'Задача "' . 
+                     $this->task->subject.'" снова запущена',
             'link' => route('taskCard', ['task' => $this->task])
         ];
     }
@@ -70,8 +67,8 @@ class TaskCreated extends Notification
     {
         return [
             'sender' => auth()->user()->name,
-            'subject' => $this->task->user->name.' поставил Вам задачу "' . 
-                     $this->task->subject.'"',
+            'subject' => 'Задача "' . 
+                     $this->task->subject.'" снова запущена',
             'link' => route('taskCard', ['task' => $this->task])
         ];
     }

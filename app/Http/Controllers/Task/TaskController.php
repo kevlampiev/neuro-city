@@ -6,7 +6,7 @@ use App\Dataservices\Task\TaskDataservice;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\MessageRequest;
 use App\Http\Requests\Task\TaskRequest;
-use App\Models\Agreement;
+use App\Notifications\TaskReopened;
 use App\Models\Message;
 use App\Models\Task;
 use App\Models\User;
@@ -99,6 +99,9 @@ class TaskController extends Controller
     public function markAsRunning(Task $task)
     {
         TaskDataservice::markAsRunning($task);
+        foreach ($task->getAllInterestedUsers() as $el) {
+            if ($el != Auth::user()->id) User::find($el)->notify(new TaskReopened($task));
+        }
         return redirect()->back();
     }
 
