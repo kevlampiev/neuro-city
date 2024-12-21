@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Middleware\PermissionMiddleware;
 use App\Http\Middleware\PasswordExpired;
+use App\Http\Middleware\TaskAccessControl;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,7 +19,8 @@ return Application::configure(basePath: dirname(__DIR__))
         // $middleware->append(PermissionMiddleware::class);
         // $middleware->append(PasswordExpired::class);
         $middleware->alias([
-            'permission' => PermissionMiddleware::class
+            'permission' => PermissionMiddleware::class,
+            'task.access' => TaskAccessControl::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

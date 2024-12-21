@@ -10,7 +10,7 @@ use App\Http\Controllers\Task\TaskLinksController;
 
 Route::group([
     'prefix' => 'tasks',
-    'middleware'=>['auth', PasswordExpired::class],
+    'middleware'=>['auth', PasswordExpired::class ],
 ],
     function () {
         Route::get('{task}/card/{page?}', [TaskController::class, 'viewTaskCard'])
@@ -50,10 +50,10 @@ Route::group([
             'middleware'=>['permission:s-agreements'],
         ],
             function () {
-                Route::get('{task}/addAgreement', [TaskLinksController::class, 'chooseAgreementToAttach'])
+                Route::middleware('task.access')->get('{task}/addAgreement', [TaskLinksController::class, 'chooseAgreementToAttach'])
                     ->name('attachAgreementToTask');
-                Route::post('{task}/addAgreement', [TaskLinksController::class, 'attachAgreement']);
-                Route::get('{task}/detachAgreement/{agreement}', [TaskLinksController::class, 'detachAgreement'])
+                Route::middleware('task.access')->post('{task}/addAgreement', [TaskLinksController::class, 'attachAgreement']);
+                Route::middleware('task.access')->get('{task}/detachAgreement/{agreement}', [TaskLinksController::class, 'detachAgreement'])
                     ->name('detachAgreementFromTask');
                 Route::get('/add-task-for-agreement/{agreement_id}', [TaskController::class, 'createSubTask'])
                     ->name('addTaskForAgreement');
@@ -63,7 +63,7 @@ Route::group([
         );
 
         Route::group([
-            'middleware'=>['permission:s-counterparty'],
+            'middleware'=>['permission:s-counterparty', 'task.access'],
         ],
             function () {
                 Route::get('{task}/addCompany', [TaskLinksController::class, 'chooseCompanyToAttach'])
@@ -84,7 +84,8 @@ Route::group([
 
 
 Route::group([
-    'prefix' => 'messages'
+    'prefix' => 'messages',
+    'middleware'=>['auth', PasswordExpired::class],
 ],
     function () {
         Route::get('{message}/reply', [MessageController::class, 'createReply'])
