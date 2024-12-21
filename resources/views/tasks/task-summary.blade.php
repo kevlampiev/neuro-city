@@ -53,19 +53,38 @@
                 Дочерние задачи
             </button>
         </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link"
-                    id="documents-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#documents"
-                    type="button"
-                    role="tab"
-                    aria-controls="documents"
-                    aria-selected="false">
-                <i class="fa fa-files-o" aria-hidden="true"></i>
-                Документы
-            </button>
-        </li>
+        @if(Gate::allows('s-agreements'))
+            <li class="nav-item" role="presentation">
+                <button class="nav-link"
+                        id="agreements-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#agreements"
+                        type="button"
+                        role="tab"
+                        aria-controls="agreements"
+                        aria-selected="false">
+                    <i class="fa fa-files-o" aria-hidden="true"></i>
+                    Договоры
+                </button>
+            </li>
+        @endif    
+
+        @if(Gate::allows('s-counterparty'))
+            <li class="nav-item" role="presentation">
+                <button class="nav-link"
+                        id="companies-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#companies"
+                        type="button"
+                        role="tab"
+                        aria-controls="companies"
+                        aria-selected="false">
+                    <i class="fa fa-files-o" aria-hidden="true"></i>
+                    Компании
+                </button>
+            </li>
+        @endif    
+
         <li class="nav-item" role="presentation">
             <button class="nav-link"
                     id="messages-tab"
@@ -82,7 +101,7 @@
 
     </ul>
 
-    {{--    Ниже идет содержитмое вкладок--}}
+    {{--    Ниже идет содержимое вкладок--}}
     <div class="row">
         <div class="col-md-12">
             <div class="tab-content" id="myTabContent">
@@ -101,11 +120,22 @@
                     @include('tasks.components.subtasks-menu')
                     @include('tasks.tasks-tree', ['tasks'=>$task->subTasks, 'listId'=>'subtasks'])
                 </div>
-                <div class="tab-pane fade" id="documents" role="tabpanel" aria-labelledby="documents-tab">
-                    <h4>Документы по задаче</h4>
-                    {{-- @include('tasks.components.documents-menu')
-                    @include('tasks.components.documents-data') --}}
-                </div>
+                 @if(Gate::allows('s-agreements'))
+                    <div class="tab-pane fade" id="agreements" role="tabpanel" aria-labelledby="agreements-tab">
+                        <h4>Связанные договоры</h4>
+                        @include('tasks.components.agreements-menu')
+                        @include('tasks.components.agreements-data')
+                    </div>
+                @endif  
+
+                @if(Gate::allows('s-counterparty'))
+                    <div class="tab-pane fade" id="companies" role="tabpanel" aria-labelledby="companies-tab">
+                        <h4>Связанные контрагенты</h4>
+                        @include('tasks.components.companies-menu')
+                        @include('tasks.components.companies-data')
+                    </div>
+                @endif  
+
                 <div class="tab-pane fade" id="messages" role="tabpanel" aria-labelledby="messages-tab">
                     <h4>Сообщения</h4>
                     @include('tasks.components.messages-menu')

@@ -1,5 +1,8 @@
 <div class="row m-1">
     <div class="col-md-12">
+    <a href="{{route('addTaskForCompany', ['company_id' => $counterparty->id])}}" class="btn btn-outline-info">Добавить
+        задачу к контраенту</a>
+    <div class="notes-container">
 
         <table class="table">
             <thead>
@@ -21,7 +24,7 @@
                     <td>{{$task->performer->name}}</td>
                     <td>{{\Carbon\Carbon::parse($task->due_date)->format('d.m.Y')}}</td>
                     <td>
-                        <a href="{{route('admin.taskCard', ['task' => $task])}}">
+                        <a href="{{route('taskCard', ['task' => $task])}}">
                             &#9776;Карточка
                         </a>
                     </td>

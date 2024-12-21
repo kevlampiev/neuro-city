@@ -6,10 +6,12 @@ use App\Dataservices\Task\TaskDataservice;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\MessageRequest;
 use App\Http\Requests\Task\TaskRequest;
-use App\Models\Agreement;
+use App\Notifications\TaskReopened;
 use App\Models\Message;
 use App\Models\Task;
 use App\Models\User;
+use App\Notifications\TaskAddFollower;
+use App\Notifications\TaskCanceled;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -17,6 +19,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\TaskCommented;
+use App\Notifications\TaskCompleted;
+use App\Notifications\TaskCreated;
+use App\Notifications\TaskDetachFollower;
 
 class TaskController extends Controller
 {
@@ -49,21 +54,16 @@ class TaskController extends Controller
             TaskDataservice::provideEditor($task));
     }
 
-    public function createTaskForAgreement(Request $request, Agreement $agreement)
-    {
-        if (url()->previous() !== url()->current()) session(['previous_url' => url()->previous()]);
-        $task = TaskDataservice::createTaskForAgreement($request, $agreement);
-        return view('tasks.task-edit',
-            TaskDataservice::provideEditor($task));
-    }
-
 
     public function store(TaskRequest $request): RedirectResponse
     {
-        $task = TaskDataservice::store($request);
+        $task = TaskDataservice::store($request);     
+        if ($task->performer_id != $task->user_id) $task->performer->notify(new TaskCreated($task));
+        
         $route = session('previous_url', route('userTasks', ['user' => Auth::user()]));
         return redirect()->to($route);
     }
+    
 
     public function edit(Request $request, Task $task)
     {
@@ -83,18 +83,27 @@ class TaskController extends Controller
     public function markAsDone(Task $task)
     {
         TaskDataservice::markAsDone($task);
+        foreach ($task->getAllInterestedUsers() as $el) {
+            if ($el != Auth::user()->id) User::find($el)->notify(new TaskCompleted($task));
+        }
         return redirect()->back();
     }
 
     public function markAsCanceled(Task $task)
     {
         TaskDataservice::markAsCanceled($task);
+        foreach ($task->getAllInterestedUsers() as $el) {
+            if ($el != Auth::user()->id) User::find($el)->notify(new TaskCanceled($task));
+        }
         return redirect()->back();
     }
 
     public function markAsRunning(Task $task)
     {
         TaskDataservice::markAsRunning($task);
+        foreach ($task->getAllInterestedUsers() as $el) {
+            if ($el != Auth::user()->id) User::find($el)->notify(new TaskReopened($task));
+        }
         return redirect()->back();
     }
 
@@ -109,34 +118,23 @@ class TaskController extends Controller
         return view('tasks.task-summary', ['task' => $task]);
     }
 
-    // private function getTaskUserList(Task $task): Collection
-    // {
-    //     $userArray = [];
-    //     $userArray[] = $task->user_id;
-    //     $userArray[] = $task->task_performer_id;
-    //     $followers = Arr::pluck(
-    //         DB::select('select user_id from task_user where task_id=:taskId', ['taskId' => $task->id]),
-    //         'user_id');
-    //     foreach ($followers as $follower) {
-    //         $userArray[] = $follower;
-    //     }
-    //     return collect($userArray)->unique();
-    // }
-
     public function addFollower(Request $request, Task $task)
     {
-        return view('tasks.task-add-follower', TaskDataservice::createTaskFollower($task));
+        return view('tasks.links.task-add-follower', TaskDataservice::createTaskFollower($task));
     }
 
     public function storeFollower(Request $request, Task $task)
     {
         TaskDataservice::storeTaskFollower($request, $task);
+        $user = User::findOrFail($request->user_id);
+        $user->notify(new TaskAddFollower($task));
         return redirect()->route('taskCard', ['task' => $task]);
     }
 
     public function detachFollower(Request $request, Task $task, User $user)
     {
         TaskDataservice::detachTaskFollower($task, $user);
+        $user->notify(new TaskDetachFollower($task));
         return redirect()->route('taskCard', ['task' => $task]);
     }
 

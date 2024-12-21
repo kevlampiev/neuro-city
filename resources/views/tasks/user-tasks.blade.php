@@ -92,6 +92,8 @@
         .task-item {
             list-style-type: none;
             outline: 1px solid lightgrey;
+            margin: 3px;
+            padding: 5px;
         }
         .task-description {
             text-decoration: none;

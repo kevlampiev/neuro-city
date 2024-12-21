@@ -54,8 +54,8 @@ class TaskCreated extends Notification
     {
         return [
             'sender' => auth()->user()->name,
-            'subject' => 'Вам назначена задача "' . 
-                     $this->task->subject,
+            'subject' => $this->task->user->name.' поставил Вам задачу "' . 
+                     $this->task->subject.'"',
             'link' => route('taskCard', ['task' => $this->task])
         ];
     }
@@ -70,8 +70,8 @@ class TaskCreated extends Notification
     {
         return [
             'sender' => auth()->user()->name,
-            'subject' => 'Вам назначена задача "' . 
-                     $this->task->subject,
+            'subject' => $this->task->user->name.' поставил Вам задачу "' . 
+                     $this->task->subject.'"',
             'link' => route('taskCard', ['task' => $this->task])
         ];
     }

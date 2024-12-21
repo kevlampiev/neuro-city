@@ -10,7 +10,9 @@
         @else
             Добавить новую задачу
         @endif</h3>
-    <form action="{{$task->id?route('editTask', $task->id):route('addTask')}}" method="POST"
+    <form 
+        {{-- action="{{$task->id?route('editTask', $task->id):route('addTask')}}"  --}}
+          method="POST"
           enctype="multipart/form-data">
         @csrf
 

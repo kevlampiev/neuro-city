@@ -85,7 +85,7 @@
                 Платежи
             </button>
             @endif
-            {{-- <button class="nav-link"
+            <button class="nav-link"
                     id="tasks-tab"
                     data-bs-toggle="tab"
                     data-bs-target="#tasks"
@@ -95,7 +95,7 @@
                     aria-selected="true">
                 <i class="fa fa-tasks" aria-hidden="true"></i>
                 Задачи по договору
-            </button> --}}
+            </button>
             <button class="nav-link"
                     id="notes-tab"
                     data-bs-toggle="tab"
@@ -190,10 +190,10 @@
         </div>
         @endif
 
-        {{-- <div class="tab-pane fade" id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
+        <div class="tab-pane fade" id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
             <h4>Задачи по договору </h4>
-             @include('Admin.agreements.agreement-summary.agreement-tasks') 
-        </div> --}}
+             @include('agreements.agreement-summary.agreement-tasks') 
+        </div>
 
         <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
             <h4>Заметки по договору </h4>

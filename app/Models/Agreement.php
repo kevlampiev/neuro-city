@@ -65,4 +65,9 @@ class Agreement extends Model
     {
         return $this->hasMany(Accrual::class);
     }
+
+    public function tasks(): BelongsToMany
+    {
+        return $this->belongsToMany(Task::class, 'agreement_task');
+    }
 }
