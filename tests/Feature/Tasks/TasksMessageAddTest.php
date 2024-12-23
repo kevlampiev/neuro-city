@@ -45,19 +45,18 @@ class TasksMessageAddTest extends TasksMessageTest
         $data = [
             'user_id'=>$this->task->user->id,
             'task_id'=>$this->task->id,
-            'description' => 'Добавлено тестом на добавление комментария неавторизованным пользователем'
+            'description' => 'Добавлено тестом на добавление комментария авторизованным пользователем'
             ];
-        $response = $this->actingAs($this->task->performer)->post($this->route, $data);
-
-        // $response->assertStatus(302) 
-        // ->assertSee($this->task->subject);
+        $response = $this->actingAs($this->task->user)->post($this->route, $data);
+        $response->assertStatus(302);
+       
         
         $this->assertDatabaseHas('messages', [
             'task_id' => $this->task->id,
-            'description' => 'Добавлено тестом на добавление комментария неавторизованным пользователем',
+            'description' => 'Добавлено тестом на добавление комментария авторизованным пользователем',
         ]);
 
-        $response2 = $this->actingAs($this->task->user)->get('home');
+        $response2 = $this->actingAs($this->task->performer)->get('home');
         $response2->assertSee('Получен комментарий по задаче');
     }    
 }

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\CheckTaskInteressant;
+use App\Http\Middleware\CheckTaskManager;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -21,6 +23,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'permission' => PermissionMiddleware::class,
             'task.access' => TaskAccessControl::class,
+            'task.manager' => CheckTaskManager::class,
+            'task.performer' => CheckTaskManager::class,
+            'task.interessant' =>CheckTaskInteressant::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

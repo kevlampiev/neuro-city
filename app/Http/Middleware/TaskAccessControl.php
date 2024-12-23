@@ -13,9 +13,8 @@ class TaskAccessControl
      */
     public function handle(Request $request, Closure $next)
     {
-        // $task = Task::find($request->route('task'))[0];
-        $user = $request->user();
 
+        $user = $request->user();
 
         $taskRouteParam = $request->route('task');
 
