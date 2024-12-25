@@ -9,8 +9,8 @@
     <div class="row mb-2">
         <h2>Мои задачи</h2>
         <div class="col-md-7">
-            
-            <a class="btn btn-outline-info" href="{{route('addTask')}}">Создать задачу</a>
+            <a class="btn btn-outline-info" href="{{route('addTask')}}"> <i class="bi bi-file-earmark-plus"></i>Создать задачу</a>
+            <a class="btn btn-outline-info" href="{{route('userTaskList', ['user' => auth()->user()])}}"><i class="bi bi-list-task"></i> Список задач</a>
         </div>
         <div class="col-md-5">
             <form class="form-inline my-2 my-lg-0 d-flex align-items-center" method="GET">

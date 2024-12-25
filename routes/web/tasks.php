@@ -14,6 +14,7 @@ Route::group([
     Route::controller(TaskController::class)->group(function () {
         Route::get('{task}/card/{page?}', 'viewTaskCard')->name('taskCard');
         Route::get('{user}/user-tasks', 'viewUserTasks')->name('userTasks');
+        Route::get('{user}/user-task-list', 'viewUserTaskList')->name('userTaskList');
         Route::get('addTask/{parentTask?}', 'createSubTask')->name('addTask');
         Route::post('addTask/{parentTask?}', 'store');
 

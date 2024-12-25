@@ -42,7 +42,12 @@
                         </li>
                         <li>
                             <a class="dropdown-item" href="{{route('userTasks', ['user' => auth()->user()])}}">
-                                Мои задачи
+                                Дерево задач
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{route('userTaskList', ['user' => auth()->user()])}}">
+                                Список задач
                             </a>
                         </li>
 

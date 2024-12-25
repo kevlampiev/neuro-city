@@ -52,6 +52,19 @@ class TaskDataservice
             ->get();
     }
 
+    /// Вспомогательная функция, выбирающая все задачи СПИСКОМ в которых заданный пользователь
+    /// является подписчиком и делающие 
+    private static function getTaskListWhereUserIsPerformer(string $searchStr, User $user): Collection
+    {
+        $tasks = Task::where('task_performer_id', '=', $user->id)
+            ->where('terminate_date', '=', null)
+            ->where('subject', 'like', $searchStr)
+            ->orderBy('importance')
+            ->orderBy('due_date')
+            ->get();
+        return $tasks;
+    }
+
     /// Вспомогательная функция, выбирающая все задачи в которых заданный пользователь
     /// является постановщиком
     private static function getTasksWhereUserIsMaster(string $searchStr, User $user): Collection
@@ -95,6 +108,21 @@ class TaskDataservice
 
         return [
             'userAssignments' => self::getTasksWhereUserIsPerformer($searchStr, $user),
+            'assignedByUser' => self::getTasksWhereUserIsMaster($searchStr, $user),
+            'followerTasks' => self::getTasksWhereUserIsFollower($searchStr, $user),
+            'filter' => $filter
+        ];
+    }
+
+
+    public static function provideUserTaskList(Request $request, User $user): array
+    {
+        $filter = ($request->get('searchStr')) ?? '';
+        $searchStr = '%' . str_replace(' ', '%', $filter) . '%';
+
+
+        return [
+            'userAssignments' => self::getTaskListWhereUserIsPerformer($searchStr, $user),
             'assignedByUser' => self::getTasksWhereUserIsMaster($searchStr, $user),
             'followerTasks' => self::getTasksWhereUserIsFollower($searchStr, $user),
             'filter' => $filter

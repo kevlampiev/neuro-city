@@ -35,6 +35,11 @@ class TaskController extends Controller
         return view('tasks.user-tasks-tree', TaskDataservice::provideUserTasks($request, Auth::user()));
     }
 
+    public function viewUserTaskList(Request $request, User $user)
+    {
+        return view('tasks.user-tasks-list', TaskDataservice::provideUserTaskList($request, Auth::user()));
+    }
+
     public function create(Request $request)
     {
         if (url()->previous() !== url()->current()) session(['previous_url' => url()->previous()]);
