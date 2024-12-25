@@ -6,15 +6,15 @@
 
     {{-- Иконка статуса задачи --}}
     @if($isOverdue)
-        <i class="fa fa-fire text-danger" aria-hidden="true"></i>
+        <i class="bi bi-fire text-danger"></i>
     @elseif($isUrgent)
-        <i class="fa fa-fire text-warning" aria-hidden="true"></i>
+        <i class="bi bi-fire text-warning"></i>
     @endif
 
     
     <span 
         @class([
-            'text-danger font-weight-bold' => $task->importance === 'high',
+            'text-danger fw-bold' => $task->importance === 'high',
             'text-secondary' => $task->importance === 'low',
             'text-black' => $task->importance !== 'high' && $task->importance !== 'low',
         ])
@@ -23,9 +23,11 @@
     </span>
 
     {{-- Дополнительная информация --}}
-    <span class="text-secondary small font-italic pl-3 ">
-        {{ !$task->parent_task_id ? 'Руководитель' : 'Исп' }}: {{ $task->performer->name }}
-        &nbsp; Срок: {{ \Carbon\Carbon::parse($task->due_date)->format('d.m.Y') }}
+    <span class="text-secondary small font-italic p-1 ">
+        <em>
+            Исп: {{ $task->performer->name }}
+            &nbsp; Срок: {{ \Carbon\Carbon::parse($task->due_date)->format('d.m.Y') }}
+        </em>
     </span>
     <a href="{{ route('taskCard', ['task' => $task]) }}" class="task-description"> &nbsp;&nbsp; &#9776; Карточка </a>
 

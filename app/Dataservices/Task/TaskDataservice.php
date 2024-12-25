@@ -52,6 +52,19 @@ class TaskDataservice
             ->get();
     }
 
+    /// Вспомогательная функция, выбирающая все задачи СПИСКОМ в которых заданный пользователь
+    /// является подписчиком и делающие 
+    private static function getTaskListWhereUserIsPerformer(string $searchStr, User $user): Collection
+    {
+        $tasks = Task::where('task_performer_id', '=', $user->id)
+            ->where('terminate_date', '=', null)
+            ->where('subject', 'like', $searchStr)
+            ->orderBy('importance')
+            ->orderBy('due_date')
+            ->get();
+        return $tasks;
+    }
+
     /// Вспомогательная функция, выбирающая все задачи в которых заданный пользователь
     /// является постановщиком
     private static function getTasksWhereUserIsMaster(string $searchStr, User $user): Collection
@@ -68,34 +81,23 @@ class TaskDataservice
     /// является исполнителем
     private static function getTasksWhereUserIsPerformer(string $searchStr, User $user): Collection
     {
-        $taskPerformer = Task::query()
-            ->where('parent_task_id', '=', null)
-            ->where('task_performer_id', '=', $user->id)
-            ->where('subject', 'like', $searchStr)
-            ->where('terminate_date', '=', null)->get();
-        $pretendersArray = Task::query()
-            ->where('parent_task_id', '=', null)
-            ->where('user_id', '<>', $user->id)
-            ->where('task_performer_id', '<>', $user->id)
-            ->where('terminate_date', '=', null)->get()->pluck('id');
+        $showHidden = false; // Если нужно поддерживать параметр видимости
+        $showTerminated = false; // Если нужно поддерживать параметр завершенности
 
-        while (count($pretendersArray) > 0) {
-            $taskPerformer = $taskPerformer->merge(
-                Task::query()
-                    ->where('task_performer_id', '=', $user->id)
-                    ->where('terminate_date', '=', null)
-                    ->where('subject', 'like', $searchStr)
-                    ->whereIn('parent_task_id', $pretendersArray)
-                    ->get()
-            );
-            $pretendersArray = Task::query()
-                ->where('user_id', '<>', $user->id)
-                ->where('task_performer_id', '<>', $user->id)
-                ->whereIn('parent_task_id', $pretendersArray)
-                ->where('terminate_date', '=', null)->get()->pluck('id');
-        }
+        $result = DB::select(
+            'SELECT * FROM get_task_tree_roots(:searchStr, :showHidden, :showTerminated, :userId)',
+            [
+                'searchStr' => $searchStr,
+                'showHidden' => $showHidden,
+                'showTerminated' => $showTerminated,
+                'userId' => $user->id,
+            ]
+        );
 
-        return $taskPerformer;
+        // Преобразуем массив результата в коллекцию моделей Task
+        $tasks = Task::hydrate($result);
+
+        return $tasks; // Вернем Eloquent\Collection
     }
 
     public static function provideUserTasks(Request $request, User $user): array
@@ -106,6 +108,21 @@ class TaskDataservice
 
         return [
             'userAssignments' => self::getTasksWhereUserIsPerformer($searchStr, $user),
+            'assignedByUser' => self::getTasksWhereUserIsMaster($searchStr, $user),
+            'followerTasks' => self::getTasksWhereUserIsFollower($searchStr, $user),
+            'filter' => $filter
+        ];
+    }
+
+
+    public static function provideUserTaskList(Request $request, User $user): array
+    {
+        $filter = ($request->get('searchStr')) ?? '';
+        $searchStr = '%' . str_replace(' ', '%', $filter) . '%';
+
+
+        return [
+            'userAssignments' => self::getTaskListWhereUserIsPerformer($searchStr, $user),
             'assignedByUser' => self::getTasksWhereUserIsMaster($searchStr, $user),
             'followerTasks' => self::getTasksWhereUserIsFollower($searchStr, $user),
             'filter' => $filter

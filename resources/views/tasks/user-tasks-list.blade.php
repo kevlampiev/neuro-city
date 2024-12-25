@@ -8,9 +8,9 @@
 
     <div class="row mb-2">
         <h2>Список моих задач</h2>
-        <div class="col-md-7">
-            
-            <a class="btn btn-outline-info" href="{{route('addTask')}}">Создать задачу</a>
+        <div class="col-md-7">           
+            <a class="btn btn-outline-info" href="{{route('addTask')}}"> <i class="bi bi-file-earmark-plus"></i>Создать задачу</a>
+            <a class="btn btn-outline-info" href="{{route('userTasks', ['user' => auth()->user()])}}"><i class="bi bi-diagram-3"></i> Дерево задач</a>
         </div>
         <div class="col-md-5">
             <form class="form-inline my-2 my-lg-0 d-flex align-items-center" method="GET">
@@ -24,18 +24,26 @@
     </div>
 
     <div class="row">
-        <div class="col-md-6">
-            <h3> Задачи, назначенные мне</h3>
+        <div class="col-md-4">
+            <h3> Назначено мне</h3>
             <ul id="userAssignments">
-                @foreach($userTasks as $task)
+                @foreach($userAssignments as $task)
                     <li class="task-item"> @include('tasks.task-record') </li>
                 @endforeach
             </ul>
         </div>
-        <div class="col-md-6">
-            <h3> Задачи, где я постановщик или наблюдатель</h3>
+        <div class="col-md-4">
+            <h3> Делегировано мной </h3>
+            <ul id="assignedByUser">
+                @foreach($assignedByUser as $task)
+                    <li class="task-item"> @include('tasks.task-record') </li>
+                @endforeach
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h3> Наблюдаю</h3>
             <ul id="otherTasks">
-                @foreach($interessantTasks as $task)
+                @foreach($followerTasks as $task)
                     <li class="task-item"> @include('tasks.task-record') </li>
                 @endforeach
             </ul>
@@ -72,6 +80,7 @@
 <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
     <script defer>
         let dnl1 =new DraggableNestableList("#userAssignments");
-        let dnl2 =new DraggableNestableList("#otherTasks");
+        let dnl2 =new DraggableNestableList("#assignedByUser");
+        let dnl3 =new DraggableNestableList("#otherTasks");
     </script>
 @endsection
