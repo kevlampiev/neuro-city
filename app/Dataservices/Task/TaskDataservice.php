@@ -68,49 +68,34 @@ class TaskDataservice
     /// является исполнителем
     private static function getTasksWhereUserIsPerformer(string $searchStr, User $user): Collection
     {
-        // $taskPerformer = Task::query()
-        //     ->where('parent_task_id', '=', null)
-        //     ->where('task_performer_id', '=', $user->id)
-        //     ->where('subject', 'like', $searchStr)
-        //     ->where('terminate_date', '=', null)->get();
-        // $pretendersArray = Task::query()
-        //     ->where('parent_task_id', '=', null)
-        //     ->where('user_id', '<>', $user->id)
-        //     ->where('task_performer_id', '<>', $user->id)
-        //     ->where('terminate_date', '=', null)->get()->pluck('id');
+        $taskPerformer = Task::query()
+            ->where('parent_task_id', '=', null)
+            ->where('task_performer_id', '=', $user->id)
+            ->where('subject', 'like', $searchStr)
+            ->where('terminate_date', '=', null)->get();
+        $pretendersArray = Task::query()
+            ->where('parent_task_id', '=', null)
+            ->where('user_id', '<>', $user->id)
+            ->where('task_performer_id', '<>', $user->id)
+            ->where('terminate_date', '=', null)->get()->pluck('id');
 
-        // while (count($pretendersArray) > 0) {
-        //     $taskPerformer = $taskPerformer->merge(
-        //         Task::query()
-        //             ->where('task_performer_id', '=', $user->id)
-        //             ->where('terminate_date', '=', null)
-        //             ->where('subject', 'like', $searchStr)
-        //             ->whereIn('parent_task_id', $pretendersArray)
-        //             ->get()
-        //     );
-        //     $pretendersArray = Task::query()
-        //         ->where('user_id', '<>', $user->id)
-        //         ->where('task_performer_id', '<>', $user->id)
-        //         ->whereIn('parent_task_id', $pretendersArray)
-        //         ->where('terminate_date', '=', null)->get()->pluck('id');
-        // }
+        while (count($pretendersArray) > 0) {
+            $taskPerformer = $taskPerformer->merge(
+                Task::query()
+                    ->where('task_performer_id', '=', $user->id)
+                    ->where('terminate_date', '=', null)
+                    ->where('subject', 'like', $searchStr)
+                    ->whereIn('parent_task_id', $pretendersArray)
+                    ->get()
+            );
+            $pretendersArray = Task::query()
+                ->where('user_id', '<>', $user->id)
+                ->where('task_performer_id', '<>', $user->id)
+                ->whereIn('parent_task_id', $pretendersArray)
+                ->where('terminate_date', '=', null)->get()->pluck('id');
+        }
 
-        // return $taskPerformer;
-        $showHidden = false; // Если нужно поддерживать параметр видимости
-        $showTerminated = false; // Если нужно поддерживать параметр завершенности
-    
-        $result = DB::select(
-            'SELECT * FROM get_task_tree_roots(:searchStr, :showHidden, :showTerminated, :userId)',
-            [
-                'searchStr' => $searchStr,
-                'showHidden' => $showHidden,
-                'showTerminated' => $showTerminated,
-                'userId' => $user->id,
-            ]
-        );
-    
-        $tasks = Task::hydrate($result);
-        return $tasks;
+        return $taskPerformer;
     }
 
     public static function provideUserTasks(Request $request, User $user): array
