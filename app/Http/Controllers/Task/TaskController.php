@@ -32,7 +32,7 @@ class TaskController extends Controller
     public function viewUserTasks(Request $request, User $user)
     {
 
-        return view('tasks.user-tasks', TaskDataservice::provideUserTasks($request, Auth::user()));
+        return view('tasks.user-tasks-tree', TaskDataservice::provideUserTasks($request, Auth::user()));
     }
 
     public function create(Request $request)
