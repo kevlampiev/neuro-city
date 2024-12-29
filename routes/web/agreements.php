@@ -73,7 +73,7 @@ Route::group([
         Route::post('agreement/{agreement}/addDocument', [AgreementDocumentController::class, 'storeSingle']);     
         
         Route::get('agreement/{agreement}/addManyDocument', [AgreementDocumentController::class, 'createMultipleDocuments'])
-            ->name('addAgreementManyDocument');
+            ->name('addAgreementManyDocuments');
         Route::post('agreement/{agreement}/addManyDocument', [AgreementDocumentController::class, 'storeMultiple']);             
         
         Route::match(['get', 'post'],'agreement/{agreement}/document/{document}/detach', [AgreementDocumentController::class, 'detach'])

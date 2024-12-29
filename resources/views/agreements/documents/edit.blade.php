@@ -2,13 +2,15 @@
 
 @section('title')
     Договор|Добавить файл
+@endsection    
 
 @section('content')
     <h3> @if ($document->id)
             Изменение данных
         @else
             Добавить новый документ
-        @endif</h3>
+        @endif
+        </h3>
     <form method="POST" enctype="multipart/form-data">
         @csrf
 

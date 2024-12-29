@@ -40,9 +40,10 @@ class AgreementDocumentController extends Controller
      */
     public function createMultipleDocuments(Agreement $agreement)
     {
-        return view('agreements.agreement-document-multiple-upload', [
+        return view('agreements.documents.add-multiple', [
             'agreement_id' => $agreement->id,
-            'route' => route('documents.storeMultiple', ['agreement'=>$agreement])
+            'agreement' => $agreement,
+            'route' => route('addAgreementManyDocuments', ['agreement'=>$agreement])
         ]);
     }
 
