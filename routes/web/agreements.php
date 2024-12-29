@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\Agreement\AgreementController;
 use App\Http\Controllers\Agreement\AgreementNoteController;
-use App\Http\Controllers\Agreement\AgreementTypeController; 
+use App\Http\Controllers\Agreement\AgreementTypeController;
+use App\Http\Controllers\Agreement\AgreementDocumentController;
 use App\Http\Controllers\DocumentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\PasswordExpired;
@@ -67,10 +68,15 @@ Route::group([
     ],
     function () {
 
-        Route::get('add/agreement/{agreement}', [DocumentController::class, 'createAgreementDocument'])
+        Route::get('agreement/{agreement}/addDocument', [AgreementDocumentController::class, 'createSingeDocument'])
             ->name('addAgreementDocument');
-        Route::post('add/agreement/{agreement}', [DocumentController::class, 'storeAgreementDocument']);     
-        Route::match(['get', 'post'],'detach/agreement/{agreement}/document/{document}', [AgreementController::class, 'detachDocument'])
+        Route::post('agreement/{agreement}/addDocument', [AgreementDocumentController::class, 'storeSingle']);     
+        
+        Route::get('agreement/{agreement}/addManyDocument', [AgreementDocumentController::class, 'createMultipleDocuments'])
+            ->name('addAgreementManyDocument');
+        Route::post('agreement/{agreement}/addManyDocument', [AgreementDocumentController::class, 'storeMultiple']);             
+        
+        Route::match(['get', 'post'],'agreement/{agreement}/document/{document}/detach', [AgreementDocumentController::class, 'detach'])
         ->name('detachAgreementDocument');          
     }
 );

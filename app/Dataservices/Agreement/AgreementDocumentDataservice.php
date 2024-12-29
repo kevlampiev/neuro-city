@@ -1,42 +1,73 @@
 <?php
 
+namespace App\Dataservices\Agreement;
 
-namespace App\Dataservices\Task;
-
-use App\Dataservices\DocumentDataservice;
-use App\Http\Requests\Task\DocumentAddRequest;
-use App\Http\Requests\Task\DocumentEditRequest;
-use App\Models\Task;
-use App\Models\Document;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+use App\Dataservices\Document\DocumentDataservice;
+use App\Http\Requests\Agreement\DocumentAddRequest;
+use App\Http\Requests\Agreement\DocumentEditRequest;
+use App\Http\Requests\Agreement\DocumentBatchAddRequest;
 use App\Models\Agreement;
-use Error;
+use App\Models\Document;
 
-class TaskDocumentDataservice extends DocumentDataservice
+class AgreementDocumentDataservice
 {
-
-    public static function provideAgreementDocumentEditor(Document $document, Task $task, $route = null): array
+    public static function provideAgreementDocumentEditor(Document $document=null, Agreement $agreement, $route = null): array
     {
+        if (!$document) {
+            $document = new Document();
+            $document->agreement_id;
+        }
         return [
             'document' => $document,
-            'task_id'=>$task->id,
-            'agreement' => Agreement::orderBy('date_open')->get(),
-            'route' => $route
+            'agreement_id' => $agreement->id,
+            'agreements' => Agreement::orderBy('date_open')->get(),
+            'route' => $route,
         ];
     }
 
-    //Сохраняем новые документ и присоединяем его к договору
-    public static function saveNewDocument(DocumentAddRequest $request):bool
+    public static function saveNewDocument(DocumentAddRequest $request): bool
     {
-        $document = self::storeNewDocument($request);
         $agreement = Agreement::find($request->input('agreement_id'));
-        if (!$document || !$agreement) return false;
-        
-        $agreement->documents()->attach($document);
+        if (!$agreement) {
+            return false;
+        }
+
+        $document = DocumentDataservice::saveFile($request);
+        if (!$document) {
+            return false;
+        }
+
+        $agreement->documents()->attach($document->id);
         return true;
     }
 
+    public static function saveMultipleDocuments(DocumentBatchAddRequest $request): bool
+    {
+        $agreement = Agreement::find($request->input('agreement_id'));
+        if (!$agreement || !$request->hasFile('document_files')) {
+            return false;
+        }
+
+        $documents = DocumentDataservice::saveMultipleFiles($request);
+        foreach ($documents as $document) {
+            $agreement->documents()->attach($document->id);
+        }
+
+        return true;
+    }
+
+    public static function updateDocument(DocumentEditRequest $request, Document $document): bool
+    {
+        return DocumentDataservice::updateDocument($request, $document);
+    }
+
+    public static function detachDocumentFromAgreement(Agreement $agreement, Document $document): bool
+    {
+        try {
+            $agreement->documents()->detach($document->id);
+            return true;
+        } catch (\Throwable $exception) {
+            return false;
+        }
+    }
 }
