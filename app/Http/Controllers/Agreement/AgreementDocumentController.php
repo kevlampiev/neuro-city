@@ -9,6 +9,7 @@ use App\Http\Requests\Agreement\DocumentBatchAddRequest;
 use App\Http\Requests\Agreement\DocumentEditRequest;
 use App\Models\Agreement;
 use App\Models\Document;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\View as ContractsViewView;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -76,14 +77,32 @@ class AgreementDocumentController extends Controller
      */
     public function storeMultiple(DocumentBatchAddRequest $request)
     {
-        $success = AgreementDocumentDataservice::saveMultipleDocuments($request);
-        $message = $success ? 'Файлы успешно загружены и связаны с договором.' : 'Ошибка при загрузке файлов.';
 
+        $validated = $request->validated();
+        $agreement = Agreement::find($request->input('agreement_id'));
+
+        $uploadedFiles = $request->input('uploaded_files', []);
+        $originalNames = $request->input('original_names', []);
+    
+        foreach ($uploadedFiles as $index => $filename) {
+            $originalName = $originalNames[$index] ?? 'Без имени';
+    
+            // Сохраняем файл в БД
+            $document = new Document();
+            $document->file_name = $filename;
+            $document->description = $originalName; // Сохраняем оригинальное имя
+            $document->created_by = Auth::user()->id;
+            $document->save();
+            $agreement->documents()->attach($document);
+        }
+    
         return redirect()->route('agreementSummary', [
-            'agreement' => $request->input('agreement_id'),
-            'page' => 'documents'
-        ])->with($success ? 'message' : 'error', $message);
+            'agreement' => $validated['agreement_id'],
+            'page' => 'documents',
+        ])->with('message', 'Документы успешно добавлены.');
+      
     }
+
 
     /**
      * Редактирует единичный файл.

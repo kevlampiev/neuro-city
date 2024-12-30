@@ -72,7 +72,7 @@
                         </a>
                     @endif
                     <span class="ml-4 mr-4" id="file-status">
-                            {{$document->file_name?"Файл доступен для скачивания":"Файл полиса отсутствует"}}
+                            {{$document->file_name?"Файл доступен для скачивания":"Файл отсутствует"}}
                         </span>
                     <a href="#" class="btn btn-outline-secondary" id="policy_file"
                        onclick="uploadFile()">

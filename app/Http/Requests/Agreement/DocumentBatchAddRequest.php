@@ -14,15 +14,15 @@ class DocumentBatchAddRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'document_files.*' => 'required|file', // Каждый файл обязателен
-            'agreement_id' => 'required|exists:agreements,id',
+            'uploaded_files.*' => 'required|string', // Пути к уже загруженным файлам
+            'agreement_id' => 'required|exists:agreements,id', // Проверка существования договора
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'document_files' => 'Файлы документов',
+            'uploaded_files' => 'Загруженные файлы',
             'agreement_id' => 'ID договора',
         ];
     }

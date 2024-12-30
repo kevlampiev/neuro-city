@@ -19,74 +19,37 @@ use Illuminate\Support\Str;
 class DocumentController extends Controller
 {
 
-
-    private function previousUrl(): string
+    public function uploadFile(Request $request)
     {
-        $route = url()->previous();
-        if (preg_match('/.{1,}summary$/i', $route)) $route .= '/documents';
-        return $route;
-    }
+        $request->validate([
+            'file' => 'required|max:25600', // Максимум 25MB
+        ]);
+    
+        try {
+            $file = $request->file('file');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs(config('paths.documents.put', 'public/documents'), $filename);;
 
-    private function storeUrl(Agreement $agreement)
-    {
-            session(['previous_url' => route('agreementSummary', ['agreement' => $agreement, 'page' => 'documents'])]);        
-    }
-
-    public function createAgreementDocument(Request $request, Agreement $agreement)
-    {
-        $Document = DocumentDataservice::create($request, $agreement);
-       $this->storeUrl($agreement);
-        if (url()->current() != url()->previous()) session(['previous_url' => url()->previous()]);
-        return view('agreements.agreement-document-edit',
-            DocumentDataservice::provideAgreementDocumentEditor($Document, $agreement, 'addDocument'));
-    }
-
-    public function storeAgreementDocument(DocumentAddRequest $request)
-    {
-        if (DocumentDataservice::storeNewAgreementDocument($request)) {
-            $agreement = Agreement::find($request->input('agreement_id'));
-            return redirect()->route("agreementSummary", ['agreement'=>$agreement, 'page' =>'documents'])->with('message', 'Документ успешно загружен и связан с договором.');
-        } else {
-            return redirect()->back()->with('error', 'Ошибка при загрузке файла.');
+            return response()->json([
+                'message' => 'Файл успешно загружен',
+                'filename' => $filename,
+                'original_name' => $file->getClientOriginalName(),
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Ошибка загрузки файла: ' . $e->getMessage()], 500);
         }
     }
-
-
-//     public function edit(Request $request, Document $document)
-//     {
-// //        $this->storeUrl($document->vehicle_id, $document->agreement_id);
-//         if (url()->current() != url()->previous()) session(['previous_url' => url()->previous()]);
-//         DocumentsDataservice::edit($request, $document);
-//         return view('Admin.document-edit',
-//             DocumentsDataservice::provideDocumentEditor($document, 'admin.editVehicleDocument'));
-//     }
-
-//     //Используется другой Request, подразумевается что файл уже есть на диске,
-//     // проверять его присутсвие в форме не обязательно
-//     public function update(DocumentEditRequest $request, Document $Document)
-//     {
-//         DocumentsDataservice::update($request, $Document);
-//         $route = session()->pull('previous_url');
-//         return redirect()->to($route);
-//     }
 
     public function preview(Document $document)
     {
         $filename =storage_path('app/public/documents/' . $document->file_name);
         $mimeType = mime_content_type($filename);
-        // $filename = Storage::url($document->file_name);
         return response()->file($filename, [
             'Content-Type' => $mimeType,
             'Content-Disposition' => 'inline; filename="' . basename($filename) . '"'
         ]);
     }
 
-    public function delete(Agreement $agreement, Document $document): RedirectResponse
-    {
-        AgreementDataservice::detachDocumentFromAgreements($agreement, $document);
-        $route = session()->pull('previous_url');
-        return redirect()->back();
-    }
 
 
 }
