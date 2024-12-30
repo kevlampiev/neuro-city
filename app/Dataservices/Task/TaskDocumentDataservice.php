@@ -50,19 +50,35 @@ class TaskDocumentDataservice
         }
 
         $task->documents()->attach($document->id);
+
+        foreach($task->agreements as $agreement) {
+            $agreement->documents()->attach($document->id);
+        }
+        
         return true;
     }
 
     public static function saveMultipleDocuments(DocumentBatchAddRequest $request): bool
     {
-        $task = Task::find($request->input('agreement_id'));
-        if (!$task || !$request->hasFile('document_files')) {
-            return false;
-        }
+        $validated = $request->validated();
+        $task = Task::find($request->input('task_id'));
 
-        $documents = DocumentDataservice::saveMultipleFiles($request);
-        foreach ($documents as $document) {
-            $task->documents()->attach($document->id);
+        $uploadedFiles = $request->input('uploaded_files', []);
+        $originalNames = $request->input('original_names', []);
+    
+        foreach ($uploadedFiles as $index => $filename) {
+            $originalName = $originalNames[$index] ?? 'Без имени';
+    
+            // Сохраняем файл в БД
+            $document = new Document();
+            $document->file_name = $filename;
+            $document->description = $originalName; // Сохраняем оригинальное имя
+            $document->created_by = Auth::user()->id;
+            $document->save();
+            $task->documents()->attach($document);
+            foreach ($task->agreements as $agreement) {
+                $agreement->documents()->attach($document->id);
+            }
         }
 
         return true;

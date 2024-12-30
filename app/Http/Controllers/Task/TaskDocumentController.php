@@ -59,11 +59,11 @@ class TaskDocumentController extends Controller
     /**
      * Сохраняет один файл (POST).
      */
-    public function storeSingle(DocumentAddRequest $request)
+    public function storeSingle(DocumentAddRequest $request, Task $task)
     {
         $success = TaskDocumentDataservice::saveNewDocument($request);
         $message = $success ? 'Документ успешно загружен и связан с задачей.' : 'Ошибка при загрузке файла.';
-
+        
         return redirect()->route('taskCard', [
             'task' => $request->input('task_id'),
             'page' => 'documents'
@@ -76,26 +76,11 @@ class TaskDocumentController extends Controller
     public function storeMultiple(DocumentBatchAddRequest $request)
     {
 
-        $validated = $request->validated();
-        $task = Task::find($request->input('task_id'));
-
-        $uploadedFiles = $request->input('uploaded_files', []);
-        $originalNames = $request->input('original_names', []);
-    
-        foreach ($uploadedFiles as $index => $filename) {
-            $originalName = $originalNames[$index] ?? 'Без имени';
-    
-            // Сохраняем файл в БД
-            $document = new Document();
-            $document->file_name = $filename;
-            $document->description = $originalName; // Сохраняем оригинальное имя
-            $document->created_by = Auth::user()->id;
-            $document->save();
-            $task->documents()->attach($document);
-        }
+        $success = TaskDocumentDataservice::saveMultipleDocuments($request);
+        $message = $success ? 'Документ успешно загружен и связан с задачей.' : 'Ошибка при загрузке файла.';
     
         return redirect()->route('taskCard', [
-            'task' => $task,
+            'task' => $request->input('task_id'),
             'page' => 'documents',
         ])->with('message', 'Документы успешно добавлены.');
       
