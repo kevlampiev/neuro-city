@@ -28,15 +28,20 @@ class DocumentController extends Controller
         try {
             $file = $request->file('file');
             $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $file->storeAs(config('paths.documents.put', 'public/documents'), $filename);;
-
+            $filePath = config('paths.documents.put', 'public/documents') . '/' . $filename;
+    
+            $file->storeAs(config('paths.documents.put', 'public/documents'), $filename);
+    
+            $fileUrl = Storage::url($filePath); // Генерация URL для файла
+    
             return response()->json([
-                'message' => 'Файл успешно загружен',
+                'uploaded' => true,
+                'url' => $fileUrl, // CKEditor ожидает этот параметр для вставки файла в редактор
                 'filename' => $filename,
                 'original_name' => $file->getClientOriginalName(),
             ], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Ошибка загрузки файла: ' . $e->getMessage()], 500);
+            return response()->json(['uploaded' => false, 'message' => 'Ошибка загрузки файла: ' . $e->getMessage()], 500);
         }
     }
 

@@ -58,17 +58,29 @@
     <script>
         ClassicEditor
             .create(document.querySelector('#description'), {
-                toolbar: [
-                    'heading', '|',
-                    'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|',
-                    'blockQuote', 'undo', 'redo'
-                ],
-                ckfinder: {
-                    uploadUrl: '/laravel-filemanager/upload?type=Files&_token={{ csrf_token() }}'
-                }
-            })
-            .catch(error => {
-                console.error(error);
-            });
+                    toolbar: [
+                        'heading', '|',
+                        'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|',
+                        'blockQuote', 'imageUpload', 'mediaEmbed', '|',
+                        'undo', 'redo'
+                    ],
+                    ckfinder: {
+                        uploadUrl: '/documents/upload', // Путь к методу uploadFile
+                        options: {
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Добавляем CSRF-токен для безопасности
+                            }
+                        }
+                    },
+                    simpleUpload: {
+                        uploadUrl: '/documents/upload', // Путь для загрузки файлов
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
     </script>
 @endsection
