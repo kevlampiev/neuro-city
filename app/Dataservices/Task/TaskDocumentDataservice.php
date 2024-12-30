@@ -5,8 +5,10 @@ namespace App\Dataservices\Task;
 
 use App\Http\Requests\Task\DocumentAddRequest;
 use App\Http\Requests\Task\DocumentEditRequest;
+use App\Http\Requests\Task\DocumentBatchAddRequest;
 use App\Models\Task;
 use App\Models\Document;
+use App\Dataservices\Document\DocumentDataservice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -16,160 +18,68 @@ use Error;
 class TaskDocumentDataservice
 {
 
-    public static function provideTaskDocumentEditor(Document $document, Task $task, $route = null): array
+    public static function provideTaskDocumentEditor(Document $document=null, Task $task, $route = null): array
     {
+        if (!$document) {
+            $document = new Document();
+        }
+        $tasks = Task::whereIn('id', function ($query) {
+            $query->select('task_id')
+                ->from('v_task_user_relations')
+                ->where('user_id', Auth::id());
+        })->get();
+        
         return [
             'document' => $document,
-            'task_id'=>$task->id,
-            'tasks' => Task::where('terminate_date',null)->where('user_id', Auth::user()->id)->orderByDesc('date_open')->get(),
-            'route' => $route
+            'task_id' => $task->id,
+            'tasks' => $tasks,
+            'route' => $route,
         ];
     }
 
-
-    /**
-     * returns Document
-     */
-    public static function create(Request $request, Task $task): Document
+    public static function saveNewDocument(DocumentAddRequest $request): bool
     {
-        $document = new Document();
-        if (!empty($request->old())) $document->fill($request->old());
-        return $document;
-    }
-
-    public static function edit(Request $request, Document $document)
-    {
-        if (!empty($request->old())) $document->fill($request->old());
-    }
-
-    public static function saveChanges(Request $request, Document $document)
-    {      
-        $document->fill($request->except(['document_file']));
-        if (!$document->user_id) $document->created_by = Auth::user()->id;
-        if ($document->id) $document->updated_at = now();
-        else $document->created_at = now();
-        if ($request->file('document_file')) {
-            Storage::delete('public/documents/' . $document->file_name);
-            $file_path = $request->file('document_file')->store(config('paths.documents.put', '/public/documents'));
-            $document->file_name = basename($file_path);
-        }
-        $document->save();
-    }
-
-
-
-    /**
-     * Сохраняет полученный из запроса файл в директорию public/documents
-     */
-    public static function uploadNewFile(Request $request):string
-    {
-        try {
-            $file = $request->file('document_file');
-                $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-                $file->storeAs('public/documents', $filename); // Сохраняем файл в директорию 'public/documents'
-            return $filename;
-        } catch (Error $exception) {
-            return '-- error while loading file --';
+        $task = Task::find($request->input('task_id'));
+        if (!$task) {
+            return false;
         }
 
-        
+        $document = DocumentDataservice::saveFile($request);
+        if (!$document) {
+            return false;
+        }
+
+        $task->documents()->attach($document->id);
+        return true;
     }
 
+    public static function saveMultipleDocuments(DocumentBatchAddRequest $request): bool
+    {
+        $task = Task::find($request->input('agreement_id'));
+        if (!$task || !$request->hasFile('document_files')) {
+            return false;
+        }
 
-    //Сохраняем новые документ и присоединяем его к договору
-    public static function storeNewTaskDocument(DocumentAddRequest $request):bool
+        $documents = DocumentDataservice::saveMultipleFiles($request);
+        foreach ($documents as $document) {
+            $task->documents()->attach($document->id);
+        }
+
+        return true;
+    }
+
+    public static function updateDocument(DocumentEditRequest $request, Document $document): bool
+    {
+        return DocumentDataservice::updateDocument($request, $document);
+    }
+
+    public static function detachDocumentFromTask(Task $task, Document $document): bool
     {
         try {
-            if ($request->hasFile('document_file')) {
-                $filename = self::uploadNewFile($request);
-    
-                    // Сохранение информации о файле в базе данных
-                $document = new Document();
-                $document->file_name = $filename;
-                $document->description = $request->input('description');
-                $document->created_by = Auth::id(); // или другой пользовательский ID
-                // $document->path = $path;
-                $document->save();
-    
-                // Создание связи между договором и документом
-                $task = Task::find($request->input('task_id'));
-                $task->documents()->attach($document->id);
-                session()->flash('message', 'Документ успешно загружен и связан с договором.');
-                return true;
- 
-            } else  {
-                session()->flash('error', 'Не удалось добавить новый документ.');
-                return false;
-            }
-               
-        } catch (Error $err) {
-            session()->flash('error', 'Не удалось добавить новый документ');
+            $task->documents()->detach($document->id);
+            return true;
+        } catch (\Throwable $exception) {
             return false;
         }
     }
-
-
-
-    //Редактируем документ, привязанный к договору
-
-    public static function updateTaskDocument(DocumentEditRequest $request):bool
-    {
-        try {
-            if ($request->hasFile('document_file')) {
-                $filename = self::uploadNewFile($request);
-    
-    
-                // Сохранение информации о файле в базе данных
-                $document = new Document();
-                $document->file_name = $filename;
-                $document->description = $request->input('description');
-                $document->created_by = Auth::id(); // или другой пользовательский ID
-                // $document->path = $path;
-                $document->save();
-    
-                // Создание связи между договором и документом
-                $task = Task::find($request->input('task_id'));
-                $task->documents()->attach($document->id);
-                session()->flash('message', 'Документ успешно загружен и связан с договором.');
-                return true;
- 
-            } else  {
-                session()->flash('error', 'Не удалось добавить новый документ.');
-                return false;
-            }
-               
-        } catch (Error $err) {
-            session()->flash('error', 'Не удалось добавить новый документ');
-            return false;
-        }
-    }
-
-
-
-
-
-
-
-
-    // public static function update(DocumentEditRequest $request, Document $document)
-    // {
-    //     try {
-    //         self::saveChanges($request, $document);
-    //         session()->flash('message', 'Данные документа обновлены');
-    //     } catch (Error $err) {
-    //         session()->flash('error', 'Не удалось обновить данные документа');
-    //     }
-    // }
-
-    public static function delete(Document $document)
-    {
-        try {
-            Storage::delete('public/documents/' . $document->file_name);
-            $document->delete();
-            session()->flash('message', 'Документ удален');
-        } catch (Error $err) {
-            session()->flash('error', 'Не удалось удалить документ');
-        }
-    }
-
 }

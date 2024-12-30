@@ -28,7 +28,7 @@ class DocumentEditRequest extends FormRequest
             'description' => 'string|min:3',
             'file_name' => 'string|min:3',
             'document_file' => 'file|nullable',
-            'task_id' => 'required|exists:tasks,id',
+            'task_id' => 'required|tasks:agreements,id',
         ];
     }
 
@@ -38,7 +38,7 @@ class DocumentEditRequest extends FormRequest
             'file_name' => 'Файл докумена',
             'description' => 'Описание',
             'document_file' => 'Файл документа',
-            'agreement_id' => 'ID задачи',
+            'task_id' => 'ID задачи',
         ];
     }
 

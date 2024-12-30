@@ -1,53 +1,33 @@
-<div class="card bg-light p-3">
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Тип файла</th>
-            <th scope="col">Описание</th>
-            <th scope="col">Опубликован</th>
-            <th scope="col">Изменен</th>
-            <th scope="col">Автор</th>
-            <th></th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
+<div class="row">
 
-        {{-- @forelse($task->documents as $document)
-
-            <tr>
-                <th scope="row">{{$loop->index+1}}</th>
-                <td>
-                    <img src="{{asset(File::extension($document->file_name).'.png')}}" style="width: 25px;">
-                </td>
-                <td>
-                    <a href="{{route('documentPreview', ['document'=>$document] ) }}">
-                        {{$document->description}}
+    @forelse($task->documents as $index=>$document)
+        <div class="col-sm-6 col-md-4 col-lg-3 d-flex">
+            <div class="card m-2 flex-fill" style="min-width: 18rem; position: relative;">
+                <div class="card-body">
+                    <a
+                        href="{{route('documentPreview', ['document'=>$document] ) }}"
+                        class="text-dark"
+                        target="_blank">
+                        <img src="{{asset(File::extension($document->file_name).'.png')}}" style="width: 25px;">
+                        <p class="card-text clr-gray mb-2 p-2">{{$document->description}}</p>
                     </a>
-                </td>
-                <td class="small text-secondary font-italic">{{Carbon\Carbon::parse($document->created_at)->format('d.m.y h:m')}}</td>
-                <td class="small text-secondary font-italic">{{Carbon\Carbon::parse($document->updated_at)->format('d.m.y h:m')}}</td>
-                <td class="small text-secondary font-italic">{{$document->user->name}}</td>
-                <td>
-                    @if($document->user_id==Auth::user()->id)
-                        <a href="{{route('editDocument', ['document' => $document])}}">
-                            &#9998;Изменить </a>
+                    
+                    
+                    <!-- Кнопка в верхнем правом углу -->
+                    @if(Auth::id()==$task->user_id)
+                    <a href="{{route('detachTaskDocument', ['task' =>$task, 'document'=>$document])}}"
+                       class="btn btn-outline-secondary"
+                       style="position: absolute; top: 5px; right: 5px;"
+                       onclick="return confirm('Действительно открепить документ?')">
+                        &#10008;
+                    </a>
                     @endif
-                </td>
-                <td>
-                    @if($document->user_id==Auth::user()->id)
-                        <a href="{{route('deleteDocument', ['document' => $document])}}"
-                           onclick="return confirm('Действительно удалить {{$document->file_name}} из базы?')">&#10008;Удалить</a>
-                    @endif
-                </td>
-            </tr>
+                </div>
+            </div>
+        </div>
 
-        @empty
-            <td colspan="3" class="font-italic">
-                Задача не имеет документов
-            </td>
-        @endforelse --}}
-        </tbody>
-    </table>
+    @empty
+        <p>Нет документов для отображения</p>
+    @endforelse
 </div>
+

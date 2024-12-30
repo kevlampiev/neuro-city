@@ -98,7 +98,19 @@
                 Сообщения
             </button>
         </li>
-
+        <li class="nav-item" role="presentation">
+            <button class="nav-link"
+                    id="documents-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#documents"
+                    type="button"
+                    role="tab"
+                    aria-controls="documents"
+                    aria-selected="false">
+                <i class="fa fa-comments-o" aria-hidden="true"></i>
+                Документы по задаче
+            </button>
+        </li>
     </ul>
 
     {{--    Ниже идет содержимое вкладок--}}
@@ -141,6 +153,14 @@
                     @include('tasks.components.messages-menu')
                     <div class="card bg-light">
                         @include('tasks.messages.messages', ['messages' => $task->messages])
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="documents" role="tabpanel" aria-labelledby="documents-tab">
+                    <h4>Документы по задаче</h4>
+                    @include('tasks.components.documents-menu')
+                    <div class="card bg-light">
+                        @include('tasks.components.documents-data', ['documents' => $task->documents])
                     </div>
                 </div>
 

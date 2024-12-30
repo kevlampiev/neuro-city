@@ -29,7 +29,7 @@ class AgreementDocumentTest extends TestCase
         $this->actingAs($user);
 
         // Создаем произвольный договор
-        $agreement = Agreement::inRandomOrder()->first();
+        $agreement = Agreement::query()->inRandomOrder()->first();
 
         // Загружаемый файл
         $file = UploadedFile::fake()->create('test-document.pdf', 100, 'application/pdf');
