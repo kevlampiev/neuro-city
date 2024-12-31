@@ -34,7 +34,8 @@
         </div>
 
         <!-- Кнопка для открытия Dropzone -->
-        <button type="button" id="toggleDropzoneButton" class="btn btn-secondary mb-3">
+        <button type="button" id="toggleDropzoneButton" class="btn btn-light mb-3">
+            <i class="bi bi-paperclip"></i>
             Прикрепить файлы
         </button>
 
