@@ -8,7 +8,8 @@ Route::group(['middleware'=>['auth', PasswordExpired::class]], function () {
     Route::get('/', function () {
         return view('main');
     });
-    // Route::get('/counter', Counter::class);
+    
+    Route::get('/avatar/{filename}', [UserProfileController::class, 'getAvatar'])->name('avatar.get');
     
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     

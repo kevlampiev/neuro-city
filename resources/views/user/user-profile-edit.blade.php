@@ -89,7 +89,8 @@
                                 <img src=   "https://aristokratrest.com/files/rublevbar/image/no_product.jpg" alt="No photo"
                                     class="rounded-circle float-start border-info" style="width: 200px; height:200px; object-fit: cover;" id="img-viewer">
                             @else
-                                 <img src="/storage/img/{{ $user->photo }}" alt="User photo"
+                                {{-- @dd(route('avatar.get', ['filename' => $user->photo])) --}}
+                                 <img src="{{ route('avatar.get', ['filename' => $user->photo]) }}" alt="User photo"
                                     class="rounded-circle float-start border-info"
                                     style="width: 200px; height:200px; object-fit: cover;" id="img-viewer">   
 

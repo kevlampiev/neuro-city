@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Dataservices\User\UserProfileDataservice;
 use App\Http\Requests\UserProfileRequest;
+use Illuminate\Support\Facades\Storage;
 
 class UserProfileController extends Controller
 {
@@ -19,6 +20,21 @@ class UserProfileController extends Controller
     {
         UserProfileDataservice::storeData($request);
         return redirect()->route('home');
+    }
+
+    public function getAvatar($filename)
+    {
+        $path = 'public/avatars/' . $filename;
+
+        if (!Storage::exists($path)) {
+            abort(404, 'Image not found');
+        }
+
+        $file = Storage::get($path);
+        $type = Storage::mimeType($path);
+
+        return response($file, 200)->header('Content-Type', $type);
+
     }
 }
 
