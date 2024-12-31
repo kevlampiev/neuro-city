@@ -59,7 +59,7 @@ class TasksCloseTest extends TestCase
         $this->assertDatabaseHas('tasks', ['user_id' => $user->id, 'task_performer_id' => $performer->id]);
     
         // Выполняем запрос
-        $response = $this->actingAs($user)->get(route('markTaskAsDone', ['task' => $task->id]));
+        $response = $this->actingAs($user)->get(route('markTaskAsDone', ['task' => $task]));
     
         // Обновляем объект задачи из базы данных
         $task->refresh();
@@ -99,7 +99,7 @@ class TasksCloseTest extends TestCase
             ]);
 
             // Выполняем запрос на отмену задачи исполнителем
-            $response = $this->actingAs($performer)->get(route('markTaskAsCanceled', ['task' => $task->id]));
+            $response = $this->actingAs($performer)->get(route('markTaskAsCanceled', ['task' => $task]));
 
             // Обновляем объект задачи из базы данных
             $task->refresh();
@@ -132,7 +132,7 @@ class TasksCloseTest extends TestCase
             $this->assertDatabaseHas('tasks', ['user_id' => $user->id, 'task_performer_id' => $performer->id]);
         
             // Выполняем запрос
-            $response = $this->actingAs($user)->get(route('markTaskAsCanceled', ['task' => $task->id]));
+            $response = $this->actingAs($user)->get(route('markTaskAsCanceled', ['task' => $task]));
         
             // Обновляем объект задачи из базы данных
             $task->refresh();

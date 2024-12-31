@@ -10,7 +10,8 @@ Route::group([
     function () {
         Route::get('{document}/preview', [DocumentController::class, 'preview'])
             ->name('documentPreview');
-        
+        Route::post('documents/upload', [DocumentController::class, 'uploadFile'])
+            ->name('documentUpload');
     }
 );
 

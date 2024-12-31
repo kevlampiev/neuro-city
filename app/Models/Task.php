@@ -42,9 +42,9 @@ class Task extends Model
         return $this->HasOne(Task::class, 'parent_task_id', 'id');
     }
 
-    public function documents(): HasMany
+    public function documents(): BelongsToMany
     {
-        return $this->hasMany(Document::class);
+        return $this->belongsToMany(Document::class, 'document_task');
     }
 
     public function messages(): HasMany

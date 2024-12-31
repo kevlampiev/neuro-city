@@ -6,6 +6,7 @@ use App\Http\Controllers\Task\TaskLinksController;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\PasswordExpired;
+use App\Http\Controllers\Task\TaskDocumentController;
 
 Route::group([
     'prefix' => 'tasks',
@@ -81,3 +82,21 @@ Route::middleware(['auth', PasswordExpired::class])->get(
     '/notifications/{id}/mark-as-read',
     [NotificationController::class, 'markAsRead']
 )->name('notifications.markAsRead');
+
+Route::group([
+    'prefix' => 'documents', 'middleware' => ['task.interessant', 'task.isRunning'],
+    ],
+    function () {
+
+        Route::get('task/{task}/addDocument', [TaskDocumentController::class, 'createSingeDocument'])
+            ->name('addTaskDocument');
+        Route::post('task/{task}/addDocument', [TaskDocumentController::class, 'storeSingle']);     
+        
+        Route::get('task/{task}/addManyDocument', [TaskDocumentController::class, 'createMultipleDocuments'])
+            ->name('addTaskManyDocuments');
+        Route::post('task/{task}/addManyDocument', [TaskDocumentController::class, 'storeMultiple']);             
+        
+        Route::match(['get', 'post'],'task/{task}/document/{document}/detach', [TaskDocumentController::class, 'detach'])
+        ->name('detachTaskDocument');          
+    }
+);

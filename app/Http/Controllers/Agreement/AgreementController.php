@@ -53,14 +53,6 @@ class AgreementController extends Controller
         return redirect()->to($route);
     }
 
-
-    public function detachDocument(Agreement $agreement, Document $document): RedirectResponse
-    {
-        AgreementDataservice::detachDocumentFromAgreements($agreement, $document);
-        $route = session()->pull('previous_url');
-        return redirect()->back();
-    }
-
     public function summary(Agreement $agreement)
     {
         // $agreement->payments()->orderBy('payment_date');
@@ -70,23 +62,5 @@ class AgreementController extends Controller
                         // 'payments' => VPaymentExtended::where('agreement_id', $agreement->id)->orderByDesc('date_open')->get(),
                     ]);
     }
-
-    // public function addVehicle(Request $request, Agreement $agreement, Vehicle $vehicle)
-    // {
-    //     if ($request->isMethod('post')) {
-    //         AgreementsDataservice::addVehicle($request, $agreement);
-    //         return redirect()->route('admin.agreementSummary', ['agreement' => $agreement, 'page' => 'vehicles']);
-    //     } else {
-    //         return view('Admin.agreements.agreement-add-vehicle',
-    //             AgreementsRepo::provideAddVehicleView($agreement));
-    //     }
-    // }
-
-    // public function detachVehicle(Request $request, Agreement $agreement, Vehicle $vehicle): RedirectResponse
-    // {
-    //     AgreementsDataservice::detachVehicle($agreement, $vehicle);
-    //     return redirect()->route('admin.agreementSummary', ['agreement' => $agreement, 'page' => 'vehicles']);
-    // }
-
 
 }

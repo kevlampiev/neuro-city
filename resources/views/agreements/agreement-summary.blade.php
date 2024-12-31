@@ -36,17 +36,6 @@
             </button>
            
             <button class="nav-link"
-                    id="collaterals-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#collaterals"
-                    type="button"
-                    role="tab"
-                    aria-controls="collaterals"
-                    aria-selected="true">
-                <i class="bi bi-file-earmark-lock"></i>
-                Залог
-            </button>
-            <button class="nav-link"
                     id="guarantees-tab"
                     data-bs-toggle="tab"
                     data-bs-target="#guarantees"
@@ -108,21 +97,6 @@
                 Заметки
             </button>
 
-            {{-- Это только для тех, кто может редактировать платежи => может управлять ключевыфми словами --}}
-            @if(Gate::allows('e-payments'))
-            <button class="nav-link"
-                    id="keywords-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#keywords"
-                    type="button"
-                    role="tab"
-                    aria-controls="keywords"
-                    aria-selected="true">
-                <i class="bi bi-key"></i>
-                Ключевые слова
-            </button>
-            @endif
-
         </div>
     </nav>
 
@@ -139,21 +113,15 @@
                 <div class="col-md-12">
                     <a class="btn btn-outline-primary"
                        href="{{route('addAgreementDocument',['agreement' => $agreement])}}">
+                        <i class="bi bi-file-earmark-plus"></i>
                         Добавить документ
                     </a>
+                    <a class="btn btn-outline-primary"
+                       href="{{route('addAgreementManyDocuments',['agreement' => $agreement])}}">
+                        <i class="bi bi-folder-plus"></i>
+                        Добавить несколько 
+                    </a>
                     @include('agreements.agreement-summary.agreement-files')
-                </div>
-            </div>
-        </div>
-
-        <div class="tab-pane fade" id="collaterals" role="tabpanel" aria-labelledby="collaterals-tab">
-            <h4>Техника в залоге по договору</h4>
-            <div class="row m-1">
-                <div class="col-md-12">
-                    {{-- <a class="btn btn-outline-info"
-                       href="{{route('admin.addDeposit', ['agreement'=>$agreement])}}">Добавить залоговую технику
-                    </a> --}}
-                    {{-- @include('Admin.agreements.agreement-summary.agreement-deposits', ['deposits' => $agreement->deposites]) --}}
                 </div>
             </div>
         </div>
@@ -199,21 +167,6 @@
             <h4>Заметки по договору </h4>
             @include('agreements.agreement-summary.agreement-notes')
         </div>
-
-        @if(Gate::allows('e-real_payment'))        
-        <div class="tab-pane fade" id="keywords" role="tabpanel" aria-labelledby="keywords-tab">
-            <h4>Ключевые слова (синонимы) для идентификации платежей по договору </h4>
-            <div class="row">
-                {{-- <div class="col-md-12">
-                    <a class="btn btn-outline-info"
-                    href="{{route('admin.addAgreementKeyword', ['agreement'=>$agreement])}}">Новое ключевое слово</a>
-
-                </div>
-            </div>
-            @include('Admin.agreements.agreement-summary.agreement-keywords', ['keywords' =>$agreement->keywords->sortBy('name')]) --}}
-        </div>
-        @endif
-
 
     </div>
 

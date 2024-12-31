@@ -41,6 +41,17 @@ class CheckTaskIsRunning
     */
    private function resolveTask($taskRouteParam): ?Task
    {
-       return is_array($taskRouteParam) ? ($taskRouteParam[0] ?? null) : $taskRouteParam;
+        if ($taskRouteParam instanceof Task) {
+            // Если это уже объект Task, возвращаем его
+            return $taskRouteParam;
+        }
+        
+        if (is_array($taskRouteParam)) {
+            $taskId = intval($taskRouteParam[0] ?? null); // Преобразуем в целое число
+        } else {
+            $taskId = intval($taskRouteParam); // Преобразуем в целое число
+        }
+
+        return Task::find($taskId);
    }
 }
