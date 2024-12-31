@@ -12,6 +12,10 @@
     <div class="mt-2">
         <p class="mb-0 text-body">{!! $message->description !!}</p>
     </div>
+    @foreach($message->documents as $document)
+        <img src="{{asset(strtolower(File::extension($document->file_name)).'.png')}}" style="width: 25px;">
+        {{$document->description}}
+    @endforeach
     <div class="mt-3 d-flex justify-content-end gap-2">
         <a href="{{route('messageReply', ['message' => $message])}}" class="btn btn-sm btn-outline-primary">
             <i class="fa fa-reply" aria-hidden="true"></i> Ответить

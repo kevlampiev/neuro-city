@@ -19,6 +19,8 @@ use App\Notifications\TaskCommented;
 use App\Notifications\TaskCompleted;
 use App\Notifications\TaskCreated;
 use App\Notifications\TaskDetachFollower;
+use Illuminate\Support\Facades\DB;
+use App\Models\Document;
 
 class TaskController extends Controller
 {
@@ -151,12 +153,19 @@ class TaskController extends Controller
     
     public function storeMessage(MessageRequest $request, Task $task, Message $message)
     {
-        TaskDataservice::storeTaskMessage($request);
-        foreach ($task->getAllInterestedUsers() as $el) {
-            if ($el != Auth::user()->id) User::find($el)->notify(new TaskCommented($task));
+        try {
+            // Создание сообщения
+            $message = TaskDataservice::storeTaskMessage($request);
+            // Уведомление пользователей
+            foreach ($task->getAllInterestedUsers() as $userId) {
+                if ($userId != Auth::id()) {
+                    User::find($userId)->notify(new TaskCommented($task));
+                }
+            }
+            return redirect()->route('taskCard', ['task' => $task, 'page' => 'messages']);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Ошибка при сохранении сообщения: ' . $e->getMessage()]);
         }
-
-        return redirect()->route('taskCard', ['task' => $task, 'page' =>'messages']);
     }
 
 
