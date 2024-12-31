@@ -1,7 +1,7 @@
 @extends('layouts.big-form')
 
 @section('title')
-    Администратор | Сообщение
+    Сообщение
 @endsection
 
 @section('content')
