@@ -8,7 +8,7 @@
                         href="{{route('documentPreview', ['document'=>$document] ) }}"
                         class="text-dark"
                         target="_blank">
-                        <img src="{{asset(File::extension($document->file_name).'.png')}}" style="width: 25px;">
+                        <img src="{{asset(strtolower(File::extension($document->file_name)).'.png')}}" style="width: 25px;">
                         <p class="card-text clr-gray mb-2 p-2">{{$document->description}}</p>
                     </a>
                     

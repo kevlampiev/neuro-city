@@ -16,6 +16,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
+use App\Models\Document;
 
 class TaskDataservice
 {
@@ -331,18 +332,47 @@ class TaskDataservice
         return $message;
     }
 
-    public static function storeTaskMessage(MessageRequest $request)
+    public static function storeTaskMessage(MessageRequest $request): ?Message
     {
+        DB::beginTransaction(); // Используем транзакцию для безопасности операций
         try {
+            // Создание сообщения
             $message = new Message();
-            $message->fill($request->all());
-            if (!$message->user_id) $message->user_id = Auth::user()->id;
+            $message->fill($request->except(['uploaded_files', 'original_names']));
+            $message->user_id = $message->user_id ?: Auth::id(); // Устанавливаем пользователя, если не указано
             $message->created_at = now();
             $message->save();
+
+            $initialNames = $request->input('original_names', []); // Массив ключ-значение: имя файла -> описание
+            
+            $task = $message->root_task; // Получаем связанную задачу
+
+            foreach ($initialNames as $filename => $description) {
+                // Сохраняем файл в базе данных
+                $document = new Document();
+                $document->file_name = $filename; // Имя файла
+                $document->description = $description ?: 'Без описания'; // Описание файла, если оно отсутствует
+                $document->created_by = Auth::id(); // Устанавливаем, кто загрузил файл
+                $document->save();
+
+                // Привязываем документ к сообщению и задаче
+                $message->documents()->attach($document->id);
+                $task?->documents()->attach($document->id);
+
+                // Привязываем документ ко всем связанным договорам задачи
+                foreach ($task?->agreements ?? [] as $agreement) {
+                    $agreement->documents()->attach($document->id);
+                }
+            }
+
+            DB::commit(); // Фиксируем транзакцию
             session()->flash('message', 'Добавлено новое сообщение');
-        } catch (Error $err) {
-            session()->flash('error', 'Не удалось добавить сообщение');
+            return $message;
+
+        } catch (\Exception $e) {
+            DB::rollBack(); // Откатываем транзакцию в случае ошибки
+            session()->flash('error', 'Не удалось добавить сообщение: ' . $e->getMessage());
+            return null;
         }
     }
-
 }
