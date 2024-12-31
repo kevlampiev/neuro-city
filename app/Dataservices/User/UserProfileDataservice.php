@@ -27,7 +27,8 @@ class UserProfileDataservice
         if ($request->file('img_file')) {
             $file = $request->file('img_file');
             $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('public/img', $filename); // Сохраняем файл в директорию 'public/img/avatars'
+            $file->storeAs(config('paths.documents.put', 'public/avatars'), $filename);
+            // $file->storeAs('img', $filename); // Сохраняем файл в директорию 'public/img/avatars'
             $user->photo = $filename;
         }
         $user->save();
