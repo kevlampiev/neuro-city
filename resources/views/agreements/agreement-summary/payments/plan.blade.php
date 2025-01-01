@@ -1,7 +1,13 @@
     <div class="row">
         <div class="col-md-12">
             <a class="btn btn-outline-info m-2"
-               href="{{route('plan-payments.add', ['agreement'=>$agreement])}}">Новый платеж</a>
+               href="{{route('plan-payments.add', ['agreement'=>$agreement])}}">
+               Новый платеж
+            </a>
+            <a class="btn btn-outline-info m-2"
+               href="{{route('plan-payments.mass-add', ['agreement'=>$agreement])}}">
+               Добавить серию платежей
+            </a>   
         </div>
     </div>
 
