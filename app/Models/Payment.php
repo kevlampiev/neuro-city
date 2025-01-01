@@ -23,4 +23,9 @@ class Payment extends Model
         return $this->belongsTo(Project::class);
     }
 
+    public function bankAccount():BelongsTo
+    {
+        return $this->belongsTo(BankAccount::class, 'bank_account_id', 'id');
+    }
+
 }
