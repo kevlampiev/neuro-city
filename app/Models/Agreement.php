@@ -61,6 +61,12 @@ class Agreement extends Model
         return $this->hasMany(VPaymentExtended::class,'agreement_id', 'id');
     }
 
+    public function planPayments():HasMany
+    {
+        return $this->hasMany(PlanPayment::class);
+    }
+
+
     public function accruals():HasMany
     {
         return $this->hasMany(Accrual::class);

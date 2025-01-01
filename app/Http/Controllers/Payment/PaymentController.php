@@ -53,7 +53,7 @@ class PaymentController extends Controller
     {
         // if (url()->previous() !== url()->current()) $route = url()->previous();
         PaymentDataservice::delete($payment);
-        return redirect()->route('payments.index');
+        return redirect()->back();
     }
 
 }

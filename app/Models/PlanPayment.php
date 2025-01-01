@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Payment extends Model
+class PlanPayment extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -15,7 +15,7 @@ class Payment extends Model
 
     public function agreement():BelongsTo
     {
-        return $this->belongsTo(Agreement::class);
+        return $this->belongsTo(Agreement::class, 'agreement_id', 'id');
     }
 
     public function project():BelongsTo
@@ -23,9 +23,9 @@ class Payment extends Model
         return $this->belongsTo(Project::class);
     }
 
-    public function bankAccount():BelongsTo
+    public function cfsItem():BelongsTo
     {
-        return $this->belongsTo(BankAccount::class, 'bank_account_id', 'id');
+        return $this->belongsTo(CFSItem::class);
     }
 
 }
