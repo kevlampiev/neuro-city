@@ -9,6 +9,7 @@
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
            aria-expanded="false">
+           @include('partials.avatar-mini', ['user'=>Auth::user()]) &thinsp; 
             {{ Auth::user()->name }}
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">

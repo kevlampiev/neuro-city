@@ -86,7 +86,7 @@
                         <ul class="list-group">
                             @forelse($task->followers as $follower)
                                 <li class="list-group-item bg-light text-secondary font-italic">
-                                    {{$follower->name}}
+                                    @include('partials.avatar-mini', ['user'=>$follower]) &thinsp; {{$follower->name}}
                                 </li>
                             @empty
                                 нет подписчиков
