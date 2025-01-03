@@ -15,7 +15,7 @@ class BigSearchDataservice
     public static function availableObjects(): array 
     {
         $doumentCounter = 0;
-        $result = ['document', 'note'];
+        $result = ['document', 'note', 'task', 'message'];
         if (Auth::user()->hasPermissionTo('s-agreements')) $result[]='agreement';
         if (Auth::user()->hasPermissionTo('s-counterparty')) {
              $result[]='company';
