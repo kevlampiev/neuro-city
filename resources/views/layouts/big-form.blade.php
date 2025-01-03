@@ -59,6 +59,16 @@
         </main>
     </div>
     
+    <style>
+        .half-gray {
+            filter: grayscale(50%);
+            transition: filter 0.3s ease;
+        }
+
+        .half-gray:hover {
+            filter: grayscale(0%);
+        }
+    </style>
     
         @yield("scripts")
         

@@ -153,6 +153,18 @@
                         <tr>
                             <th class="text-end text-muted">Сроки исполнения</th>
                             <td class="{{ ($task->due_date < now() && !$task->terminate_date) ? 'text-danger' : ((now()->diffInDays($task->due_date) < 3 && !$task->terminate_date) ? 'text-warning' : '') }}">
+                                @php
+                                    $taskStr = '#' . $task->id . ' ' . $task->subject;
+                                    $isOverdue = $task->due_date < now() && !$task->terminate_date;
+                                    $isUrgent = !$isOverdue && now()->diffInDays($task->due_date) < 3 && !$task->terminate_date;
+                                @endphp
+
+                                {{-- Иконка статуса задачи --}}
+                                @if($isOverdue)
+                                    <i class="bi bi-fire text-danger"></i>
+                                @elseif($isUrgent)
+                                    <i class="bi bi-fire text-warning"></i>
+                                @endif
                                 {{ \Carbon\Carbon::parse($task->start_date)->format('d.m.Y') }} - {{ \Carbon\Carbon::parse($task->due_date)->format('d.m.Y') }}
                             </td>
                         </tr>

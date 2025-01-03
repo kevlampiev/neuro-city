@@ -25,7 +25,7 @@
     {{-- Дополнительная информация --}}
     <span class="text-secondary small font-italic p-1 ">
         <em>
-            Исп: {{ $task->performer->name }}
+            Исп: @include('partials.avatar-mini-name', ['user'=>$task->performer]) 
             &nbsp; Срок: {{ \Carbon\Carbon::parse($task->due_date)->format('d.m.Y') }}
         </em>
     </span>
