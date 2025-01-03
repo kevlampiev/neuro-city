@@ -11,7 +11,7 @@
                 @endif
 
                 <!-- Изображение пользователя -->
-                <img src="{{ $user->photo?asset('storage/img/avatars'.$user->photo):asset('noimg.png') }}" 
+                <img src="{{ $user->photo?route('avatar.get', ['filename' => $user->photo]):asset('unknown_user.jpg') }}" 
                      alt="{{ 'Изображение ' . $user->name }}" 
                      class="img-thumbnail rounded-circle" 
                      style="width: 150px; height: 150px; object-fit: cover;">

@@ -14,6 +14,13 @@
         </div>
         <div class="col-md-5">
             <form class="form-inline my-2 my-lg-0 d-flex align-items-center" method="GET">
+                <div class="form-check me-3">
+                    <input class="form-check-input" type="checkbox" id="showClosedTasks" name="showClosedTasks" 
+                           {{ request()->get('showClosedTasks') ? 'checked' : '' }}>
+                    <label class="form-check-label" for="showClosedTasks">
+                        Показывать закрытые задачи
+                    </label>
+                </div>
                 <input class="form-control mr-sm-2" type="search" placeholder="Поиск в моих задачах" aria-label="Search"
                        name="searchStr"
                        value="{{isset($filter)?$filter:''}}">

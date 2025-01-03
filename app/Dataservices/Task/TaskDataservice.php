@@ -37,7 +37,7 @@ class TaskDataservice
 
     /// Вспомогательная функция, выбирающая все задачи в которых заданный пользователь
     /// является подписчиком
-    private static function getTasksWhereUserIsFollower(string $searchStr, User $user): Collection
+    private static function getTasksWhereUserIsFollower(string $searchStr, User $user, bool $showTerminated=false): Collection
     {
         $taskFollowerIds = Arr::pluck(
             DB::select('select distinct task_id from task_user where user_id=:user_id',
@@ -45,8 +45,9 @@ class TaskDataservice
             'task_id');
 
         return Task::query()
-            ->where('terminate_date', '=', null)
-            ->where('terminate_date', '=', null)
+            ->when(!$showTerminated, function ($query) {
+                $query->where('terminate_date', '=', null);
+            })
             ->where('subject', 'like', $searchStr)
             ->whereIn('id', $taskFollowerIds)
             ->orderBy('due_date')
@@ -55,10 +56,12 @@ class TaskDataservice
 
     /// Вспомогательная функция, выбирающая все задачи СПИСКОМ в которых заданный пользователь
     /// является подписчиком и делающие 
-    private static function getTaskListWhereUserIsPerformer(string $searchStr, User $user): Collection
+    private static function getTaskListWhereUserIsPerformer(string $searchStr, User $user, bool $showTerminated=false): Collection
     {
         $tasks = Task::where('task_performer_id', '=', $user->id)
-            ->where('terminate_date', '=', null)
+            ->when(!$showTerminated, function ($query) {
+                $query->where('terminate_date', '=', null);
+            })
             ->where('subject', 'like', $searchStr)
             ->orderBy('importance')
             ->orderBy('due_date')
@@ -68,22 +71,25 @@ class TaskDataservice
 
     /// Вспомогательная функция, выбирающая все задачи в которых заданный пользователь
     /// является постановщиком
-    private static function getTasksWhereUserIsMaster(string $searchStr, User $user): Collection
+    private static function getTasksWhereUserIsMaster(string $searchStr, User $user, bool $showTerminated=false): Collection
     {
-        return Task::query()
+
+         return Task::query()
             ->where('user_id', '=', $user->id)
             ->where('task_performer_id', '<>', $user->id)
             ->where('subject', 'like', $searchStr)
-            ->where('terminate_date', '=', null)
-            ->orderBy('task_performer_id')->get();
+            ->when(!$showTerminated, function ($query) {
+                $query->where('terminate_date', '=', null);
+            })
+            ->orderBy('task_performer_id')
+            ->get();
     }
 
     /// Вспомогательная функция, выбирающая все задачи в которых заданный пользователь
-    /// является исполнителем
-    private static function getTasksWhereUserIsPerformer(string $searchStr, User $user): Collection
+    /// является исполнителем для вывода задач в видк дерева (только основания ветвей)
+    private static function getTasksWhereUserIsPerformer(string $searchStr, User $user, bool $showTerminated=false): Collection
     {
         $showHidden = false; // Если нужно поддерживать параметр видимости
-        $showTerminated = false; // Если нужно поддерживать параметр завершенности
 
         $result = DB::select(
             'SELECT * FROM get_task_tree_roots(:searchStr, :showHidden, :showTerminated, :userId)',
@@ -106,11 +112,12 @@ class TaskDataservice
         $filter = ($request->get('searchStr')) ?? '';
         $searchStr = '%' . str_replace(' ', '%', $filter) . '%';
 
+        $showTerminated =  $request->get('showClosedTasks', false);
 
         return [
-            'userAssignments' => self::getTasksWhereUserIsPerformer($searchStr, $user),
-            'assignedByUser' => self::getTasksWhereUserIsMaster($searchStr, $user),
-            'followerTasks' => self::getTasksWhereUserIsFollower($searchStr, $user),
+            'userAssignments' => self::getTasksWhereUserIsPerformer($searchStr, $user, $showTerminated),
+            'assignedByUser' => self::getTasksWhereUserIsMaster($searchStr, $user, $showTerminated),
+            'followerTasks' => self::getTasksWhereUserIsFollower($searchStr, $user, $showTerminated),
             'filter' => $filter
         ];
     }
@@ -120,12 +127,13 @@ class TaskDataservice
     {
         $filter = ($request->get('searchStr')) ?? '';
         $searchStr = '%' . str_replace(' ', '%', $filter) . '%';
+        $showTerminated =  $request->get('showClosedTasks', false);
 
 
         return [
-            'userAssignments' => self::getTaskListWhereUserIsPerformer($searchStr, $user),
-            'assignedByUser' => self::getTasksWhereUserIsMaster($searchStr, $user),
-            'followerTasks' => self::getTasksWhereUserIsFollower($searchStr, $user),
+            'userAssignments' => self::getTaskListWhereUserIsPerformer($searchStr, $user, $showTerminated),
+            'assignedByUser' => self::getTasksWhereUserIsMaster($searchStr, $user, $showTerminated),
+            'followerTasks' => self::getTasksWhereUserIsFollower($searchStr, $user, $showTerminated),
             'filter' => $filter
         ];
     }

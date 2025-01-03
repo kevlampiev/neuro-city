@@ -86,7 +86,7 @@
                         <h5>Изображение для аватара</h5>
                         <div onclick="document.getElementById('loadImgBtn').click()">
                             @if(!$user->photo)
-                                <img src=   "https://aristokratrest.com/files/rublevbar/image/no_product.jpg" alt="No photo"
+                                <img src= {{asset('unknown_user.jpg')}} alt="No photo"
                                     class="rounded-circle float-start border-info" style="width: 200px; height:200px; object-fit: cover;" id="img-viewer">
                             @else
                                 {{-- @dd(route('avatar.get', ['filename' => $user->photo])) --}}

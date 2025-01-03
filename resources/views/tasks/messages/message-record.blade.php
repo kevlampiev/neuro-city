@@ -1,8 +1,9 @@
 <div>
     <div class="d-flex justify-content-between align-items-start">
         <div>
+            
             <span class="text-primary fw-bold">
-                {{$message->user->name}}
+                @include('partials.avatar-mini-name', ['user'=>$message->user])   
             </span>
             <small class="text-muted">
                 {{\Carbon\Carbon::parse($message->created_at)->format('d.m.Y H:i')}}
