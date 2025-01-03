@@ -14,7 +14,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <a class="btn btn-outline-info" href="{{route('droidTypes.create')}}">Добавить тип</a>
+            <a class="btn btn-outline-info" href="{{route('products.create')}}">Добавить </a>
         </div>
     </div>
 

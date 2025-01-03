@@ -143,7 +143,7 @@
         @if(Gate::allows('s-accruals'))
         <div class="tab-pane fade" id="accruals" role="tabpanel" aria-labelledby="accruals-tab">
             <div class="row">
-                @include('agreements.agreement-summary.agreement-accruals', ['accruals' =>$agreement->accruals])
+                @include('agreements.agreement-summary.accruals', ['accruals' =>$agreement->accruals])
             </div>
         </div>
         @endif

@@ -31,7 +31,17 @@ class PlanAccrual extends Model
 
     public function plItem():BelongsTo
     {
-        return $this->belongsTo(PLItem::class);
+        return $this->belongsTo(PlItem::class);
+    }
+
+    /**
+     * Get the computed amount.
+     *
+     * @return float
+     */
+    public function getAmountAttribute()
+    {
+        return $this->units_count * $this->amount_per_unit;
     }
 
 }

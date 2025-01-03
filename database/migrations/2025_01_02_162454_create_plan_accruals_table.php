@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->boolean('is_service')->default(false);
             $table->text('description')->nullable();
+            $table->unsignedBigInteger('created_by');
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('created_by')->references('id')->on('users');
         });    
 
         Schema::create('plan_accruals', function (Blueprint $table) {
@@ -27,7 +29,8 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id')->comment('поставяемый продукт/оказываемая услуга');
             $table->date('initial_date')->comment('Первоначальная дата поставки по договору');
             $table->date('shifted_date')->comment('Планируемая дата поставки по договору');
-            $table->float('amount')->comment('стоимость продукта/услуги по договору без НДС');
+            $table->float('units_count')->comment('Количество единиц товара, услуг');
+            $table->float('amount_per_unit')->comment('стоимость единицы продукта/услуги по договору без НДС');
             $table->unsignedBigInteger('pl_item_id');
             $table->string('description')->nullable();
             $table->timestamps();
